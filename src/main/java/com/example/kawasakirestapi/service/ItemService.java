@@ -212,12 +212,11 @@ public class ItemService {
      */
     public List<Item> searchItem(String searchword) {
 
-        List<Item> itemList = itemRepository.findByTitleContaining(searchword);
-        if (itemList.isEmpty()) {
+        List<Item> items = itemRepository.findByTitleContaining(searchword);
+        if (items.isEmpty()) {
             return new ArrayList<>();
         }
-
-        return itemList;
+        return items;
     }
 
 }

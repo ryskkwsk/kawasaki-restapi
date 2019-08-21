@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.example.kawasakirestapi.exception.ImageNotFoundException;
@@ -110,37 +111,35 @@ public class ItemsController {
      * @return 画像データ HttpEntity<byte[]>
      */
     @GetMapping ("api/items/image/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public HttpEntity<byte[]> showImageItem(@PathVariable Long id) {
 
-        byte[] image = itemService.getImage(id);
+        byte[] images = itemService.getImage(id);
         //レスポンスデータとして返却
         HttpHeaders headers = new HttpHeaders();
-        try (InputStream inputStream = new ByteArrayInputStream(image)) {
+        try (InputStream inputStream = new ByteArrayInputStream(images)) {
             String contentType = URLConnection.guessContentTypeFromStream(inputStream);
             headers.setContentType(MediaType.valueOf(contentType));
-            headers.setContentLength(image.length);
+            headers.setContentLength(images.length);
         } catch (Exception e) {
             throw new ImageNotFoundException("対象の画像が存在しません", e);
         }
 
-        return new HttpEntity<>(image, headers);
+        return new HttpEntity<>(images, headers);
     }
 
     /**
      * 商品検索API
      *
-     * @param searchword string 検索キーワード
+     * @param item  検索キーワード
      * @return 検索キーワードを含んだ商品を返す
      */
     @GetMapping("api/items/search")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Item> searchItems(@RequestParam("q") String searchword) {
+    public List<Item> searchItems(@RequestBody(required = false) Item item) {
 
-        if (StringUtils.isEmptyOrWhitespace(searchword)) {
+        String searchword = item.getTitle();
+        if (searchword.isEmpty()) {
             return new ArrayList<>();
         }
-
         return itemService.searchItem(searchword);
     }
 
