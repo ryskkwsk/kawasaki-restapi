@@ -25,12 +25,12 @@ import org.thymeleaf.util.StringUtils;
 import javax.imageio.ImageIO;
 
 @RestController
-public class ItemRestController {
+public class ItemsController {
 
     private final ItemService itemService;
     private final ItemRepository itemRepository;
 
-    public ItemRestController(ItemService itemService, ItemRepository itemRepository) {
+    public ItemsController(ItemService itemService, ItemRepository itemRepository) {
         this.itemService = itemService;
         this.itemRepository = itemRepository;
     }

@@ -44,7 +44,7 @@
 │   │   │           └── kawasakirestapi
 │   │   │               ├── KawasakiRestapiApplication.java
 │   │   │               ├── controller
-│   │   │               │   └── ItemRestController.java
+│   │   │               │   └── ItemsController.java
 │   │   │               ├── entity
 │   │   │               │   └── Item.java
 │   │   │               ├── exception

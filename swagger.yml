@@ -11,7 +11,7 @@ servers:
 
 paths:
   # paths オブジェクト
-  /v1/items/:
+  /api/items/:
     # path item オブジェクト
     get: # GET
       # Operationオブジェクト
@@ -60,7 +60,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/handleMethodArgumentNotValid"
 
-  /v1/items/{id}:
+  /api/items/{id}:
     put:
       tags:
         - Item
@@ -127,7 +127,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/ItemNotFoundException'
 
-  /v1/items/search:
+  /api/items/search:
     get:
       tags:
         - Item
@@ -151,7 +151,7 @@ paths:
                   $ref: "#/components/schemas/ItemDataResponse"
 
 
-  /v1/items/image/{id}:
+  /api/items/image/{id}:
     get:
       tags:
         - Item
