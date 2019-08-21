@@ -1,6 +1,5 @@
-package com.example.kawasakirestapi.handler;
+package com.example.kawasakirestapi.exception;
 
-import com.example.kawasakirestapi.exception.*;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

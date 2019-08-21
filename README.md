@@ -60,7 +60,7 @@
 │   │   │               └── service
 │   │   │                   └── ItemService.java
 │   │   └── resources
-│   │       ├── application.properties
+│   │       ├── application.yml
 │   │       ├── data.sql
 │   │       ├── static
 │   │       │   └── images
