@@ -2,11 +2,10 @@ package com.example.kawasakirestapi.service;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.example.kawasakirestapi.exception.ImageNotFoundException;
 import com.example.kawasakirestapi.exception.ImageNotUploadedException;
@@ -134,7 +133,7 @@ public class ItemService {
         //画像の拡張子取得
         String ext = uploadImage.getOriginalFilename().substring(number);
         //画像名再設定
-        String fileName = id + "_" + getImageUploadedDate() + ext;
+        String fileName = id + "_" + getRandomId() + ext;
         File uploadPath = new File(localImagesPath + "/" + fileName);
 
         try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(uploadPath))) {
@@ -151,13 +150,14 @@ public class ItemService {
     }
 
     /**
-     * 現在の日時取得
+     * 重複のない一意なユニークなIDを取得
      *
-     * @return 日時 String
+     * @return 生成されたユニークな値
      */
-    private String getImageUploadedDate() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS"));
-    }
+      private String getRandomId() {
+          UUID uuid = UUID.randomUUID();
+          return  uuid.toString();
+      }
 
     /**
      * 指定の画像が保存されているディレクトリのパスを返す。
