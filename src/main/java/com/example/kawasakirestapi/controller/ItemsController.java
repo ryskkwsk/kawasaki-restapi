@@ -40,7 +40,6 @@ public class ItemsController {
      * @return 全ての商品を取得し、jsonで送信(0件の場合、空の配列を返す)
      */
     @GetMapping("api/items")
-    @ResponseBody
     public List<Item> getItems() {
         List<Item> items = itemService.findAll();
         return items;
@@ -121,7 +120,6 @@ public class ItemsController {
      * @param id 画像を表示する商品id
      * @return 画像データ HttpEntity<byte[]>
      */
-    @ResponseBody
     @GetMapping ("api/items/image/{id}")
     @ResponseStatus(HttpStatus.OK)
     public HttpEntity<byte[]> showImageItem(@PathVariable Long id) {
@@ -146,7 +144,6 @@ public class ItemsController {
      * @param searchword string 検索キーワード
      * @return 検索キーワードを含んだ商品を返す
      */
-    @ResponseBody
     @GetMapping("api/items/search")
     @ResponseStatus(HttpStatus.OK)
     public List<Item> searchItems(@RequestParam("q") String searchword) {

@@ -63,9 +63,9 @@
 │   │       ├── application.yml
 │   │       ├── data.sql
 │   │       ├── static
-│   │       │   └── images
-│   │       │       └── 1_2019082018505423.jpeg
-│   │       └── templates
+│   │          └── images
+│   │              
+│   │       
 │   └── test
 │       └── java
 │           └── com
