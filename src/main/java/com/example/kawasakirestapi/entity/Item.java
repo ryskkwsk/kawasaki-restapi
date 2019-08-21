@@ -44,6 +44,6 @@ public class Item implements Serializable{
     private String description;
 
     @Column
-    private String image;
+    private String imagePath;
 
 }

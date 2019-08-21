@@ -11,16 +11,16 @@
 
 ####ルーティング
 
- | HTTPメソッド | URL | Conrtollerメソッド | 概要 |
- |:-----------|:------------|:------------|:--- |
- | GET       |        v1/items |     getItems     | 商品情報の取得 |
- | POST    |      v1/items |    createItem    | 商品情報の保存 |
- | DELETE       |        v1/items/{id} |     deleteItem     | 商品情報の削除 |
- | DELETE         |   v1/items/image/{id} |      deleteItemImage      | 商品画像の削除 |
- | PUT       |       v1/items/{id} |    editItem    | 商品情報の編集 |
- | POST    |     v1/items/image/{id} |   uploadImageItem    | 商品画像の登録 |
- | GET | v1/items/image/{id} | showImageItem | 商品画像の表示　|
- | POST | v1/items/search | searchItems | 商品情報の検索 |
+ | HTTPメソッド | URL | 概要 |
+ |:-----------|:------|:--- |
+ | GET       |        api/items         | 商品情報の取得 |
+ | POST    |      api/items        | 商品情報の保存 |
+ | DELETE       |        api/items/{id}          | 商品情報の削除 |
+ | DELETE         |   api/items/image/{id}            | 商品画像の削除 |
+ | PUT       |       api/items/{id}         | 商品情報の編集 |
+ | POST    |     api/items/image/{id}        | 商品画像の登録 |
+ | GET | api/items/image/{id}   | 商品画像の表示　|
+ | GET | api/items/search   | 商品情報の検索 |
 
 
 ####DB設計
@@ -31,7 +31,7 @@
  | title    |VARCHAR(100)|    NO    |  |
  | price       |INT(20)|     NO     |  |
  | description         |   VARCHAR(500) |      NO      |  |
- | image       |       VARCHAR(255) |    YES    |  |
+ | image_path       |       VARCHAR(500) |    YES    |  |
 
 
 ####ディレクトリ構成
@@ -95,25 +95,6 @@ $ mysql.server start
 ```
  $ mysql -u root #MySQLにログイン
  mysql> CREATE DATABASE kawasaki_restfulapi; #データベース作成
-```
-・application.ymlの作成
-```
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/kawasaki_restfulapi
-    username: root
-    password:
-  jpa:
-    database: MYSQL
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-  mvc:
-  throw-exception-if-no-handler-found: true
-  resources:
-  add-mappings: false
-  localImagesPath: src/main/resources/static/images
-
 ```
 ・アプリ起動
 ```

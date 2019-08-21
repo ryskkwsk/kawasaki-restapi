@@ -39,7 +39,7 @@ public class ItemRestController {
      * 商品取得用コントローラー
      * @return 全ての商品を取得し、jsonで送信(0件の場合、空の配列を返す)
      */
-    @GetMapping("v1/items")
+    @GetMapping("api/items")
     @ResponseBody
     public List<Item> getItems() {
         List<Item> items = itemService.findAll();
@@ -51,7 +51,7 @@ public class ItemRestController {
      * @param item 登録する商品
      * @return 登録された商品を取得し、jsonで送信
      */
-    @PostMapping("v1/items")
+    @PostMapping("api/items")
     public Item createItem(@RequestBody @Validated Item item) {
         return itemService.save(item);
     }
@@ -60,7 +60,7 @@ public class ItemRestController {
      * 商品情報削除用コントローラー
      * @param id 削除する商品のid
      */
-    @DeleteMapping("v1/items/{id}")
+    @DeleteMapping("api/items/{id}")
     public void deleteItem(@PathVariable("id") long id) {
         itemService.deleteById(id);
     }
@@ -69,7 +69,7 @@ public class ItemRestController {
      * 商品画像削除用コントローラー
      * @param id 削除する商品のid
      */
-    @DeleteMapping("v1/items/image/{id}")
+    @DeleteMapping("api/items/image/{id}")
     public void deleteItemImage(@PathVariable("id") long id) {
         Item item = itemRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("対象の商品が存在しません"));
         itemService.deleteImageItem(item);
@@ -81,7 +81,7 @@ public class ItemRestController {
      * @param id 編集する商品のid
      * @return 編集された商品をjsonで送信
      */
-    @PutMapping("v1/items/{id}")
+    @PutMapping("api/items/{id}")
     public Item editItem(@RequestBody @Validated Item item, @PathVariable("id") long id) {
         return itemService.update(item, id);
     }
@@ -92,7 +92,7 @@ public class ItemRestController {
      * @param id          画像を登録する商品のid
      * @param uploadImage MultipartFile
      */
-    @PostMapping("v1/items/image/{id}")
+    @PostMapping("api/items/image/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Item uploadImageItem(
             @PathVariable("id") long id,
@@ -122,7 +122,7 @@ public class ItemRestController {
      * @return 画像データ HttpEntity<byte[]>
      */
     @ResponseBody
-    @GetMapping ("v1/items/image/{id}")
+    @GetMapping ("api/items/image/{id}")
     @ResponseStatus(HttpStatus.OK)
     public HttpEntity<byte[]> showImageItem(@PathVariable Long id) {
 
@@ -147,7 +147,7 @@ public class ItemRestController {
      * @return 検索キーワードを含んだ商品を返す
      */
     @ResponseBody
-    @GetMapping("v1/items/search")
+    @GetMapping("api/items/search")
     @ResponseStatus(HttpStatus.OK)
     public List<Item> searchItems(@RequestParam("q") String searchword) {
 

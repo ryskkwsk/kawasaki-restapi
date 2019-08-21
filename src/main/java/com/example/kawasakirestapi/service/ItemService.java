@@ -96,7 +96,7 @@ public class ItemService {
      * @param item Item
      */
     public void deleteImageItem(Item item) {
-        File file = new File(item.getImage());
+        File file = new File(item.getImagePath());
         if (file.exists()) {
             file.delete();
         }
@@ -129,7 +129,7 @@ public class ItemService {
             //アップロードファイルをbyte配列で取得して、ファイルへバイナリデータを書き込む
             bufferedOutputStream.write(uploadImage.getBytes());
             String imagePath = localImagesPath + "/" + fileName;
-            item.setImage(imagePath);
+            item.setImagePath(imagePath);
 
             return itemRepository.save(item);
         } catch (Exception e) {
@@ -158,7 +158,7 @@ public class ItemService {
 
         Item item = findOneById(id).orElseThrow(() -> new ItemNotFoundException("対象の商品が存在しません"));
 
-        return item.getImage();
+        return item.getImagePath();
     }
 
     /**
