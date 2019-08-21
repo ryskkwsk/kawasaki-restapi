@@ -26,7 +26,7 @@ public class Item implements Serializable{
 
     @Id
     @GeneratedValue
-    @Column
+    @Column(nullable = false)
     private Long id;
 
     @Column(nullable = false)
@@ -36,11 +36,11 @@ public class Item implements Serializable{
 
     @Column(nullable = false)
     @NotNull(message = "必須項目です")
-    @Min(value = 0, message = "0以上の数値をご入力ください")
+    @Min(value = 0, message = "金額は0以上の数値をご入力ください")
     private Long price;
 
     @Length(max = 500, message = "商品説明は{max}文字以内で入力してください")
-    @Column
+    @Column(nullable = false)
     private String description;
 
     @Column

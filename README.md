@@ -53,8 +53,8 @@
 │   │   │               │   ├── ImageNotUploadedException.java
 │   │   │               │   ├── InvalidImageFileException.java
 │   │   │               │   └── ItemNotFoundException.java
-│   │   │               ├── handler
-│   │   │               │   └── ItemExceptionHandler.java
+│   │   │               │   └── ItemExceptionHandler.java
+│   │   │               │   
 │   │   │               ├── repository
 │   │   │               │   └── ItemRepository.java
 │   │   │               └── service

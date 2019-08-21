@@ -1,5 +1,6 @@
 package com.example.kawasakirestapi.service;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,6 +10,7 @@ import java.util.Optional;
 
 import com.example.kawasakirestapi.exception.ImageNotFoundException;
 import com.example.kawasakirestapi.exception.ImageNotUploadedException;
+import com.example.kawasakirestapi.exception.InvalidImageFileException;
 import com.example.kawasakirestapi.exception.ItemNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -18,6 +20,8 @@ import org.springframework.core.io.ResourceLoader;
 import com.example.kawasakirestapi.entity.Item;
 import com.example.kawasakirestapi.repository.ItemRepository;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.imageio.ImageIO;
 
 @Service
 public class ItemService {
@@ -86,7 +90,7 @@ public class ItemService {
      * @param id 取得する商品のid
      * @return 取得した商品情報を返す
      */
-    Optional<Item> findOneById(Long id) {
+    public Optional<Item> findOneById(Long id) {
         return itemRepository.findById(id);
     }
 
@@ -115,6 +119,15 @@ public class ItemService {
             Long id,
             MultipartFile uploadImage) {
 
+        try (InputStream image = uploadImage.getInputStream()){
+            BufferedImage bufferedImage = ImageIO.read(image);
+            if (bufferedImage == null) {
+                throw new InvalidImageFileException("投稿が画像データではない、もしくは画像が添付されておりません");
+            }
+        } catch (IOException e)   {
+            throw new InvalidImageFileException("投稿が画像データではない、もしくは画像が添付されておりません");
+        }
+
         Item item = findOneById(id).orElseThrow(() -> new ItemNotFoundException("対象の商品が存在しません"));
         //画像のファイル名の文字数取得
         int number = uploadImage.getOriginalFilename().lastIndexOf(".");
@@ -123,7 +136,6 @@ public class ItemService {
         //画像名再設定
         String fileName = id + "_" + getImageUploadedDate() + ext;
         File uploadPath = new File(localImagesPath + "/" + fileName);
-
 
         try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(uploadPath))) {
             //アップロードファイルをbyte配列で取得して、ファイルへバイナリデータを書き込む
