@@ -97,7 +97,7 @@ public class ItemService {
     /**
      * 商品に紐づく画像ファイルを削除
      *
-     * @param item Item
+     * @param item 商品情報
      */
     public void deleteImageItem(Item item) {
         File file = new File(item.getImagePath());
@@ -111,7 +111,7 @@ public class ItemService {
      * 指定の商品が存在しない場合、例外処理。
      * 画像が正しい形式でない場合、例外処理
      *
-     * @param id          Long
+     * @param id 商品id         Long
      * @param uploadImage MultipartFile
      * @return item       Item
      */
@@ -177,7 +177,7 @@ public class ItemService {
      * 指定の画像データを返却。
      * 対象の商品が存在しない場合エラー処理。
      *
-     * @param id Long
+     * @param id 商品id
      * @return 画像データ HttpEntity<byte[]>
      */
     public byte[] getImage(Long id) {
