@@ -1,19 +1,13 @@
 package com.example.kawasakirestapi.controller;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 import com.example.kawasakirestapi.exception.ImageNotFoundException;
-import com.example.kawasakirestapi.exception.InvalidImageFileException;
 import com.example.kawasakirestapi.exception.ItemNotFoundException;
-import com.example.kawasakirestapi.repository.ItemRepository;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,19 +17,14 @@ import org.springframework.web.bind.annotation.*;
 import com.example.kawasakirestapi.entity.Item;
 import com.example.kawasakirestapi.service.ItemService;
 import org.springframework.web.multipart.MultipartFile;
-import org.thymeleaf.util.StringUtils;
-
-import javax.imageio.ImageIO;
 
 @RestController
 public class ItemsController {
 
     private final ItemService itemService;
-    private final ItemRepository itemRepository;
 
-    public ItemsController(ItemService itemService, ItemRepository itemRepository) {
+    public ItemsController(ItemService itemService) {
         this.itemService = itemService;
-        this.itemRepository = itemRepository;
     }
 
     /**
@@ -130,13 +119,13 @@ public class ItemsController {
     /**
      * 商品検索API
      *
-     * @param item  検索キーワード
+     * @param item  検索するタイトルを含んだ商品情報
      * @return 検索キーワードを含んだ商品を返す
      */
     @GetMapping("api/items/search")
-    public List<Item> searchItems(@RequestBody(required = false) Item item) {
+    public List<Item> searchItems(@RequestBody(required = false) @Validated Item item) {
 
-        String searchword = item.getTitle();
+        String searchword= item.getTitle();
         if (searchword.isEmpty()) {
             return new ArrayList<>();
         }
