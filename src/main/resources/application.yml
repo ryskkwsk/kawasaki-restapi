@@ -13,5 +13,9 @@ spring:
   resources:
   add-mappings: false
   localImagesPath: src/main/resources/static/images
+  jackson:
+    default-property-inclusion:non_null #null項目は出力しない
+    serialization: #整形する
+      INDENT_OUTPUT: true
 
 

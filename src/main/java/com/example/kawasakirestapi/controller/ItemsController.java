@@ -102,7 +102,7 @@ public class ItemsController {
     @GetMapping ("api/items/image/{id}")
     public HttpEntity<byte[]> showImageItem(@PathVariable Long id) {
 
-        byte[] images = itemService.getImage(id);
+        byte[] images = itemService.getImageByte(id);
         //レスポンスデータとして返却
         HttpHeaders headers = new HttpHeaders();
         try (InputStream inputStream = new ByteArrayInputStream(images)) {

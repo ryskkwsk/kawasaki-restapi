@@ -2,10 +2,7 @@ package com.example.kawasakirestapi.service;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import com.example.kawasakirestapi.exception.ImageNotFoundException;
 import com.example.kawasakirestapi.exception.ImageNotUploadedException;
@@ -180,7 +177,7 @@ public class ItemService {
      * @param id 商品id
      * @return 画像データ HttpEntity<byte[]>
      */
-    public byte[] getImage(Long id) {
+    public byte[] getImageByte(Long id) {
 
         //画像の格納されているディレクトリを取得
         String imagePath = getLocalImagePath(id);
@@ -214,7 +211,7 @@ public class ItemService {
 
         List<Item> items = itemRepository.findByTitleContaining(searchword);
         if (items.isEmpty()) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
         return items;
     }
