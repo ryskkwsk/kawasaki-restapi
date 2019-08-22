@@ -101,19 +101,7 @@ public class ItemsController {
      */
     @GetMapping ("api/items/image/{id}")
     public HttpEntity<byte[]> showImageItem(@PathVariable Long id) {
-
-        byte[] images = itemService.getImageByte(id);
-        //レスポンスデータとして返却
-        HttpHeaders headers = new HttpHeaders();
-        try (InputStream inputStream = new ByteArrayInputStream(images)) {
-            String contentType = URLConnection.guessContentTypeFromStream(inputStream);
-            headers.setContentType(MediaType.valueOf(contentType));
-            headers.setContentLength(images.length);
-        } catch (Exception e) {
-            throw new ImageNotFoundException("対象の画像が存在しません", e);
-        }
-
-        return new HttpEntity<>(images, headers);
+        return itemService.getImageItem(id);
     }
 
     /**

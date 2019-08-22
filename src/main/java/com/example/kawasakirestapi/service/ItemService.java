@@ -2,6 +2,7 @@ package com.example.kawasakirestapi.service;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URLConnection;
 import java.util.*;
 
 import com.example.kawasakirestapi.exception.ImageNotFoundException;
@@ -10,6 +11,9 @@ import com.example.kawasakirestapi.exception.InvalidImageFileException;
 import com.example.kawasakirestapi.exception.ItemNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.core.io.ResourceLoader;
 
@@ -131,6 +135,7 @@ public class ItemService {
         String ext = uploadImage.getOriginalFilename().substring(number);
         //画像名再設定
         String fileName = id + "_" + getRandomId() + ext;
+        //アップロードファイルを置く
         File uploadPath = new File(localImagesPath + "/" + fileName);
 
         try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(uploadPath))) {
@@ -177,7 +182,7 @@ public class ItemService {
      * @param id 商品id
      * @return 画像データ HttpEntity<byte[]>
      */
-    public byte[] getImageByte(Long id) {
+    public HttpEntity<byte[]> getImageItem(Long id) {
 
         //画像の格納されているディレクトリを取得
         String imagePath = getLocalImagePath(id);
@@ -197,9 +202,21 @@ public class ItemService {
 
             throw new ImageNotFoundException("対象の画像が存在しません", e);
         }
+        byte[] images = b;
 
-        return b;
+        HttpHeaders headers = new HttpHeaders();
+        try (InputStream inputStream = new ByteArrayInputStream(images)) {
+            String contentType = URLConnection.guessContentTypeFromStream(inputStream);
+            headers.setContentType(MediaType.valueOf(contentType));
+            headers.setContentLength(images.length);
+        } catch (Exception e) {
+            throw new ImageNotFoundException("対象の画像が存在しません", e);
+        }
+
+        return new HttpEntity<>(images,headers);
     }
+
+
     /**
      * 商品の検索。
      * 検索結果がない場合は空の配列を返す
