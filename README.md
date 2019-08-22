@@ -54,6 +54,7 @@
 │   │   │               │   ├── InvalidImageFileException.java
 │   │   │               │   └── ItemNotFoundException.java
 │   │   │               │   └── ItemExceptionHandler.java
+│   │   │               │   └── SearchResultNotFoundException.java
 │   │   │               │   
 │   │   │               ├── repository
 │   │   │               │   └── ItemRepository.java
