@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartException;
 import org.slf4j.Logger;
@@ -32,6 +33,26 @@ public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         ErrorResponse body = new ErrorResponse(status, "内部エラーが発生しております。");
+
+        return handleExceptionInternal(ex, body, headers, status, request);
+    }
+
+    /**
+     *
+     * @param ex    Exception
+     * @param headers   appliaction/json
+     * @param status    405
+     * @param request   リクエスト内容
+     * @return  405エラー情報を返す
+     */
+    @Override
+    public ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request) {
+
+        logger.warn(ex.getMessage(), ex);
+        ErrorResponse body = new ErrorResponse(status, "許可されていないリクエストです");
 
         return handleExceptionInternal(ex, body, headers, status, request);
     }
