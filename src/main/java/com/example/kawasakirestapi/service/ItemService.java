@@ -114,7 +114,7 @@ public class ItemService {
      */
     public Item uploadImageItem(
             Long id,
-            MultipartFile uploadImage) {
+            MultipartFile uploadImage) throws IOException {
 
         try (InputStream image = uploadImage.getInputStream()){
             BufferedImage bufferedImage = ImageIO.read(image);
@@ -132,6 +132,8 @@ public class ItemService {
         String ext = uploadImage.getOriginalFilename().substring(number);
         //画像名再設定
         String fileName = id + "_" + getRandomId() + ext;
+        //ディレクトリ作成
+        mkdirs();
         //アップロードファイルを置く
         File uploadPath = new File(localImagesPath + "/" + fileName);
 
@@ -147,6 +149,17 @@ public class ItemService {
             throw new ImageNotUploadedException("画像のアップロードに失敗しました", e);
         }
     }
+
+    /**
+     * ディレクトリ作成
+     * @throws IOException
+     */
+    private void mkdirs() throws IOException {
+        File dir = new File(localImagesPath);
+        dir.mkdir();
+    }
+
+
 
     /**
      * 重複のない一意なユニークなIDを取得
