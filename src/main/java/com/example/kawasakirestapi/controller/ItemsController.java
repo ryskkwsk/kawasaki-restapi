@@ -1,17 +1,10 @@
 package com.example.kawasakirestapi.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.example.kawasakirestapi.exception.ImageNotFoundException;
 import com.example.kawasakirestapi.exception.ItemNotFoundException;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.example.kawasakirestapi.entity.Item;
@@ -111,12 +104,9 @@ public class ItemsController {
      * @return 検索キーワードを含んだ商品を返す
      */
     @GetMapping("api/items/search")
-    public List<Item> searchItems(@RequestBody(required = false) @Validated Item item) {
+    public List<Item> searchItems(@RequestBody(required = false)Item item) {
 
         String searchword= item.getTitle();
-        if (searchword.isEmpty()) {
-            return new ArrayList<>();
-        }
         return itemService.searchItem(searchword);
     }
 

@@ -108,11 +108,27 @@ public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
      * @param request リクエスト
      * @return 400エラー情報を返す
      */
-    @ExceptionHandler({ InvalidImageFileException.class })
-    public ResponseEntity<Object> invalidImageException(InvalidImageFileException ex, WebRequest request) {
+    @ExceptionHandler(InvalidImageFileException.class)
+    public ResponseEntity<Object> handleInvalidImageException(InvalidImageFileException ex, WebRequest request) {
         logger.error(ex.getMessage(), ex);
         HttpHeaders headers = new HttpHeaders();
         HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorResponse body = new ErrorResponse(status, ex.getMessage());
+
+        return handleExceptionInternal(ex, body, headers, status, request);
+    }
+
+    /**
+     * 検索キーワードが空だった場合にエラーを返す
+     * @param ex    例外
+     * @param request リクエスト
+     * @return 404エラー情報を返す
+     */
+    @ExceptionHandler(SearchResultNotFoundException.class)
+    public ResponseEntity<Object> handleSearchResultException(SearchResultNotFoundException ex, WebRequest request) {
+        logger.warn(ex.getMessage(), ex);
+        HttpHeaders headers = new HttpHeaders();
+        HttpStatus status = HttpStatus.NOT_FOUND;
         ErrorResponse body = new ErrorResponse(status, ex.getMessage());
 
         return handleExceptionInternal(ex, body, headers, status, request);

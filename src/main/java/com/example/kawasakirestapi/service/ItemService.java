@@ -5,10 +5,7 @@ import java.io.*;
 import java.net.URLConnection;
 import java.util.*;
 
-import com.example.kawasakirestapi.exception.ImageNotFoundException;
-import com.example.kawasakirestapi.exception.ImageNotUploadedException;
-import com.example.kawasakirestapi.exception.InvalidImageFileException;
-import com.example.kawasakirestapi.exception.ItemNotFoundException;
+import com.example.kawasakirestapi.exception.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
@@ -49,7 +46,7 @@ public class ItemService {
     /**
      * 商品を保存する
      * @param item 保存する商品
-     * @return
+     * @return データベースに保存した商品情報を返す
      */
     public Item save(Item item){
 
@@ -65,7 +62,7 @@ public class ItemService {
      * 商品を編集して保存する
      * @param item 編集後の商品
      * @param id 編集する商品のid
-     * @return
+     * @return  編集した商品情報を保存して、データベースに更新した情報を返す
      */
     public Item update(Item item, long id) {
         Item updateItem = findOneById(id).orElseThrow(() ->new ItemNotFoundException("対象の商品が存在しません"));
@@ -226,6 +223,9 @@ public class ItemService {
      */
     public List<Item> searchItem(String searchword) {
 
+        if (searchword.isEmpty()) {
+            throw new SearchResultNotFoundException("ステータスコード200です。検索結果が見つかりませんでした。");
+        }
         List<Item> items = itemRepository.findByTitleContaining(searchword);
         if (items.isEmpty()) {
             return Collections.emptyList();

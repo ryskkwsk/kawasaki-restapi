@@ -14,7 +14,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>{
     /**
      * 一致した商品idの商品を返す
      * @param id 商品id
-     * @return
+     * @return 商品idに該当した商品をOptionalで返す
      */
     Optional<Item> findById(Long id);
 
