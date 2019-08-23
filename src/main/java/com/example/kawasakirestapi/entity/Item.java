@@ -1,6 +1,5 @@
 package com.example.kawasakirestapi.entity;
 
-import java.io.File;
 import java.io.Serializable;
 
 import javax.persistence.Column;

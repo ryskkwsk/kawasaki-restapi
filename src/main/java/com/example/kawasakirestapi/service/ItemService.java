@@ -6,11 +6,10 @@ import java.net.URLConnection;
 import java.util.*;
 
 import com.example.kawasakirestapi.exception.*;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.core.io.ResourceLoader;
 
@@ -70,7 +69,7 @@ public class ItemService {
         updateItem.setDescription(item.getDescription());
         updateItem.setPrice(item.getPrice());
 
-        return itemRepository.saveAndFlush(updateItem);
+        return itemRepository.save(updateItem);
     }
 
     /**
@@ -114,7 +113,7 @@ public class ItemService {
      */
     public Item uploadImageItem(
             Long id,
-            MultipartFile uploadImage) throws IOException {
+            MultipartFile uploadImage) {
 
         try (InputStream image = uploadImage.getInputStream()){
             BufferedImage bufferedImage = ImageIO.read(image);
@@ -126,20 +125,20 @@ public class ItemService {
         }
 
         Item item = findOneById(id).orElseThrow(() -> new ItemNotFoundException("対象の商品が存在しません"));
-        //画像のファイル名の文字数取得
+        // 画像のファイル名の文字数取得
         int number = uploadImage.getOriginalFilename().lastIndexOf(".");
-        //画像の拡張子取得
+        // 画像の拡張子取得
         String ext = uploadImage.getOriginalFilename().substring(number);
-        //画像名再設定
+        // 画像名再設定
         String fileName = id + "_" + getRandomId() + ext;
-        //ディレクトリ作成
+        // ディレクトリ作成
         mkdirs();
-        //アップロードファイルを置く
-        File uploadPath = new File(localImagesPath + "/" + fileName);
+        // アップロードファイルを置く
+        File uploadPath = new File(localImagesPath + "/" + fileName).getAbsoluteFile();
 
-        try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(uploadPath))) {
-            //アップロードファイルをbyte配列で取得して、ファイルへバイナリデータを書き込む
-            bufferedOutputStream.write(uploadImage.getBytes());
+        try {
+            // 配置したファイルに書き込む
+            uploadImage.transferTo(uploadPath);
             String imagePath = localImagesPath + "/" + fileName;
             item.setImagePath(imagePath);
 
@@ -151,14 +150,16 @@ public class ItemService {
     }
 
     /**
-     * ディレクトリ作成
-     * @throws IOException
+     * 画像配置するディレクトリの作成
      */
-    private void mkdirs() throws IOException {
-        File dir = new File(localImagesPath);
-        dir.mkdir();
+    private void mkdirs() {
+        try {
+            File dir = new File(localImagesPath);
+            dir.mkdir();
+        } catch (Exception e) {
+            e.getMessage();
+        }
     }
-
 
 
     /**
@@ -194,25 +195,20 @@ public class ItemService {
      */
     public HttpEntity<byte[]> getImageItem(Long id) {
 
-        //画像の格納されているディレクトリを取得
+        // 画像の格納されているディレクトリを取得
         String imagePath = getLocalImagePath(id);
-        //リソースファイルを読み込む
+        // リソースファイルを読み込む
         Resource resource = resourceLoader.getResource("File:" + imagePath);
 
-        byte[] b;
-        //byteへ変換
-        try (InputStream image = resource.getInputStream()) {
-            ByteArrayOutputStream bout = new ByteArrayOutputStream();
-            int c;
-            while ((c = image.read()) != -1) {
-                bout.write(c);
-            }
-            b = bout.toByteArray();
+        byte[] imageBytes;
+        // byteへ変換
+        try (InputStream is = resource.getInputStream()) {
+            imageBytes = IOUtils.toByteArray(is);
         } catch (Exception e) {
 
             throw new ImageNotFoundException("対象の画像が存在しません", e);
         }
-        byte[] images = b;
+        byte[] images = imageBytes;
 
         HttpHeaders headers = new HttpHeaders();
         try (InputStream inputStream = new ByteArrayInputStream(images)) {
@@ -223,7 +219,7 @@ public class ItemService {
             throw new ImageNotFoundException("対象の画像が存在しません", e);
         }
 
-        return new HttpEntity<>(images,headers);
+        return new ResponseEntity<>(images,headers, HttpStatus.OK);
     }
 
 
@@ -240,9 +236,6 @@ public class ItemService {
             throw new SearchResultNotFoundException("ステータスコード200です。検索結果が見つかりませんでした。");
         }
         List<Item> items = itemRepository.findByTitleContaining(searchword);
-        if (items.isEmpty()) {
-            return Collections.emptyList();
-        }
         return items;
     }
 

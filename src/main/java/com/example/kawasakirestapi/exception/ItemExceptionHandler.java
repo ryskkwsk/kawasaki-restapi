@@ -1,13 +1,12 @@
 package com.example.kawasakirestapi.exception;
 
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartException;
-import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -17,8 +16,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  *
  */
 @RestControllerAdvice
+@Slf4j
 public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
-    private static final Logger logger = LoggerFactory.getLogger(ItemExceptionHandler.class);
 
     /**
      * 500エラー発生時にエラーを返す
@@ -29,7 +28,7 @@ public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleInternalServerErrorException(Exception ex, WebRequest request) {
-        logger.error(ex.getMessage(), ex);
+        log.error(ex.getMessage(), ex);
         HttpHeaders headers = new HttpHeaders();
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         ErrorResponse body = new ErrorResponse(status, "内部エラーが発生しております。");
@@ -51,7 +50,7 @@ public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
             HttpStatus status,
             WebRequest request) {
 
-        logger.warn(ex.getMessage(), ex);
+        log.warn((ex.getMessage()), ex);
         ErrorResponse body = new ErrorResponse(status, "許可されていないリクエストです");
 
         return handleExceptionInternal(ex, body, headers, status, request);
@@ -65,7 +64,7 @@ public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(ItemNotFoundException.class)
     public ResponseEntity<Object> handleItemNotFoundException(ItemNotFoundException ex, WebRequest request) {
-        logger.warn(ex.getMessage(), ex);
+        log.warn(ex.getMessage(), ex);
         HttpHeaders headers = new HttpHeaders();
         HttpStatus status = HttpStatus.NOT_FOUND;
         ErrorResponse body = new ErrorResponse(status, ex.getMessage());
@@ -81,7 +80,7 @@ public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(ImageNotFoundException.class)
     public ResponseEntity<Object> handleImageNotFoundException(ImageNotFoundException ex, WebRequest request) {
-        logger.warn(ex.getMessage(), ex);
+        log.warn(ex.getMessage(), ex);
         HttpHeaders headers = new HttpHeaders();
         HttpStatus status = HttpStatus.NOT_FOUND;
         ErrorResponse body = new ErrorResponse(status, ex.getMessage());
@@ -97,7 +96,7 @@ public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(ImageNotUploadedException.class)
     public ResponseEntity<Object> handleImageNotUploadedException(ImageNotUploadedException ex, WebRequest request) {
-        logger.error(ex.getMessage(), ex);
+        log.error(ex.getMessage(), ex);
         HttpHeaders headers = new HttpHeaders();
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         ErrorResponse body = new ErrorResponse(status, ex.getMessage());
@@ -114,7 +113,7 @@ public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(MultipartException.class)
     public ResponseEntity<Object> handleFileUploadErrorException(MultipartException ex, WebRequest request){
         String errorMessage = "画像ファイルではありません";
-        logger.error(ex.getMessage(), ex);
+        log.error(ex.getMessage(), ex);
         HttpHeaders headers = new HttpHeaders();
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ErrorResponse body = new ErrorResponse(status, errorMessage);
@@ -131,7 +130,7 @@ public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(InvalidImageFileException.class)
     public ResponseEntity<Object> handleInvalidImageException(InvalidImageFileException ex, WebRequest request) {
-        logger.error(ex.getMessage(), ex);
+        log.error(ex.getMessage(), ex);
         HttpHeaders headers = new HttpHeaders();
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ErrorResponse body = new ErrorResponse(status, ex.getMessage());
@@ -147,7 +146,7 @@ public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(SearchResultNotFoundException.class)
     public ResponseEntity<Object> handleSearchResultException(SearchResultNotFoundException ex, WebRequest request) {
-        logger.warn(ex.getMessage(), ex);
+        log.warn(ex.getMessage(), ex);
         HttpHeaders headers = new HttpHeaders();
         HttpStatus status = HttpStatus.NOT_FOUND;
         ErrorResponse body = new ErrorResponse(status, ex.getMessage());
