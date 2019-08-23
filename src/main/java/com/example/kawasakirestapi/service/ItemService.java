@@ -7,6 +7,9 @@ import java.util.*;
 
 import com.example.kawasakirestapi.exception.*;
 import org.apache.commons.io.IOUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -21,6 +24,7 @@ import javax.imageio.ImageIO;
 
 @Service
 public class ItemService {
+    private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
 
     private final ItemRepository itemRepository;
 
@@ -157,10 +161,9 @@ public class ItemService {
             File dir = new File(localImagesPath);
             dir.mkdir();
         } catch (Exception e) {
-            e.getMessage();
+            logger.error(e.getMessage());
         }
     }
-
 
     /**
      * 重複のない一意なユニークなIDを取得
@@ -235,8 +238,7 @@ public class ItemService {
         if (searchword.isEmpty()) {
             throw new SearchResultNotFoundException("ステータスコード200です。検索結果が見つかりませんでした。");
         }
-        List<Item> items = itemRepository.findByTitleContaining(searchword);
-        return items;
+        return itemRepository.findByTitleContaining(searchword);
     }
 
 }
