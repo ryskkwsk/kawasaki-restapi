@@ -1,0 +1,332 @@
+openapi: 3.0.0
+
+info:
+  title: 'RESTfulな商品管理API'
+  description: '商品データの登録・検索・削除・編集ができるRESTfulなAPI'
+  version: 1.0.0
+
+servers:
+  - url: "http://localhost:8080/v1/"
+    description: "ローカルサーバーで使用"
+
+paths:
+  # paths オブジェクト
+  /api/items/:
+    # path item オブジェクト
+    get: # GET
+      # Operationオブジェクト
+      tags:
+        - Item
+      summary: "全ての商品を取得"
+      description: "登録されている全ての商品をjson形式で返却"
+      parameters: []
+      responses: # レスポンス定義
+        200: # HTTP status
+          description: "json形式で返却"
+          content:
+            application/json: # レスポンスの形式指定
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemDataResponse"
+    post: # POST
+      tags:
+        - Item
+      summary: "商品の新規登録"
+      description: "商品情報をPOSTメソッドで送信"
+      parameters: []
+      requestBody: # リクエストボディ
+        description: "画像は別フォームで送ることを想定しており、その際は画像のパスをデータベースに入れる"
+        content:
+          application/json: # レスポンスの形式指定
+            schema: # POSTするオブジェクト
+              $ref: "#/components/schemas/ItemRegisterRequest"
+      responses:
+        200:
+          description: "商品登録成功時のレスポンス"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemDataResponse"
+
+        400:
+          description: "バリデーションエラー時のレスポンス"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/handleMethodArgumentNotValid"
+
+  /api/items/{id}:
+    put:
+      tags:
+        - Item
+      summary: "商品情報を編集"
+      description: "id値を持つ商品情報を編集"
+      parameters:
+        - name: id
+          in: path
+          description: "編集したい商品のID"
+          required: true
+          schema:
+            type: integer
+      requestBody: # リクエストボディ
+        description: "画像以外を編集"
+        content:
+          application/json: # レスポンスの形式指定
+            schema:
+              $ref: "#/components/schemas/ItemUpdateRequest"
+      responses:
+        200:
+          description: "成功時のレスポンス"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ItemDataResponse"
+        400:
+          description: "バリデーションエラー時のレスポンス"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/handleMethodArgumentNotValid"
+        404:
+          description: "対象の投稿が存在しなかった時のレスポンス"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemNotFoundException"
+
+    delete: #delete
+      tags:
+        - Item
+      summary: "商品情報を削除"
+      description: "id値を持つ商品情報を削除。"
+      parameters: # リクエストパラメータ
+        - name: id
+          in: path # パラメータをパス内に含める
+          description: "削除した商品id"
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: DELETE
+        404:
+          description: "対象の商品が存在しなかった時のレスポンス"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemNotFoundException'
+
+  /api/items/search:
+    get:
+      tags:
+        - Item
+      summary: "商品を検索"
+      description: "商品を検索する。"
+      parameters: # リクエストパラメータ
+        - name: q
+          in: query
+          description: "検索時はクエリーにqを指定し、検索条件を指定"
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "成功時のレスポンス"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemDataResponse"
+
+
+  /api/items/image/{id}:
+    get:
+      tags:
+        - Item
+      summary: "商品画像を表示"
+      description: "id値をもつ商品に紐づく画像を表示"
+      parameters: # リクエストパラメータ
+        - name: id
+          in: path
+          description: "item id"
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "商品画像"
+        404:
+          description: "対象の画像が存在しなかった時にエラーを返す"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ImageNotFoundException"
+
+    post:
+      tags:
+        - Item
+      summary: "商品画像を登録"
+      description: "商品画像をPOSTメソッドで送信。画像には'/items/image/1'の形式でアクセス可能。"
+      parameters:
+        - name: id
+          in: path # パラメータをパス内に含める
+          description: "画像表示する商品のid"
+          required: true
+          schema:
+            type: integer
+      requestBody: # リクエストボディ
+        description: "画像はパスをデータベースに入れる"
+        content:
+          multipart/form-data:
+            schema: # POSTするオブジェクト
+              $ref: "#/components/schemas/ItemImageRequest"
+      responses:
+        200:
+          description: STORE
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemDataResponse"
+        404:
+          description: "対象の投稿が存在しなかった時のレスポンス"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemNotFoundException"
+        500:
+          description: "画像が正しくアップロードされなかった場合にエラーを返す"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ImageNotUploadedException"
+
+components:
+  schemas: # スキーマオブジェクトの定義
+    ItemDataResponse:
+      type: object
+      required:
+        - id
+        - title
+        - description
+        - image
+        - price
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          example: "タピオカ"
+        description:
+          type: string
+          example: "若い者に人気な飲み物"
+        image:
+          type: string
+          example: "v1/item/image/1"
+        price:
+          type: integer
+          example: 150
+
+    ItemRegisterRequest:
+      type: object
+      required:
+        - title
+        - description
+        - price
+      properties:
+        title:
+          type: string
+          example: "タピオカ"
+        description:
+          type: string
+          example: "毎日行列ができる"
+        price:
+          type: integer
+          example: 150
+
+    ItemUpdateRequest:
+      type: object
+      required:
+        - title
+        - description
+        - price
+      properties:
+        title:
+          type: string
+          example: "たこ焼き"
+        description:
+          type: string
+          example: "毎日たべれる"
+        price:
+          type: integer
+          example: 400
+
+    ItemImageRequest:
+      type: object
+      properties:
+        image:
+          type: string
+          format: binary
+          example: "image.jpg"
+
+    handleMethodArgumentNotValid:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "400 BAD_REQUEST"
+        validationError:
+          type: array
+          items:
+            example: "title: 商品タイトルは100文字以内で入力してください"
+
+    ItemNotFoundException:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "404 NOT_FOUND"
+        message:
+          type: string
+          example: "対象の商品が存在しません"
+
+    ImageNotUploadedException:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "500 INTERNAL_SERVER_ERROR"
+        message:
+          type: string
+          example: "画像のアップロードに失敗しました"
+
+    ImageNotFoundException:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "404 NOT_FOUND"
+        message:
+          type: string
+          example: "対象の画像が存在しません"
