@@ -27,9 +27,9 @@
 
  | カラム名 | 型 | null | key |
  |:-----------|:------------|:------------|:--- |
- | id       |BIGINT(20)|     NO    | primary key |
+ | id       |INT BIGINT|     NO    | primary key |
  | title    |VARCHAR(100)|    NO    |  |
- | price       |INT(20)|     NO     |  |
+ | price       |INT|     NO     |  |
  | description         |   VARCHAR(500) |      NO      |  |
  | image_path       |       VARCHAR(500) |    YES    |  |
 
