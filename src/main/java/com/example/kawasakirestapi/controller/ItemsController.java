@@ -1,6 +1,5 @@
 package com.example.kawasakirestapi.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import com.example.kawasakirestapi.exception.ItemNotFoundException;
@@ -81,7 +80,7 @@ public class ItemsController {
     @PostMapping("api/items/image/{id}")
     public Item uploadImageItem(
             @PathVariable("id") long id,
-            @RequestParam("image") MultipartFile uploadImage) throws IOException {
+            @RequestParam("image") MultipartFile uploadImage) {
 
         return itemService.uploadImageItem(id, uploadImage);
     }

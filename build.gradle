@@ -32,6 +32,6 @@ dependencies {
 	compile 'org.apache.commons:commons-lang3:3.9'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
-	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok:1.18.8'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
