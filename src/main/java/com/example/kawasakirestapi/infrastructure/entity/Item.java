@@ -1,4 +1,4 @@
-package com.example.kawasakirestapi.entity;
+package com.example.kawasakirestapi.infrastructure.entity;
 
 import java.io.Serializable;
 

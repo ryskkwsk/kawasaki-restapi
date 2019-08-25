@@ -1,11 +1,11 @@
-package com.example.kawasakirestapi.service;
+package com.example.kawasakirestapi.domain.service;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URLConnection;
 import java.util.*;
 
-import com.example.kawasakirestapi.exception.*;
+import com.example.kawasakirestapi.application.exception.*;
 import org.apache.commons.io.IOUtils;
 
 import org.slf4j.Logger;
@@ -16,8 +16,8 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.core.io.ResourceLoader;
 
-import com.example.kawasakirestapi.entity.Item;
-import com.example.kawasakirestapi.repository.ItemRepository;
+import com.example.kawasakirestapi.infrastructure.entity.Item;
+import com.example.kawasakirestapi.domain.repository.ItemRepository;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;

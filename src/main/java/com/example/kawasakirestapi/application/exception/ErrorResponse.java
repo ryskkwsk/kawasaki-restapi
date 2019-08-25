@@ -1,4 +1,4 @@
-package com.example.kawasakirestapi.exception;
+package com.example.kawasakirestapi.application.exception;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

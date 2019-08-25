@@ -1,4 +1,4 @@
-package com.example.kawasakirestapi.exception;
+package com.example.kawasakirestapi.application.exception;
 
 import lombok.extern.slf4j.Slf4j;
 
