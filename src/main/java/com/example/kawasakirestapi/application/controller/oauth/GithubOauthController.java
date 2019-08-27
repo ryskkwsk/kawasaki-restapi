@@ -2,6 +2,7 @@ package com.example.kawasakirestapi.application.controller.oauth;
 
 import com.example.kawasakirestapi.application.exception.InvalidAuthorizeException;
 import com.example.kawasakirestapi.domain.service.oauth.GithubOauthService;
+import lombok.AllArgsConstructor;
 import org.springframework.social.github.api.GitHub;
 import org.springframework.social.github.api.impl.GitHubTemplate;
 import org.springframework.stereotype.Controller;
@@ -13,21 +14,14 @@ import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
 @Controller
+@AllArgsConstructor
 public class GithubOauthController {
 
-    private final GithubOauthService oauthService;
+    private GithubOauthService oauthService;
 
     private static final String TOKEN = "token";
 
-    private final HttpSession httpSession;
-
-    public GithubOauthController(
-            GithubOauthService oauthService,
-            HttpSession httpSession) {
-
-        this.oauthService = oauthService;
-        this.httpSession = httpSession;
-    }
+    private HttpSession httpSession;
 
     @GetMapping("/")
     public String index() {
