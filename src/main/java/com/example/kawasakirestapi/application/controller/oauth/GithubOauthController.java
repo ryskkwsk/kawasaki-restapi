@@ -73,7 +73,7 @@ public class GithubOauthController {
      * @return githubのプロフィールへリダイレクト
      */
     @GetMapping("github/callback")
-    public String getToken(@RequestParam("authenticationCode") String authenticationCode) {
+    public String getToken(@RequestParam("code") String authenticationCode) {
 
         if (authenticationCode == null) {
             return "error/401";
