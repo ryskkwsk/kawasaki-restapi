@@ -73,7 +73,7 @@ public class GithubOauthController {
      * @return githubのプロフィールへリダイレクト
      */
     @GetMapping("github/callback")
-    public String getToken(@RequestParam String code) {
+    public String getToken(@RequestParam("code") String code) {
 
         if (code == null) {
             return "error/401";
@@ -92,7 +92,7 @@ public class GithubOauthController {
      */
     @GetMapping("github/logout")
     public String logout() {
-        httpSession.removeAttribute(TOKEN);
+        httpSession.invalidate();
         return "redirect:/";
     }
 
