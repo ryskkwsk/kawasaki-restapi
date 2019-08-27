@@ -21,15 +21,28 @@ public class GithubOauthService {
     @Value("${github.callbackUrl}")
     private String callbackUrl;
 
+    /**
+     * github認証URL生成
+     * @return
+     */
     public String getOauthAuthorizeUrl() {
         return operations().buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, new OAuth2Parameters());
     }
 
+    /**
+     * 認証コードをもとにアクセストークン取得
+     * @param code
+     * @return
+     */
     public String getAccessToken(String code) {
         AccessGrant accessGrant = operations().exchangeForAccess(code, callbackUrl, null);
         return accessGrant.getAccessToken();
     }
 
+    /**
+     * githubの認証のコア機能
+     * @return
+     */
     private OAuth2Operations operations() {
         GitHubConnectionFactory gitHubConnectionFactory = new GitHubConnectionFactory(client, secret);
         return gitHubConnectionFactory.getOAuthOperations();

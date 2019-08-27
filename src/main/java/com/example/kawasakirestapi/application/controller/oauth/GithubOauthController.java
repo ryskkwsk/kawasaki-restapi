@@ -23,18 +23,26 @@ public class GithubOauthController {
 
     private HttpSession httpSession;
 
+    /**
+     * ログインページを表示
+     * @return ログインページのviewを返す
+     */
     @GetMapping("/")
     public String index() {
         return "oauth/login";
     }
 
+    /**
+     * githubの認証画面へリダイレクト
+     * @return
+     */
     @GetMapping("/github/login")
     public String login() {
         return "redirect:" + oauthService.getOauthAuthorizeUrl();
     }
 
     /**
-     * viewを表示。
+     * githubから取得したプロフィールを表示。
      *
      * @param model Model
      * @return view
@@ -64,7 +72,7 @@ public class GithubOauthController {
      * アクセストークンセッションに保存
      *
      * @param code String
-     * @return redirect
+     * @return githubのプロフィールへリダイレクト
      */
     @GetMapping("github/callback")
     public String getToken(@RequestParam String code) {
@@ -82,7 +90,7 @@ public class GithubOauthController {
     /**
      * セッション破棄
      *
-     * @return redirect
+     * @return ログインページにリダイレクト
      */
     @GetMapping("github/logout")
     public String logout() {
