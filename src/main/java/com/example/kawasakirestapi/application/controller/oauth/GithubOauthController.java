@@ -67,7 +67,7 @@ public class GithubOauthController {
     }
 
     /**
-     * アクセストークンセッションに保存
+     * github OAuthコールバック時のアクション
      *
      * @param code String
      * @return githubのプロフィールへリダイレクト
