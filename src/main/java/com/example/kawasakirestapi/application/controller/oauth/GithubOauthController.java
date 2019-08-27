@@ -4,7 +4,6 @@ import com.example.kawasakirestapi.application.exception.InvalidAuthorizeExcepti
 import com.example.kawasakirestapi.domain.service.oauth.GithubOauthService;
 import lombok.AllArgsConstructor;
 import org.springframework.social.github.api.GitHub;
-import org.springframework.social.github.api.impl.GitHubTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,7 +54,7 @@ public class GithubOauthController {
             throw new InvalidAuthorizeException("ユーザー認証が正しく行われておりません");
         }
 
-        GitHub gitHub = new GitHubTemplate(userInfo.toString());
+        GitHub gitHub = oauthService.getGithub(userInfo);
 
         String userName = gitHub.userOperations().getUserProfile().getUsername();
         Long userId = gitHub.userOperations().getUserProfile().getId();

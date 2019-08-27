@@ -1,6 +1,8 @@
 package com.example.kawasakirestapi.domain.service.oauth;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.social.github.api.GitHub;
+import org.springframework.social.github.api.impl.GitHubTemplate;
 import org.springframework.social.github.connect.GitHubConnectionFactory;
 import org.springframework.social.oauth2.AccessGrant;
 import org.springframework.social.oauth2.GrantType;
@@ -46,5 +48,14 @@ public class GithubOauthService {
     private OAuth2Operations operations() {
         GitHubConnectionFactory gitHubConnectionFactory = new GitHubConnectionFactory(client, secret);
         return gitHubConnectionFactory.getOAuthOperations();
+    }
+
+    /**
+     * githubのユーザー情報取得
+     * @param userInfo
+     * @return
+     */
+    public GitHub getGithub(Object userInfo) {
+        return new GitHubTemplate(userInfo.toString());
     }
 }
