@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>OAuth</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">プロフィールページ</h1>
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <td>ユーザー名</td>
+            <td th:text="${userName}"></td>
+        </tr>
+        <tr>
+            <td>プロフィール画像</td>
+            <td><img th:src="'https://avatars2.githubusercontent.com/u/'+${userId}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-danger">
+        <a href="/github/logout" class="text-white">logout</a>
+    </button>
+</div>
+</body>
+
+</html>

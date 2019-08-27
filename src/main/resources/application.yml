@@ -19,5 +19,10 @@ spring:
     serialization:
       #整形する
       INDENT_OUTPUT: true
+github:
+  client:  4fd9e9bf93c7948d361d
+  secret: 02a5e451394f730bac8c56af905cd9ef2a51107c
+  callbackUrl: http://localhost:8080/github/callback
+
 
 

@@ -43,30 +43,56 @@
 │   │   │       └── example
 │   │   │           └── kawasakirestapi
 │   │   │               ├── KawasakiRestapiApplication.java
-│   │   │               ├── controller
-│   │   │               │   └── ItemsController.java
-│   │   │               ├── entity
-│   │   │               │   └── Item.java
-│   │   │               ├── exception
-│   │   │               │   ├── ErrorResponse.java
-│   │   │               │   ├── ImageNotFoundException.java
-│   │   │               │   ├── ImageNotUploadedException.java
-│   │   │               │   ├── InvalidImageFileException.java
-│   │   │               │   └── ItemNotFoundException.java
-│   │   │               │   └── ItemExceptionHandler.java
-│   │   │               │   └── SearchResultNotFoundException.java
-│   │   │               │   
-│   │   │               ├── repository
-│   │   │               │   └── ItemRepository.java
-│   │   │               └── service
-│   │   │                   └── ItemService.java
+│   │   │               ├── application
+│   │   │               │   ├── controller
+│   │   │               │   │   ├── item
+│   │   │               │   │   │   └── ItemsController.java
+│   │   │               │   │   └── oauth
+│   │   │               │   │       └── GithubOauthController.java
+│   │   │               │   └── exception
+│   │   │               │       ├── ErrorResponse.java
+│   │   │               │       ├── ImageNotFoundException.java
+│   │   │               │       ├── ImageNotUploadedException.java
+│   │   │               │       ├── InvalidAuthorizeException.java
+│   │   │               │       ├── InvalidImageFileException.java
+│   │   │               │       ├── ItemExceptionHandler.java
+│   │   │               │       ├── ItemNotFoundException.java
+│   │   │               │       ├── OauthExceptionHandler.java
+│   │   │               │       └── SearchResultNotFoundException.java
+│   │   │               │       
+│   │   │               ├── domain
+│   │   │               │
+│   │   │               │   ├── repository
+│   │   │               │   │   └── ItemRepository.java
+│   │   │               │   └── service
+│   │   │               │       ├── item
+│   │   │               │       │   └── ItemService.java
+│   │   │               │       └── oauth
+│   │   │               │           └── GithubOauthService.java
+│   │   │               └── infrastructure
+│   │   │                   └── entity
+│   │   │                       └── Item.java
 │   │   └── resources
 │   │       ├── application.yml
 │   │       ├── data.sql
 │   │       ├── static
-│   │          └── images
-│   │              
-│   │       
+│   │       │   ├── css
+│   │       │   │   ├── bootstrap.css
+│   │       │   │   └── custom.css
+│   │       │   ├── images
+│   │       │   │   └── 1_f9f29f63-c5fd-4959-8557-42691fe4355c.jpeg
+│   │       │   └── js
+│   │       │       ├── bootstrap.js
+│   │       │       └── jquery.js
+│   │       └── templates
+│   │           ├── error
+│   │           │   ├── 401.html
+│   │           │   ├── 404.html
+│   │           │   └── 500.html
+│   │           └── oauth
+│   │               ├── github
+│   │               │   └── index.html
+│   │               └── login.html
 │   └── test
 │       └── java
 │           └── com
@@ -74,6 +100,8 @@
 │                   └── kawasakirestapi
 │                       └── KawasakiRestapiApplicationTests.java
 └── swagger.yml
+
+
 ```
 
     
