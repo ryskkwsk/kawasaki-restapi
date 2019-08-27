@@ -28,7 +28,7 @@ public class GithubOauthService {
      * @return
      */
     public String getOauthAuthorizeUrl() {
-        return operations().buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, new OAuth2Parameters());
+        return getOAuth2Operations().buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, new OAuth2Parameters());
     }
 
     /**
@@ -37,7 +37,7 @@ public class GithubOauthService {
      * @return
      */
     public String getAccessToken(String authenticationCode) {
-        AccessGrant accessGrant = operations().exchangeForAccess(authenticationCode, callbackUrl, null);
+        AccessGrant accessGrant = getOAuth2Operations().exchangeForAccess(authenticationCode, callbackUrl, null);
         return accessGrant.getAccessToken();
     }
 
@@ -45,7 +45,7 @@ public class GithubOauthService {
      * githubの認証のコア機能
      * @return
      */
-    private OAuth2Operations operations() {
+    private OAuth2Operations getOAuth2Operations() {
         GitHubConnectionFactory gitHubConnectionFactory = new GitHubConnectionFactory(client, secret);
         return gitHubConnectionFactory.getOAuthOperations();
     }
