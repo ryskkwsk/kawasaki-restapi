@@ -69,17 +69,17 @@ public class GithubOauthController {
     /**
      * github OAuthコールバック時のアクション
      *
-     * @param code String
+     * @param authenticationCode String
      * @return githubのプロフィールへリダイレクト
      */
     @GetMapping("github/callback")
-    public String getToken(@RequestParam("code") String code) {
+    public String getToken(@RequestParam("authenticationCode") String authenticationCode) {
 
-        if (code == null) {
+        if (authenticationCode == null) {
             return "error/401";
         }
 
-        String accessToken = oauthService.getAccessToken(code);
+        String accessToken = oauthService.getAccessToken(authenticationCode);
         httpSession.setAttribute(TOKEN, accessToken);
 
         return "redirect:/github/profile";

@@ -33,11 +33,11 @@ public class GithubOauthService {
 
     /**
      * 認証コードをもとにアクセストークン取得
-     * @param code
+     * @param authenticationCode
      * @return
      */
-    public String getAccessToken(String code) {
-        AccessGrant accessGrant = operations().exchangeForAccess(code, callbackUrl, null);
+    public String getAccessToken(String authenticationCode) {
+        AccessGrant accessGrant = operations().exchangeForAccess(authenticationCode, callbackUrl, null);
         return accessGrant.getAccessToken();
     }
 
