@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
-import java.util.Objects;
 
 @Controller
 @AllArgsConstructor
@@ -52,7 +51,7 @@ public class GithubOauthController {
 
         Object userInfo = httpSession.getAttribute(TOKEN);
 
-        if(Objects.isNull(userInfo)) {
+        if(userInfo == null) {
             throw new InvalidAuthorizeException("ユーザー認証が正しく行われておりません");
         }
 
