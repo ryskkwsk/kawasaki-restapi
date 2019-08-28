@@ -1,6 +1,7 @@
 package com.example.kawasakirestapi.application.controller.oauth;
 
 import com.example.kawasakirestapi.application.exception.InvalidAuthorizeException;
+import com.example.kawasakirestapi.domain.config.OAuthSetting;
 import com.example.kawasakirestapi.domain.service.oauth.GithubOauthService;
 import lombok.AllArgsConstructor;
 import org.springframework.social.github.api.GitHub;
@@ -15,9 +16,9 @@ import javax.servlet.http.HttpSession;
 @AllArgsConstructor
 public class GithubOauthController {
 
-    private GithubOauthService oauthService;
+    private OAuthSetting oAuthSetting;
 
-    private static final String TOKEN = "token";
+    private GithubOauthService oauthService;
 
     private HttpSession httpSession;
 
@@ -48,7 +49,7 @@ public class GithubOauthController {
     @GetMapping("github/profile")
     public String viewProfile(Model model)  {
 
-        Object userInfo = httpSession.getAttribute(TOKEN);
+        Object userInfo = httpSession.getAttribute(oAuthSetting.getAccessTokenSessionKey());
 
         if(userInfo == null) {
             throw new InvalidAuthorizeException("ユーザー認証が正しく行われておりません");
@@ -80,7 +81,7 @@ public class GithubOauthController {
         }
 
         String accessToken = oauthService.getAccessToken(authenticationCode);
-        httpSession.setAttribute(TOKEN, accessToken);
+        httpSession.setAttribute(oAuthSetting.getAccessTokenSessionKey(), accessToken);
 
         return "redirect:/github/profile";
     }

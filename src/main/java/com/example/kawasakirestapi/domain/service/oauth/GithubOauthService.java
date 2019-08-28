@@ -1,6 +1,7 @@
 package com.example.kawasakirestapi.domain.service.oauth;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.example.kawasakirestapi.domain.config.GithubSetting;
+import lombok.AllArgsConstructor;
 import org.springframework.social.github.api.GitHub;
 import org.springframework.social.github.api.impl.GitHubTemplate;
 import org.springframework.social.github.connect.GitHubConnectionFactory;
@@ -12,16 +13,10 @@ import org.springframework.stereotype.Service;
 
 
 @Service
+@AllArgsConstructor
 public class GithubOauthService {
 
-    @Value("${setting.github.client}")
-    private String client;
-
-    @Value("${setting.github.secret}")
-    private String secret;
-
-    @Value("${setting.github.callbackUrl}")
-    private String callbackUrl;
+    private GithubSetting githubSetting;
 
     /**
      * github認証URL生成
@@ -37,7 +32,7 @@ public class GithubOauthService {
      * @return
      */
     public String getAccessToken(String authenticationCode) {
-        AccessGrant accessGrant = getOAuth2Operations().exchangeForAccess(authenticationCode, callbackUrl, null);
+        AccessGrant accessGrant = getOAuth2Operations().exchangeForAccess(authenticationCode, githubSetting.getCallbackUrl(), null);
         return accessGrant.getAccessToken();
     }
 
@@ -46,7 +41,7 @@ public class GithubOauthService {
      * @return
      */
     private OAuth2Operations getOAuth2Operations() {
-        GitHubConnectionFactory gitHubConnectionFactory = new GitHubConnectionFactory(client, secret);
+        GitHubConnectionFactory gitHubConnectionFactory = new GitHubConnectionFactory(githubSetting.getClient(), githubSetting.getSecret());
         return gitHubConnectionFactory.getOAuthOperations();
     }
 

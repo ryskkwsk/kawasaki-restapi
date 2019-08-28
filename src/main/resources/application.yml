@@ -26,3 +26,5 @@ setting:
     client: "${CLIENT_ID}"
     secret: "${CLIENT_SECRET}"
     callbackUrl: http://localhost:8080/github/callback
+  oauth:
+    accessTokenSessionKey: "token"
