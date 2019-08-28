@@ -1,7 +1,7 @@
 package com.example.kawasakirestapi.application.controller.oauth;
 
 import com.example.kawasakirestapi.application.exception.InvalidAuthorizeException;
-import com.example.kawasakirestapi.domain.config.OAuthSetting;
+import com.example.kawasakirestapi.domain.setting.OAuthSetting;
 import com.example.kawasakirestapi.domain.service.oauth.GithubOauthService;
 import lombok.AllArgsConstructor;
 import org.springframework.social.github.api.GitHub;
@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ *  Githubによるソーシャルログインを行うコントローラー
+ */
 @Controller
 @AllArgsConstructor
 public class GithubOauthController {
@@ -33,7 +36,7 @@ public class GithubOauthController {
 
     /**
      * githubの認証画面へリダイレクト
-     * @return
+     * @return github認証画面へリダイレクト
      */
     @GetMapping("/github/login")
     public String login() {
@@ -44,9 +47,9 @@ public class GithubOauthController {
      * githubから取得したプロフィールを表示。
      *
      * @param model Model
-     * @return view
+     * @return githubのプロフィール画面を返す
      */
-    @GetMapping("github/profile")
+    @GetMapping("/github/profile")
     public String viewProfile(Model model)  {
 
         Object userInfo = httpSession.getAttribute(oAuthSetting.getAccessTokenSessionKey());
@@ -71,9 +74,9 @@ public class GithubOauthController {
      * github OAuthコールバック時のアクション
      *
      * @param authenticationCode String
-     * @return githubのプロフィールへリダイレクト
+     * @return viewProfileメソッドへリダイレクト
      */
-    @GetMapping("github/callback")
+    @GetMapping("/github/callback")
     public String getToken(@RequestParam("code") String authenticationCode) {
 
         if (authenticationCode == null) {
@@ -89,9 +92,9 @@ public class GithubOauthController {
     /**
      * セッション破棄
      *
-     * @return ログインページにリダイレクト
+     * @return ログインページへリダイレクト
      */
-    @GetMapping("github/logout")
+    @GetMapping("/github/logout")
     public String logout() {
         httpSession.invalidate();
         return "redirect:/";

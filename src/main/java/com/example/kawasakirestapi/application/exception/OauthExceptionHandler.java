@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+
 /**
- *
+ * ソーシャルログイン認証のOAuthコントローラーにかかる例外ハンドラ
  */
 @RestControllerAdvice
 @Slf4j

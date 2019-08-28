@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * 商品管理を行うサービス
+ */
 @Service
 public class ItemService {
     private static final Logger logger = LoggerFactory.getLogger(ItemService.class);

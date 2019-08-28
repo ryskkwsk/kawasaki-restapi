@@ -11,6 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+/**
+ * 商品管理を行うResufulなAPIコントローラー
+ */
 @RestController
 public class ItemsController {
 
