@@ -13,6 +13,8 @@ import java.io.Serializable;
 
 /**
  * itemsテーブルのエンティティ
+ *
+ * @author kawasakiryosuke
  */
 @Entity
 @Table(name = "items")

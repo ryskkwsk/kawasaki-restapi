@@ -8,6 +8,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 /**
  * ソーシャルログイン認証のOAuthコントローラーにかかる例外ハンドラ
+ *
+ * @author kawasakiryosuke
  */
 @RestControllerAdvice
 @Slf4j

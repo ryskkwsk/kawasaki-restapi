@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * OAuth認証関連の情報を管理
+ *
+ * @author kawasakiryosuke
  */
 @Component
 @ConfigurationProperties(prefix = "setting.oauth")

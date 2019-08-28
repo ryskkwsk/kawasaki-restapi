@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * Githubのプライベート情報を管理
+ *
+ * @author kawasakiryosuke
  */
 @Component
 @ConfigurationProperties(prefix = "setting.github")

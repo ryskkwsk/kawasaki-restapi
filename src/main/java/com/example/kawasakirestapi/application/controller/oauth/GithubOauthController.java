@@ -1,9 +1,9 @@
 package com.example.kawasakirestapi.application.controller.oauth;
 
 import com.example.kawasakirestapi.application.exception.InvalidAuthorizeException;
-import com.example.kawasakirestapi.domain.setting.OAuthSetting;
 import com.example.kawasakirestapi.domain.service.oauth.GithubOauthService;
-import lombok.AllArgsConstructor;
+import com.example.kawasakirestapi.domain.setting.OAuthSetting;
+import lombok.RequiredArgsConstructor;
 import org.springframework.social.github.api.GitHub;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,16 +14,18 @@ import javax.servlet.http.HttpSession;
 
 /**
  *  Githubによるソーシャルログインを行うコントローラー
+ *
+ *  @author kawasakiryosuke
  */
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class GithubOauthController {
 
-    private OAuthSetting oAuthSetting;
+    private final OAuthSetting oAuthSetting;
 
-    private GithubOauthService oauthService;
+    private final GithubOauthService oauthService;
 
-    private HttpSession httpSession;
+    private final HttpSession httpSession;
 
     /**
      * ログインページを表示

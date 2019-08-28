@@ -1,7 +1,7 @@
 package com.example.kawasakirestapi.domain.service.oauth;
 
 import com.example.kawasakirestapi.domain.setting.GithubSetting;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.social.github.api.GitHub;
 import org.springframework.social.github.api.impl.GitHubTemplate;
 import org.springframework.social.github.connect.GitHubConnectionFactory;
@@ -13,12 +13,14 @@ import org.springframework.stereotype.Service;
 
 /**
  * Githubによるソーシャルログインを行うサービス
+ *
+ * @author kawasakiryosuke
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class GithubOauthService {
 
-    private GithubSetting githubSetting;
+    private final GithubSetting githubSetting;
 
     /**
      * github認証URL生成

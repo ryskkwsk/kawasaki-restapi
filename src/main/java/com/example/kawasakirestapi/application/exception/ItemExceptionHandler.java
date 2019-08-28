@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 /**
  * 例外のハンドラクラス。
  *
+ * @author kawasakiryosuke
  */
 @RestControllerAdvice
 @Slf4j

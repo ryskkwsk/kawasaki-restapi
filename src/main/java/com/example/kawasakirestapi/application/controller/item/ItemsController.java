@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * 商品管理を行うResufulなAPIコントローラー
+ *
+ * @author kawasakiryosuke
  */
 @RestController
 public class ItemsController {

@@ -3,9 +3,9 @@ package com.example.kawasakirestapi.domain.service.item;
 import com.example.kawasakirestapi.application.exception.*;
 import com.example.kawasakirestapi.domain.repository.ItemRepository;
 import com.example.kawasakirestapi.infrastructure.entity.Item;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -26,10 +26,13 @@ import java.util.UUID;
 
 /**
  * 商品管理を行うサービス
+ *
+ * @author kawasakiryosuke
  */
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class ItemService {
-    private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
 
     private final ItemRepository itemRepository;
 
@@ -37,11 +40,6 @@ public class ItemService {
     private String localImagesPath;
 
     private final ResourceLoader resourceLoader;
-
-    public ItemService(ItemRepository itemRepository, ResourceLoader resourceLoader) {
-        this.itemRepository = itemRepository;
-        this.resourceLoader = resourceLoader;
-    }
 
     /**
      * 全ての商品の取得
@@ -166,7 +164,7 @@ public class ItemService {
             File dir = new File(localImagesPath);
             dir.mkdir();
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
