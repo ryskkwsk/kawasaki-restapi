@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class GithubOauthService {
 
-    @Value("${github.client}")
+    @Value("${setting.github.client}")
     private String client;
 
-    @Value("${github.secret}")
+    @Value("${setting.github.secret}")
     private String secret;
 
-    @Value("${github.callbackUrl}")
+    @Value("${setting.github.callbackUrl}")
     private String callbackUrl;
 
     /**

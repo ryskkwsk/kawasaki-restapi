@@ -100,9 +100,22 @@
 │                   └── kawasakirestapi
 │                       └── KawasakiRestapiApplicationTests.java
 └── swagger.yml
-
-
 ```
+各層の役割
+```
+・アプリケーション層
+UI
+ドメイン層のオブジェクトを使って、アプリケーションの機能を実現する層。
+クライアントとの入出力とビジネスロジックをつなぐ
+・ドメイン層
+ビジネスロジック
+ドメインを表現するオブジェクト
+・インフラストラクチャ層
+各層を実装するための具体的な技術要素を提供する層
+永続化の実装
+他サービスとの通信等の実装
+```
+
 
     
 ####開発環境のセットアップ
@@ -125,6 +138,8 @@ $ mysql.server start
  $ mysql -u root #MySQLにログイン
  mysql> CREATE DATABASE kawasaki_restfulapi; #データベース作成
 ```
+・Githubアカウント登録
+・Githubで取得したclientidとsecretをIntellijの環境変数の登録
 ・アプリ起動
 ```
 ./gradle bootRun
