@@ -1,30 +1,38 @@
-package com.example.kawasakirestapi.domain.service;
-
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.URLConnection;
-import java.util.*;
+package com.example.kawasakirestapi.domain.service.item;
 
 import com.example.kawasakirestapi.application.exception.*;
+import com.example.kawasakirestapi.domain.repository.ItemRepository;
+import com.example.kawasakirestapi.infrastructure.entity.Item;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.core.io.ResourceLoader;
-
-import com.example.kawasakirestapi.infrastructure.entity.Item;
-import com.example.kawasakirestapi.domain.repository.ItemRepository;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
+/**
+ * 商品管理を行うサービス
+ *
+ * @author kawasakiryosuke
+ */
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class ItemService {
-    private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
 
     private final ItemRepository itemRepository;
 
@@ -32,11 +40,6 @@ public class ItemService {
     private String localImagesPath;
 
     private final ResourceLoader resourceLoader;
-
-    public ItemService(ItemRepository itemRepository, ResourceLoader resourceLoader) {
-        this.itemRepository = itemRepository;
-        this.resourceLoader = resourceLoader;
-    }
 
     /**
      * 全ての商品の取得
@@ -161,7 +164,7 @@ public class ItemService {
             File dir = new File(localImagesPath);
             dir.mkdir();
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
