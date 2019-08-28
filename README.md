@@ -44,55 +44,19 @@
 │   │   │           └── kawasakirestapi
 │   │   │               ├── KawasakiRestapiApplication.java
 │   │   │               ├── application
-│   │   │               │   ├── controller
-│   │   │               │   │   ├── item
-│   │   │               │   │   │   └── ItemsController.java
-│   │   │               │   │   └── oauth
-│   │   │               │   │       └── GithubOauthController.java
-│   │   │               │   └── exception
-│   │   │               │       ├── ErrorResponse.java
-│   │   │               │       ├── ImageNotFoundException.java
-│   │   │               │       ├── ImageNotUploadedException.java
-│   │   │               │       ├── InvalidAuthorizeException.java
-│   │   │               │       ├── InvalidImageFileException.java
-│   │   │               │       ├── ItemExceptionHandler.java
-│   │   │               │       ├── ItemNotFoundException.java
-│   │   │               │       ├── OauthExceptionHandler.java
-│   │   │               │       └── SearchResultNotFoundException.java
+│   │   │               │   ├── controller-
+│   │   │               │   └── exception-
 │   │   │               │       
 │   │   │               ├── domain
-│   │   │               │
-│   │   │               │   ├── repository
-│   │   │               │   │   └── ItemRepository.java
-│   │   │               │   └── service
-│   │   │               │       ├── item
-│   │   │               │       │   └── ItemService.java
-│   │   │               │       └── oauth
-│   │   │               │           └── GithubOauthService.java
+│   │   │               │   ├── repository-
+│   │   │               │   └── service-
 │   │   │               └── infrastructure
-│   │   │                   └── entity
-│   │   │                       └── Item.java
+│   │   │                   └── entity-
 │   │   └── resources
 │   │       ├── application.yml
 │   │       ├── data.sql
 │   │       ├── static
-│   │       │   ├── css
-│   │       │   │   ├── bootstrap.css
-│   │       │   │   └── custom.css
-│   │       │   ├── images
-│   │       │   │   └── 1_f9f29f63-c5fd-4959-8557-42691fe4355c.jpeg
-│   │       │   └── js
-│   │       │       ├── bootstrap.js
-│   │       │       └── jquery.js
 │   │       └── templates
-│   │           ├── error
-│   │           │   ├── 401.html
-│   │           │   ├── 404.html
-│   │           │   └── 500.html
-│   │           └── oauth
-│   │               ├── github
-│   │               │   └── index.html
-│   │               └── login.html
 │   └── test
 │       └── java
 │           └── com
@@ -101,16 +65,16 @@
 │                       └── KawasakiRestapiApplicationTests.java
 └── swagger.yml
 ```
-各層の役割
+各ディレクトリの役割
 ```
-・アプリケーション層
+・application配下
 UI
 ドメイン層のオブジェクトを使って、アプリケーションの機能を実現する層。
 クライアントとの入出力とビジネスロジックをつなぐ
-・ドメイン層
+・domain配下
 ビジネスロジック
 ドメインを表現するオブジェクト
-・インフラストラクチャ層
+・infrastructure配下
 各層を実装するための具体的な技術要素を提供する層
 永続化の実装
 他サービスとの通信等の実装
@@ -138,8 +102,30 @@ $ mysql.server start
  $ mysql -u root #MySQLにログイン
  mysql> CREATE DATABASE kawasaki_restfulapi; #データベース作成
 ```
-・Githubアカウント登録
-・Githubで取得したclientidとsecretをIntellijの環境変数の登録
+####Github認証情報の環境変数の設定
+ローカル環境での動作確認のために、Githubの認証情報を環境変数に設定をする。
+
+#####GitHubのOAuthアプリケーションの登録
+```
+1. Githubのアカウントが無ければ登録
+2. Githubページにログインする。
+3. 右上のアイコンを押す
+4. Setting>Developer settings>OAuth Appsを押す
+5. 右上のNew OAuth Appを押す
+6. 各項目を入力し、Register applicationを押す
+7. 作成したアプリケーションのページに表示されたClientID とSecretを保持しておく。
+```
+
+#####環境変数の設定
+作成したClient IDとClient Secretを環境変数に設定する。
+
+```
+Intelli IDEAの場合
+「option」+「command」+「r」を押下する。
+「Edit Configurations...」を選択する。
+「VM options」に -DOAUTHAPP_GITHUB_CLIENT_ID=xxx -DOAUTHAPP_GITHUB_CLIENT_SECRET=yyyを入力して、xxxをClient IDに差し替え、yyyをClient Secretに差し替える。
+application.ymlに上記で設定した環境変数を設定する
+```
 ・アプリ起動
 ```
 ./gradle bootRun
