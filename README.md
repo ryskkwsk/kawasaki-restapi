@@ -25,6 +25,7 @@
 
 ####DB設計
 
+#####items
  | カラム名 | 型 | null | key |
  |:-----------|:------------|:------------|:--- |
  | id       |INT BIGINT|     NO    | primary key |
@@ -32,6 +33,16 @@
  | price       |INT|     NO     |  |
  | description         |   VARCHAR(500) |      NO      |  |
  | image_path       |       VARCHAR(500) |    YES    |  |
+ 
+ #####AutenticationToken
+  | カラム名 | 型 | null | key |
+  |:-----------|:------------|:------------|:--- |
+  | id       |INT BIGINT|     NO    | primary key |
+  | dead_line    |DATETIME|    YES   |  |
+  | create_at      |DATETIME|     YES     |  |
+  | auth_token         |   VARCHAR(255) |      YES      |  |
+  | user_id       |       INT BIGINT |    YES    |  |
+  | user_name       |       VARCHAR |    YES    |  |
 
 
 ####ディレクトリ構成
