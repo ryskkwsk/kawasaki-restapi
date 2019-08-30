@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>OAuth</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">プロフィールページ</h1>
+    <table class="table table-bordered">
+        <tbody>
+        <div th:object="${userInfo}">
+        <tr>
+            <td>ユーザー名</td>
+            <td th:text="*{userName}"></td>
+        </tr>
+        <tr>
+            <td>プロフィール画像</td>
+            <td><img th:src= "'https://avatars2.githubusercontent.com/u/' + *{userId}" ></td>
+        </tr>
+        <tr>
+            <td>認証トークン</td>
+            <td><p th:text="*{authToken}"></p></td>
+        </tr>
+        </div>
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-danger">
+        <a href="/github/logout" class="text-white">logout</a>
+    </button>
+</div>
+</body>
+
+</html>
