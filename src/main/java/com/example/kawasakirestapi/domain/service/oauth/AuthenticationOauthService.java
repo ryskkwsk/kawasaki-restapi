@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.social.github.api.GitHubUserProfile;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -42,7 +43,10 @@ public class AuthenticationOauthService {
      * @return 認証トークンを返す
      */
     public String generateToken() {
-        return UUID.randomUUID().toString();
+
+        String uuid = UUID.randomUUID().toString();
+        String base64 = Base64.getEncoder().encodeToString(uuid.getBytes());
+        return base64;
     }
 
     /**
@@ -51,16 +55,16 @@ public class AuthenticationOauthService {
      * @param userProfile
      * @return
      */
-    public boolean validAuthToken(String authToken, GitHubUserProfile userProfile) {
-        //認証用トークンがすでに登録されているか確認
+    public boolean verifyAuthToken(String authToken, GitHubUserProfile userProfile) {
+        // 認証用トークンがすでに登録されているか確認
         if (checkAuthTokenIsAlreadyRegistered(userProfile.getId())) {
-            //すでに登録されているトークン情報を削除
+            // すでに登録されているトークン情報を削除
             deleteAuthToken(getAuthToken(userProfile.getId()));
-            //新たに生成されたトークン情報をDBに保存
+            // 新たに生成されたトークン情報をDBに保存
             saveToken(userProfile.getName(), userProfile.getId(), authToken);
 
         } else {
-            //認証情報をdbに保存
+            // 認証情報をdbに保存
             saveToken(userProfile.getName(), userProfile.getId(), authToken);
         }
         return true;

@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -64,27 +65,28 @@ public class GithubOauthController {
      * @return githubのプロフィール画面を返す
      */
     @GetMapping("/github/profile")
-    public String viewProfile(Model model) {
+    public String viewProfile(Model model, HttpServletResponse response) {
 
         if(!tokenSessionInfo.checkToken()){
+            response.setStatus(401);
             return "error/401";
         }
         GitHub gitHub = oauthService.getGithub(httpSession.getAttribute(oAuthSetting.getAccessTokenSessionKey()));
 
-        //ユーザープロフィール取得
+        // ユーザープロフィール取得
         GitHubUserProfile userProfile = gitHub.userOperations().getUserProfile();
 
-        //認証用トークンを取得
+        // 認証用トークンを取得
         String authToken = authenticationOauthService.generateToken();
 
-        //認証トークン登録されているかチェック、されてた場合削除して更新
-        authenticationOauthService.validAuthToken(authToken, userProfile);
+        // 認証トークン登録されているかチェック、されてた場合削除して更新
+        authenticationOauthService.verifyAuthToken(authToken, userProfile);
 
-        //新しい認証トークンで登録された認証情報を取得
-        AuthenticationToken userInfo = authenticationOauthService.findByToken(authToken).orElseThrow(() -> new TokenNotFoundException("トークンがデータベースに登録されていません"));
+        // 新しい認証トークンで登録された認証情報を取得
+        AuthenticationToken authenticationToken = authenticationOauthService.findByToken(authToken).orElseThrow(() -> new TokenNotFoundException("トークンがデータベースに登録されていません"));
 
-        //viewに渡す
-        model.addAttribute("userInfo", userInfo);
+        // viewに渡す
+        model.addAttribute("authenticationToken", authenticationToken);
 
         return "/oauth/github/profile";
     }
@@ -96,14 +98,15 @@ public class GithubOauthController {
      * @return viewProfileメソッドへリダイレクト
      */
     @GetMapping("/github/callback")
-    public String githubCallback(@RequestParam("code") String authenticationCode) {
+    public String githubCallback(@RequestParam("code") String authenticationCode, HttpServletResponse response) {
 
         if (authenticationCode == null) {
+            response.setStatus(401);
             return "error/401";
         }
-        //アクセストークン取得
+        // アクセストークン取得
         String accessToken = oauthService.getAccessToken(authenticationCode);
-        //アクセストークンをsessioninfoに格納
+        // アクセストークンをsessioninfoに格納
         tokenSessionInfo.setAccessToken(accessToken);
         httpSession.setAttribute(oAuthSetting.getAccessTokenSessionKey(), accessToken);
 
