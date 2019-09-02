@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 @Data
 public class ErrorResponse {
 
-    //エラーの詳細メッセージ
+    // エラーの詳細メッセージ
     private final Error error;
 
     public ErrorResponse(HttpStatus status, String message) {
@@ -19,9 +19,9 @@ public class ErrorResponse {
     }
     @Data
     private class Error {
-        //エラーの概要メッセージ
+        // エラーの概要メッセージ
         private final String message;
-        //Httpステータス
+        // Httpステータス
         private final HttpStatus status;
 
         Error(HttpStatus status, String message) {

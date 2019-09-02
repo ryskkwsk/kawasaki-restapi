@@ -31,7 +31,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
              AuthenticationToken authenticationToken = authenticationOauthService.findByToken(authToken.replace("Bearer", "").trim()).orElseThrow(() -> new TokenNotFoundException("トークンがデータベースに登録されていません"));
 
-             //トークンが有効期限切れだったら例外を返す
+             // トークンが有効期限切れだったら例外を返す
             if (authenticationToken.isExpired()) {
                 throw new TokenTimeoutException();
             }

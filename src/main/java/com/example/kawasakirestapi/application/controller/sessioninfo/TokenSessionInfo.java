@@ -17,7 +17,7 @@ public class TokenSessionInfo {
 
     private String accessToken;
 
-    //アクセストークンがnullかどうかチェック
+    // アクセストークンがnullかどうかチェック
     public boolean checkToken() {
         return accessToken != null;
     }

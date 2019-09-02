@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Setter
 public class OAuthSetting {
 
-    //アクセストークンセッションキー
+    // アクセストークンセッションキー
     private String accessTokenSessionKey;
 
 }
