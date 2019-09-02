@@ -14,14 +14,20 @@
     <h1 class="text-center">プロフィールページ</h1>
     <table class="table table-bordered">
         <tbody>
+        <div th:object="${userInfo}">
         <tr>
             <td>ユーザー名</td>
-            <td th:text="${userName}"></td>
+            <td th:text="*{userName}"></td>
         </tr>
         <tr>
             <td>プロフィール画像</td>
-            <td><img th:src="'https://avatars2.githubusercontent.com/u/'+${userId}"></td>
+            <td><img th:src= "'https://avatars2.githubusercontent.com/u/' + *{userId}" ></td>
         </tr>
+        <tr>
+            <td>認証トークン</td>
+            <td><p th:text="*{authToken}"></p></td>
+        </tr>
+        </div>
         </tbody>
     </table>
     <button type="button" class="btn btn-danger">

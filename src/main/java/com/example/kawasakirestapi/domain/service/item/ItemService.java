@@ -1,6 +1,6 @@
 package com.example.kawasakirestapi.domain.service.item;
 
-import com.example.kawasakirestapi.application.exception.*;
+import com.example.kawasakirestapi.application.exception.Item.*;
 import com.example.kawasakirestapi.domain.repository.ItemRepository;
 import com.example.kawasakirestapi.infrastructure.entity.Item;
 import lombok.RequiredArgsConstructor;

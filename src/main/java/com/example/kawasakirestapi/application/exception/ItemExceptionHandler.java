@@ -1,5 +1,6 @@
 package com.example.kawasakirestapi.application.exception;
 
+import com.example.kawasakirestapi.application.exception.Item.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

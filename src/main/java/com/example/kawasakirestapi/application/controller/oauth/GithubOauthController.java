@@ -1,15 +1,21 @@
 package com.example.kawasakirestapi.application.controller.oauth;
 
-import com.example.kawasakirestapi.application.exception.InvalidAuthorizeException;
+import com.example.kawasakirestapi.application.controller.sessioninfo.TokenSessionInfo;
+import com.example.kawasakirestapi.application.exception.oauth.TokenNotFoundException;
+import com.example.kawasakirestapi.domain.service.oauth.AuthenticationOauthService;
 import com.example.kawasakirestapi.domain.service.oauth.GithubOauthService;
 import com.example.kawasakirestapi.domain.setting.OAuthSetting;
+import com.example.kawasakirestapi.infrastructure.entity.AuthenticationToken;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.social.github.api.GitHub;
+import org.springframework.social.github.api.GitHubUserProfile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -25,7 +31,12 @@ public class GithubOauthController {
 
     private final GithubOauthService oauthService;
 
+    private final AuthenticationOauthService authenticationOauthService;
+
     private final HttpSession httpSession;
+
+    private final TokenSessionInfo tokenSessionInfo;
+
 
     /**
      * ログインページを表示
@@ -33,6 +44,9 @@ public class GithubOauthController {
      */
     @GetMapping("/")
     public String index() {
+        if(tokenSessionInfo.checkToken()){
+            return "github/profile";
+        }
         return "oauth/login";
     }
 
@@ -52,24 +66,30 @@ public class GithubOauthController {
      * @return githubのプロフィール画面を返す
      */
     @GetMapping("/github/profile")
-    public String viewProfile(Model model)  {
+    public String viewProfile(Model model, HttpServletResponse response) {
 
-        Object userInfo = httpSession.getAttribute(oAuthSetting.getAccessTokenSessionKey());
-
-        if(userInfo == null) {
-            throw new InvalidAuthorizeException("ユーザー認証が正しく行われておりません");
+        if(!tokenSessionInfo.checkToken()){
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return "error/401";
         }
+        GitHub gitHub = oauthService.getGithub(httpSession.getAttribute(oAuthSetting.getAccessTokenSessionKey()));
 
-        GitHub gitHub = oauthService.getGithub(userInfo);
+        // ユーザープロフィール取得
+        GitHubUserProfile userProfile = gitHub.userOperations().getUserProfile();
 
-        String userName = gitHub.userOperations().getUserProfile().getUsername();
-        Long userId = gitHub.userOperations().getUserProfile().getId();
+        // 認証用トークンを取得
+        String authToken = authenticationOauthService.generateToken();
 
-        model.addAttribute("userName", userName);
-        model.addAttribute("userId", userId);
+        // 認証トークン登録されているかチェック、されてた場合削除して更新
+        authenticationOauthService.verifyAuthToken(authToken, userProfile);
 
+        // 新しい認証トークンで登録された認証情報を取得
+        AuthenticationToken authenticationToken = authenticationOauthService.findByToken(authToken).orElseThrow(() -> new TokenNotFoundException("トークンがデータベースに登録されていません"));
 
-        return "oauth/github/index";
+        // viewに渡す
+        model.addAttribute("authenticationToken", authenticationToken);
+
+        return "/oauth/github/profile";
     }
 
     /**
@@ -79,13 +99,16 @@ public class GithubOauthController {
      * @return viewProfileメソッドへリダイレクト
      */
     @GetMapping("/github/callback")
-    public String getToken(@RequestParam("code") String authenticationCode) {
+    public String githubCallback(@RequestParam("code") String authenticationCode, HttpServletResponse response) {
 
         if (authenticationCode == null) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "error/401";
         }
-
+        // アクセストークン取得
         String accessToken = oauthService.getAccessToken(authenticationCode);
+        // アクセストークンをsessioninfoに格納
+        tokenSessionInfo.setAccessToken(accessToken);
         httpSession.setAttribute(oAuthSetting.getAccessTokenSessionKey(), accessToken);
 
         return "redirect:/github/profile";

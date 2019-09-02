@@ -6,7 +6,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: "http://localhost:8080/v1/"
+  - url: "http://localhost:8080/"
     description: "ローカルサーバーで使用"
 
 paths:
@@ -29,6 +29,13 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ItemDataResponse"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/401Error"
+
     post: # POST
       tags:
         - Item
@@ -59,6 +66,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/handleMethodArgumentNotValid"
+
 
   /api/items/{id}:
     put:
@@ -94,6 +102,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/handleMethodArgumentNotValid"
+
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/401Error"
+
         404:
           description: "対象の投稿が存在しなかった時のレスポンス"
           content:
@@ -118,6 +134,14 @@ paths:
       responses:
         200:
           description: DELETE
+
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/401Error"
+
         404:
           description: "対象の商品が存在しなかった時のレスポンス"
           content:
@@ -149,6 +173,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ItemDataResponse"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/401Error"
 
 
   /api/items/image/{id}:
@@ -167,6 +197,14 @@ paths:
       responses:
         200:
           description: "商品画像"
+
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/401Error"
+
         404:
           description: "対象の画像が存在しなかった時にエラーを返す"
           content:
@@ -221,6 +259,10 @@ paths:
                   $ref: "#/components/schemas/ImageNotUploadedException"
 
 components:
+  securitySchemes:
+    Auth:
+      token:
+      bearer:
   schemas: # スキーマオブジェクトの定義
     ItemDataResponse:
       type: object
@@ -330,3 +372,18 @@ components:
         message:
           type: string
           example: "対象の画像が存在しません"
+    authToken:
+      type: object
+      properties:
+        id:
+          type: string
+        value:
+          type: string
+
+    ApiErrorResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        errorMessage:
+          type: string
