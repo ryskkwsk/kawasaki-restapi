@@ -45,8 +45,7 @@ public class AuthenticationOauthService {
     public String generateToken() {
 
         String uuid = UUID.randomUUID().toString();
-        String base64 = Base64.getEncoder().encodeToString(uuid.getBytes());
-        return base64;
+        return Base64.getEncoder().encodeToString(uuid.getBytes());
     }
 
     /**

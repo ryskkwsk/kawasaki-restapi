@@ -7,6 +7,7 @@ import com.example.kawasakirestapi.domain.service.oauth.GithubOauthService;
 import com.example.kawasakirestapi.domain.setting.OAuthSetting;
 import com.example.kawasakirestapi.infrastructure.entity.AuthenticationToken;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.social.github.api.GitHub;
 import org.springframework.social.github.api.GitHubUserProfile;
 import org.springframework.stereotype.Controller;
@@ -68,7 +69,7 @@ public class GithubOauthController {
     public String viewProfile(Model model, HttpServletResponse response) {
 
         if(!tokenSessionInfo.checkToken()){
-            response.setStatus(401);
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "error/401";
         }
         GitHub gitHub = oauthService.getGithub(httpSession.getAttribute(oAuthSetting.getAccessTokenSessionKey()));
@@ -101,7 +102,7 @@ public class GithubOauthController {
     public String githubCallback(@RequestParam("code") String authenticationCode, HttpServletResponse response) {
 
         if (authenticationCode == null) {
-            response.setStatus(401);
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "error/401";
         }
         // アクセストークン取得
