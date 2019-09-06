@@ -5,7 +5,7 @@ import com.example.kawasakirestapi.application.exception.oauth.TokenNotFoundExce
 import com.example.kawasakirestapi.domain.service.oauth.AuthenticationOauthService;
 import com.example.kawasakirestapi.domain.service.oauth.GithubOauthService;
 import com.example.kawasakirestapi.domain.setting.OAuthSetting;
-import com.example.kawasakirestapi.infrastructure.entity.AuthenticationToken;
+import com.example.kawasakirestapi.infrastructure.entity.oauth.AuthenticationToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.social.github.api.GitHub;

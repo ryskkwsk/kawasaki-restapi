@@ -1,8 +1,8 @@
 package com.example.kawasakirestapi.domain.service.oauth;
 
 import com.example.kawasakirestapi.application.exception.oauth.TokenNotFoundException;
-import com.example.kawasakirestapi.domain.repository.AuthenticationRepository;
-import com.example.kawasakirestapi.infrastructure.entity.AuthenticationToken;
+import com.example.kawasakirestapi.domain.repository.oauth.AuthenticationRepository;
+import com.example.kawasakirestapi.infrastructure.entity.oauth.AuthenticationToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.social.github.api.GitHubUserProfile;
 import org.springframework.stereotype.Service;

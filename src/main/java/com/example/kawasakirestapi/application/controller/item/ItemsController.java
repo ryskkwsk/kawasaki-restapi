@@ -2,7 +2,7 @@ package com.example.kawasakirestapi.application.controller.item;
 
 import com.example.kawasakirestapi.application.exception.Item.ItemNotFoundException;
 import com.example.kawasakirestapi.domain.service.item.ItemService;
-import com.example.kawasakirestapi.infrastructure.entity.Item;
+import com.example.kawasakirestapi.infrastructure.entity.item.Item;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;

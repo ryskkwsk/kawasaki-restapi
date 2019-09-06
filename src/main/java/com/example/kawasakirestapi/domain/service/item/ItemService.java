@@ -1,8 +1,8 @@
 package com.example.kawasakirestapi.domain.service.item;
 
 import com.example.kawasakirestapi.application.exception.Item.*;
-import com.example.kawasakirestapi.domain.repository.ItemRepository;
-import com.example.kawasakirestapi.infrastructure.entity.Item;
+import com.example.kawasakirestapi.domain.repository.item.ItemRepository;
+import com.example.kawasakirestapi.infrastructure.entity.item.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
