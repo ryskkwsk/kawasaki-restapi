@@ -26,6 +26,7 @@
 ####DB設計
 
 #####items
+
  | カラム名 | 型 | null | key |
  |:-----------|:------------|:------------|:--- |
  | id       |INT BIGINT|     NO    | primary key |
@@ -35,28 +36,31 @@
  | image_path       |       VARCHAR(500) |    YES    |  |
  
 #####AutenticationToken
-  | カラム名 | 型 | null | key |
-  |:-----------|:------------|:------------|:--- |
-  | id       |INT BIGINT|     NO    | primary key |
-  | dead_line    |DATETIME|    YES   |  |
-  | create_at      |DATETIME|     YES     |  |
-  | auth_token         |   VARCHAR(255) |      YES      |  |
-  | user_id       |       INT BIGINT |    YES    |  |
-  | user_name       |       VARCHAR |    YES    |  |
+
+ | カラム名 | 型 | null | key |
+ |:-----------|:------------|:------------|:--- |
+ | id       |INT BIGINT|     NO    | primary key |
+ | dead_line    |DATETIME|    YES   |  |
+ | create_at      |DATETIME|     YES     |  |
+ | auth_token         |   VARCHAR(255) |      YES      |  |
+ | user_id       |       INT BIGINT |    YES    |  |
+ | user_name       |       VARCHAR |    YES    |  |
   
 #####access_log
-  | カラム名 | 型 | null | key |
-  |:-----------|:------------|:------------|:--- |
-  | id       |INT BIGINT|     NO    | primary key |
-  | access_count    |INT|    YES   |  |
-  | aggregation_date      |DATE|     YES     |  |
-  | request_mehod         |   VARCHAR(255) |      YES      |  |
-  | request_url       |       VARCHAR(255) |    YES    |  |
-  | responsetimes       |       INT |    YES    |  |
-  | status_code       |       INT |    YES    |  |
+
+ | カラム名 | 型 | null | key |
+ |:-----------|:------------|:------------|:--- |
+ | id       |INT BIGINT|     NO    | primary key |
+ | access_count    |INT|    YES   |  |
+ | aggregation_date      |DATE|     YES     |  |
+ | request_mehod         |   VARCHAR(255) |      YES      |  |
+ | request_url       |       VARCHAR(255) |    YES    |  |
+ | responsetimes       |       INT |    YES    |  | 
+ | status_code       |       INT |    YES    |  |
 
 
 ####ディレクトリ構成
+
 ```
 ├── src
 │   ├── main
