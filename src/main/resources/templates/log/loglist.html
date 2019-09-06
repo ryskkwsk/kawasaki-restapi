@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>admin</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+<form th:action="@{/loglist/search}">
+    <label>from</label>
+    <input type="date" name="from"/>
+    <span>~</span>
+    <label>until</label>
+    <input type="date" name="until"/>
+    <input type="submit" value="検索">
+</form>
+<span th:if="${errorMessage != null}" th:text="${errorMessage}"></span>
+<span th:if="${errorMessage == null && logs.isEmpty()}" th:text="指定された期間のログは存在しません。"></span>
+<div th:if="${!logs.isEmpty()}">
+    <table class="table table-striped">
+        <tr>
+            <th>access date</th>
+            <th>HttpMethod</th>
+            <th>requestUrl</th>
+            <th>status code</th>
+            <th>access counts</th>
+            <th>processing average time</th>
+        </tr>
+        <tr th:object="${log}" th:each="log:${logs}">
+            <td th:text="${log.aggregationDate}"></td>
+            <td th:text="${log.requestMethod}"></td>
+            <td th:text="${log.requestUrl}"></td>
+            <td th:text="${log.statusCode}"></td>
+            <td th:text="${log.accessCount}"></td>
+            <td th:text="${log.responseTimes}"></td>
+        </tr>
+    </table>
+</div>
+</div>
+</body>
+</html>
