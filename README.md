@@ -1,4 +1,4 @@
-#Todoアプリケーション
+#RestfulなAPIの商品管理アプリケーション
 
 ###使用技術
 -Spring Boot2.1.7
@@ -34,7 +34,7 @@
  | description         |   VARCHAR(500) |      NO      |  |
  | image_path       |       VARCHAR(500) |    YES    |  |
  
- #####AutenticationToken
+#####AutenticationToken
   | カラム名 | 型 | null | key |
   |:-----------|:------------|:------------|:--- |
   | id       |INT BIGINT|     NO    | primary key |
@@ -43,6 +43,17 @@
   | auth_token         |   VARCHAR(255) |      YES      |  |
   | user_id       |       INT BIGINT |    YES    |  |
   | user_name       |       VARCHAR |    YES    |  |
+  
+#####access_log
+  | カラム名 | 型 | null | key |
+  |:-----------|:------------|:------------|:--- |
+  | id       |INT BIGINT|     NO    | primary key |
+  | access_count    |INT|    YES   |  |
+  | aggregation_date      |DATE|     YES     |  |
+  | request_mehod         |   VARCHAR(255) |      YES      |  |
+  | request_url       |       VARCHAR(255) |    YES    |  |
+  | responsetimes       |       INT |    YES    |  |
+  | status_code       |       INT |    YES    |  |
 
 
 ####ディレクトリ構成
@@ -57,10 +68,17 @@
 │   │   │               ├── application
 │   │   │               │   ├── controller-
 │   │   │               │   └── exception-
+│   │   │               │   └── filter
+│   │   │               │   └── inetrceptor
 │   │   │               │       
 │   │   │               ├── domain
 │   │   │               │   ├── repository-
 │   │   │               │   └── service-
+│   │   │               │   └── setting
+│   │   │               │   └── batch
+│   │   │               │   └── config
+│   │   │               │   └── dto
+│   │   │               │             
 │   │   │               └── infrastructure
 │   │   │                   └── entity-
 │   │   └── resources
@@ -68,6 +86,7 @@
 │   │       ├── data.sql
 │   │       ├── static
 │   │       └── templates
+│   │       └── logback-spring.xml
 │   └── test
 │       └── java
 │           └── com
@@ -137,6 +156,16 @@ Intelli IDEAの場合
 「VM options」に -DOAUTHAPP_GITHUB_CLIENT_ID=xxx -DOAUTHAPP_GITHUB_CLIENT_SECRET=yyyを入力して、xxxをClient IDに差し替え、yyyをClient Secretに差し替える。
 application.ymlに上記で設定した環境変数を設定する
 ```
+
+####バッチ処理
+```
+1.APIにアクセスがあった日毎にlogs/access内にログファイルが作成され、同日中のアクセスは全てそのログファイルに記録される。
+2.毎日AM10:00にlogs/access内の前日のlogファイルを集計する。
+3.ログを１行ずつ読み取り、HTTPMethod, URL, HTTPStatus が重複するログに関してはアクセス回数と処理時間の平均のみを記録する。
+4.ログの一覧を取得するにはAuth認証後、http://localhost:8080/loglist にアクセスしてログボタンを押してください。
+```
+バッチ処理の仕様は/src/batch/image配下のバッチ処理フロー図、概要図を参照してください。
+
 ・アプリ起動
 ```
 ./gradle bootRun
