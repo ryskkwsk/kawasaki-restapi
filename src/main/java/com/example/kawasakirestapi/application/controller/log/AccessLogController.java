@@ -4,7 +4,7 @@ import com.example.kawasakirestapi.application.controller.sessioninfo.TokenSessi
 import com.example.kawasakirestapi.domain.dto.SearchAccessLogDto;
 import com.example.kawasakirestapi.domain.service.AccessLogService;
 import com.example.kawasakirestapi.domain.service.log.SearchAccessLogService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,20 +20,14 @@ import java.util.List;
  * @author kawasakiryosuke
  */
 @Controller
+@RequiredArgsConstructor
 public class AccessLogController {
     private final AccessLogService accessLogService;
 
     private final SearchAccessLogService searchAccessLogService;
 
     private final TokenSessionInfo tokenSessionInfo;
-
-    @Autowired
-    public AccessLogController(AccessLogService accessLogService, SearchAccessLogService searchAccessLogService, TokenSessionInfo tokenSessionInfo) {
-        this.accessLogService = accessLogService;
-        this.searchAccessLogService = searchAccessLogService;
-        this.tokenSessionInfo = tokenSessionInfo;
-    }
-
+    
     /**
      * 認証トークンがあれば、アクセスログを取得してログの一覧のviewを返す。無ければトップページに遷移。
      * @param model
