@@ -30,3 +30,4 @@ setting:
     accessTokenSessionKey: "token"
   log:
     accessLogPath: "src/main/resources/logs/access/access."
+    datetimeFormat: "yyyy/MM/dd"
