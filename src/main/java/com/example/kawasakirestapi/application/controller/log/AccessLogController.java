@@ -2,7 +2,7 @@ package com.example.kawasakirestapi.application.controller.log;
 
 import com.example.kawasakirestapi.application.controller.sessioninfo.TokenSessionInfo;
 import com.example.kawasakirestapi.domain.dto.SearchAccessLogDto;
-import com.example.kawasakirestapi.domain.service.AccessLogService;
+import com.example.kawasakirestapi.domain.service.log.AccessLogService;
 import com.example.kawasakirestapi.domain.service.log.SearchAccessLogService;
 import com.example.kawasakirestapi.infrastructure.entity.log.AccessLog;
 import lombok.RequiredArgsConstructor;
