@@ -53,11 +53,13 @@ public class AccessLogService {
     public void aggregateAccessLog() throws IOException {
 
         Path filePath = createYesterdayFilePath();
+        // 昨日の日付のログファイルが無かった場合、終了する
         if(!Files.exists(filePath)){
             log.info("本日のログファイルはありませんでした");
             return;
         }
 
+        // 既に昨日のログファイルがDBに登録されていた場合、終了する
         if(isAlreadyAggregated()){
             log.info("本日のログは集計済みです");
             return;
@@ -166,8 +168,8 @@ public class AccessLogService {
 
     /**
      * 日付をStringからLocalDateに変換
-     * @param date
-     * @param format
+     * @param date 変換する日付
+     * @param format 日付のフォーマット
      * @return  変換した日付を返す
      */
     public LocalDate convertLocalDate(String date, String format) {
@@ -176,7 +178,7 @@ public class AccessLogService {
 
     /**
      * 日付をStringからLocalDateTimeに変換
-     * @param date
+     * @param date  変換する日付
      * @return  変換したLocalDateTime型の日付を返す
      */
     public LocalDateTime convertLocalDateTime(String date) {

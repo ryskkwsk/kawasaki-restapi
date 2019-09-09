@@ -47,8 +47,8 @@ public class AccessLogController {
 
     /**
      *  ログの集計結果を日付検索する
-     * @param beginning
-     * @param end
+     * @param beginning 開始の日付
+     * @param end   終了の日付
      * @param model
      * @return  検索結果をつめたviewファイル
      */
@@ -60,19 +60,21 @@ public class AccessLogController {
             return "redirect:/";
         }
 
+        // 開始の日付もしくは終了の日付が空だった場合、エラーメッセージ表示
         if (StringUtils.isEmpty(beginning) || StringUtils.isEmpty(end)) {
             model.addAttribute("errorMessage", "期間を指定してください");
             model.addAttribute("logs","");
         } else {
+            // 開始の日付、終了の日付をLocalDateTime型に変換
             LocalDateTime beginningDay = accessLogService.convertLocalDateTime(beginning);
             LocalDateTime endDay= accessLogService.convertLocalDateTime(end);
 
+            // 終了の日付が開始の日付より前だった場合、エラーメッセージ表示
             if (endDay.isBefore(beginningDay)) {
                 model.addAttribute("errorMessage", "入力された期間が不正です。");
             }
             List<SearchAccessLogDto> searchAccessLogDtoList = searchAccessLogService.getSearchAccessLog(beginningDay, endDay);
             model.addAttribute("logs", searchAccessLogDtoList);
-
         }
         return "log/searchLogList";
     }
