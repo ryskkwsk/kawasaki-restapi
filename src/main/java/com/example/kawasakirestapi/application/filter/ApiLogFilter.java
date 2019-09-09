@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-public class LoggingFilter implements Filter {
+public class ApiLogFilter implements Filter {
 
     /**
      * リクエスト情報をログに書き込む
