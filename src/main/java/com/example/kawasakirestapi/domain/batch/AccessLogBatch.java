@@ -1,6 +1,7 @@
 package com.example.kawasakirestapi.domain.batch;
 
 import com.example.kawasakirestapi.domain.service.AccessLogService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -13,12 +14,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class AccessLogBatch {
     private final AccessLogService accessLogService;
-
-    public AccessLogBatch(AccessLogService accessLogService) {
-        this.accessLogService = accessLogService;
-    }
 
     /**
      *  毎朝10時にアクセスログの集計を開始する
