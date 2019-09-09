@@ -22,7 +22,7 @@ import java.io.IOException;
 public class ApiLogFilter implements Filter {
 
     private final FilterUrlSetting filterUrlSetting;
-    
+
     /**
      * リクエスト情報をログに書き込む
      * @param request
@@ -56,10 +56,6 @@ public class ApiLogFilter implements Filter {
                 url,
                 statusCode,
                 responseTime);
-    }
-
-    @Override
-    public void destroy() {
     }
 
 }
