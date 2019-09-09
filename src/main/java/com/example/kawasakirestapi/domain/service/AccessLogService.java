@@ -3,7 +3,9 @@ package com.example.kawasakirestapi.domain.service;
 import com.example.kawasakirestapi.domain.dto.AccessLogDto;
 import com.example.kawasakirestapi.domain.repository.log.AccessLogRepository;
 import com.example.kawasakirestapi.domain.repository.log.SearchAccessLogRepository;
+import com.example.kawasakirestapi.domain.setting.AccessLogPathSetting;
 import com.example.kawasakirestapi.infrastructure.entity.log.AccessLog;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -26,16 +28,14 @@ import java.util.stream.Stream;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class AccessLogService {
 
     private final AccessLogRepository accessLogRepository;
 
     private final SearchAccessLogRepository searchAccessLogRepository;
 
-    public AccessLogService(AccessLogRepository accessLogRepository, SearchAccessLogRepository searchAccessLogRepository) {
-        this.accessLogRepository = accessLogRepository;
-        this.searchAccessLogRepository = searchAccessLogRepository;
-    }
+    private final AccessLogPathSetting accessLogPathSetting;
 
     /**
      * データベースに保存されているアクセスログ情報を取得する
@@ -51,27 +51,27 @@ public class AccessLogService {
      */
     public void aggregateAccessLog() throws IOException {
 
-        Path filePath = createFilePath();
+        Path filePath = createYesterdayFilePath();
         if(!Files.exists(filePath)){
             log.info("本日のログファイルはありませんでした");
             return;
         }
 
-        if(isAggregated()){
+        if(isAlreadyAggregated()){
             log.info("本日のログは集計済みです");
             return;
         }
 
         Map<String, AccessLog> map = new HashMap<>();
         try (Stream<String> logStream = Files.lines(filePath)) {
-            log.info(filePath + "を読み込みます");
+            log.info("{}を読み込みます",filePath);
             logStream.map(this::splitLine)
                      .forEach(accessLogDto -> {
                          String key = accessLogDto.getUniqueKey();
                          if (map.containsKey(key)) {
-                             aggregateSameLog(key, accessLogDto, map);
+                             setAggregateSameLog(key, accessLogDto, map);
                          } else {
-                             saveNewAccessLog(key, accessLogDto, map);
+                             setNewAccessLog(key, accessLogDto, map);
                          }
                      });
         }
@@ -82,8 +82,9 @@ public class AccessLogService {
      * 本日の日付のアクセスログがデータベースに保存されていた場合、tureを返す
      * @return true or false
      */
-    private boolean isAggregated() {
-        List<AccessLog> accessLogsOfYesterday = accessLogRepository.findByAggregationDate(LocalDate.now().minusDays(1));
+    private boolean isAlreadyAggregated() {
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        List<AccessLog> accessLogsOfYesterday = accessLogRepository.findByAggregationDate(yesterday);
         return !accessLogsOfYesterday.isEmpty();
     }
 
@@ -93,12 +94,14 @@ public class AccessLogService {
      * @return  AccessLogDto
      */
     private AccessLogDto splitLine(String logLine) {
-        List<String> split = Arrays.asList(logLine.split(" "));
-        LocalDate accessDate = convertLocalDate(split.get(0) +  " " + split.get(1),"yyyy/MM/dd HH:mm:ss");
-        String requestMethod = split.get(2);
-        String requestUrl = split.get(3);
-        String statusCode = split.get(4);
-        String responseTime = split.get(5);
+        List<String> columns = Arrays.asList(logLine.split(" ",-1));
+        String yearMonthDate = columns.get(0);
+        String hourMinutesSecond = columns.get(1);
+        LocalDate accessDate = convertLocalDate(yearMonthDate +  " " + hourMinutesSecond,"yyyy/MM/dd HH:mm:ss");
+        String requestMethod = columns.get(2);
+        String requestUrl = columns.get(3);
+        String statusCode = columns.get(4);
+        String responseTime = columns.get(5);
 
         return saveAccessLogDto(requestMethod, requestUrl, statusCode, responseTime, accessDate);
     }
@@ -137,7 +140,7 @@ public class AccessLogService {
      * @param accessLogDto
      * @param map
      */
-    private void saveNewAccessLog(String key, AccessLogDto accessLogDto, Map<String, AccessLog> map) {
+    private void setNewAccessLog(String key, AccessLogDto accessLogDto, Map<String, AccessLog> map) {
         AccessLog accessLog = new AccessLog();
         accessLog.setAggregationDate(accessLogDto.getAggregationDate());
         accessLog.setRequestMethod(accessLogDto.getRequestMethod());
@@ -154,7 +157,7 @@ public class AccessLogService {
      * @param accessLogDto
      * @param map
      */
-    private void aggregateSameLog(String key, AccessLogDto accessLogDto, Map<String, AccessLog> map) {
+    private void setAggregateSameLog(String key, AccessLogDto accessLogDto, Map<String, AccessLog> map) {
         AccessLog accessLog = map.get(key);
         accessLog.countUp();
         accessLog.calculateAverage(accessLogDto.getResponseTimes());
@@ -170,17 +173,19 @@ public class AccessLogService {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern(format));
     }
 
+
+
     /**
      * 昨日の日付のログファイルパスを生成
      * @return  生成したログファイルパスを返す
      */
-    private Path createFilePath() {
+    private Path createYesterdayFilePath() {
         LocalDate yesterday = LocalDate.now().minusDays(1);
+
         String date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(yesterday);
 
-        return Paths.get("src/main/resources/logs/access/access." + date + ".log").toAbsolutePath();
+        return Paths.get(accessLogPathSetting.getAccessLogPath() + date + ".log").toAbsolutePath();
     }
-
 
 
 }
