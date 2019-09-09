@@ -54,8 +54,6 @@ public class AccessLogController {
      */
     @GetMapping("/loglist/search")
     public String searchAggregatedLog(@RequestParam("from") String beginning, @RequestParam("until") String end, Model model) {
-        LocalDate beginningDate;
-        LocalDate endDate;
 
         // 認証トークンチェック
         if (!tokenSessionInfo.checkToken()) {
@@ -66,8 +64,8 @@ public class AccessLogController {
             model.addAttribute("errorMessage", "期間を指定してください");
             model.addAttribute("logs","");
         } else {
-            beginningDate = accessLogService.convertLocalDate(beginning, "yyyy-MM-dd");
-            endDate = accessLogService.convertLocalDate(end, "yyyy-MM-dd");
+            LocalDate beginningDate = accessLogService.convertLocalDate(beginning, "yyyy-MM-dd");
+            LocalDate endDate = accessLogService.convertLocalDate(end, "yyyy-MM-dd");
 
             if (endDate.isBefore(beginningDate)) {
                 model.addAttribute("errorMessage", "入力された期間が不正です。");
