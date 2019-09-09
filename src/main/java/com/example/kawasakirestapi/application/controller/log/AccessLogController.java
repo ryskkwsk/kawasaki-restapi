@@ -4,6 +4,7 @@ import com.example.kawasakirestapi.application.controller.sessioninfo.TokenSessi
 import com.example.kawasakirestapi.domain.dto.SearchAccessLogDto;
 import com.example.kawasakirestapi.domain.service.AccessLogService;
 import com.example.kawasakirestapi.domain.service.log.SearchAccessLogService;
+import com.example.kawasakirestapi.infrastructure.entity.log.AccessLog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +28,7 @@ public class AccessLogController {
     private final SearchAccessLogService searchAccessLogService;
 
     private final TokenSessionInfo tokenSessionInfo;
-    
+
     /**
      * 認証トークンがあれば、アクセスログを取得してログの一覧のviewを返す。無ければトップページに遷移。
      * @param model
@@ -35,13 +36,13 @@ public class AccessLogController {
      */
     @GetMapping("/loglist")
     public String viewAccessLog(Model model) {
-        // 認証トークンチェック
-        if (tokenSessionInfo.checkToken()) {
-            model.addAttribute("logs", accessLogService.findAll());
-        } else {
-            return "redirect:/";
-        }
-        return "log/loglist";
+    // 認証トークンチェック
+    if (!tokenSessionInfo.checkToken()) {
+        return "redirect:/";
+    }
+    List<AccessLog> accessLogs = accessLogService.findAll();
+    model.addAttribute("logs", accessLogs);
+    return "log/loglist";
     }
 
     /**
