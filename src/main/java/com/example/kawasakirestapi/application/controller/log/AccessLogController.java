@@ -70,8 +70,8 @@ public class AccessLogController {
             if (endDate.isBefore(beginningDate)) {
                 model.addAttribute("errorMessage", "入力された期間が不正です。");
             }
-            List<SearchAccessLogDto> list = searchAccessLogService.getSearchAccessLog(beginningDate, endDate);
-            model.addAttribute("logs", list);
+            List<SearchAccessLogDto> searchAccessLogDtoList = searchAccessLogService.getSearchAccessLog(beginningDate, endDate);
+            model.addAttribute("logs", searchAccessLogDtoList);
 
         }
         return "log/searchLogList";
