@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -23,6 +23,6 @@ public interface SearchAccessLogRepository extends JpaRepository<AccessLog, Long
      * @return  一定範囲内に合致した日付の情報を返す
      */
     @Query(value = "SELECT request_url AS requestUrl, aggregation_date AS aggregationDate, status_code AS statusCode, request_method AS requestMethod, SUM(access_count) AS totalAccessCount, AVG(response_times) AS averageResponseTime FROM access_log WHERE aggregation_date BETWEEN :beginningDay AND :endDay GROUP BY request_url, status_code", nativeQuery = true)
-    List<SearchAccessLogDto> findByAggregationDateBetween(@Param("beginningDay") LocalDate beginningDay, @Param("endDay")LocalDate endDay);
+    List<SearchAccessLogDto> findByAggregationDateBetween(@Param("beginningDay") LocalDateTime beginningDay, @Param("endDay")LocalDateTime endDay);
 
 }

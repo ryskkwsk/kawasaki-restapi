@@ -3,7 +3,7 @@ package com.example.kawasakirestapi.domain.service;
 import com.example.kawasakirestapi.domain.dto.AccessLogDto;
 import com.example.kawasakirestapi.domain.repository.log.AccessLogRepository;
 import com.example.kawasakirestapi.domain.repository.log.SearchAccessLogRepository;
-import com.example.kawasakirestapi.domain.setting.AccessLogPathSetting;
+import com.example.kawasakirestapi.domain.setting.AccessLogSetting;
 import com.example.kawasakirestapi.infrastructure.entity.log.AccessLog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class AccessLogService {
 
     private final SearchAccessLogRepository searchAccessLogRepository;
 
-    private final AccessLogPathSetting accessLogPathSetting;
+    private final AccessLogSetting accessLogSetting;
 
     /**
      * データベースに保存されているアクセスログ情報を取得する
@@ -173,7 +174,17 @@ public class AccessLogService {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern(format));
     }
 
-
+    /**
+     * 日付をStringからLocalDateTimeに変換
+     * @param date
+     * @return  変換したLocalDateTime型の日付を返す
+     */
+    public LocalDateTime convertLocalDateTime(String date) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(accessLogSetting.getDatetimeFormat());
+        String replaceDate = date.replaceAll("-", "/");
+        LocalDate localDate = LocalDate.parse(replaceDate, dtf);
+        return LocalDateTime.of(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(), 0, 0, 0);
+    }
 
     /**
      * 昨日の日付のログファイルパスを生成
@@ -184,7 +195,7 @@ public class AccessLogService {
 
         String date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(yesterday);
 
-        return Paths.get(accessLogPathSetting.getAccessLogPath() + date + ".log").toAbsolutePath();
+        return Paths.get(accessLogSetting.getAccessLogPath() + date + ".log").toAbsolutePath();
     }
 
 

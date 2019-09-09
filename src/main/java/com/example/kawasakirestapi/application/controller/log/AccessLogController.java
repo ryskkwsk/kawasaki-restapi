@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -64,13 +64,13 @@ public class AccessLogController {
             model.addAttribute("errorMessage", "期間を指定してください");
             model.addAttribute("logs","");
         } else {
-            LocalDate beginningDate = accessLogService.convertLocalDate(beginning, "yyyy-MM-dd");
-            LocalDate endDate = accessLogService.convertLocalDate(end, "yyyy-MM-dd");
+            LocalDateTime beginningDay = accessLogService.convertLocalDateTime(beginning);
+            LocalDateTime endDay= accessLogService.convertLocalDateTime(end);
 
-            if (endDate.isBefore(beginningDate)) {
+            if (endDay.isBefore(beginningDay)) {
                 model.addAttribute("errorMessage", "入力された期間が不正です。");
             }
-            List<SearchAccessLogDto> searchAccessLogDtoList = searchAccessLogService.getSearchAccessLog(beginningDate, endDate);
+            List<SearchAccessLogDto> searchAccessLogDtoList = searchAccessLogService.getSearchAccessLog(beginningDay, endDay);
             model.addAttribute("logs", searchAccessLogDtoList);
 
         }
