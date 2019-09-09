@@ -28,3 +28,5 @@ setting:
     callbackUrl: http://localhost:8080/github/callback
   oauth:
     accessTokenSessionKey: "token"
+  log:
+    accessLogPath: "src/main/resources/logs/access/access."
