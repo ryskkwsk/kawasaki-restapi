@@ -4,6 +4,7 @@ import com.example.kawasakirestapi.application.exception.oauth.TokenNotFoundExce
 import com.example.kawasakirestapi.application.exception.oauth.TokenTimeoutException;
 import com.example.kawasakirestapi.domain.service.oauth.AuthenticationOauthService;
 import com.example.kawasakirestapi.infrastructure.entity.oauth.AuthenticationToken;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -29,16 +30,19 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         String authToken = Optional.ofNullable(request.getHeader("authorization"))
                 .orElseThrow(() -> new TokenNotFoundException("トークンがリクエストに含まれていません"));
 
-        AuthenticationToken authenticationToken = authenticationOauthService.findByToken(authToken.replace("Bearer", "").trim()).orElseThrow(() -> new TokenNotFoundException("トークンがデータベースに登録されていません"));
-//        AuthenticationToken authenticationToken = authenticationOauthService.findByToken(authToken).orElseThrow(() -> new TokenNotFoundException("トークンがデータベースに登録されていません"));
+        String replaceAuthToken = authToken.replace("Bearer", "").trim();
 
+        if(!StringUtils.isBlank(replaceAuthToken)){
+            AuthenticationToken authenticationToken = authenticationOauthService.findByToken(replaceAuthToken).orElseThrow(() -> new TokenNotFoundException("トークンがデータベースに登録されていません"));
 
-        // トークンが有効期限切れだったら例外を返す
+            // トークンが有効期限切れだったら例外を返す
             if (authenticationToken.isExpired()) {
                 throw new TokenTimeoutException();
             }
-
-            return true;
+        } else {
+            throw new TokenNotFoundException("トークンがありませんでした。");
+        }
+        return true;
     }
 
 }
