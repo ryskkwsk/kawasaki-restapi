@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -66,8 +66,8 @@ public class AccessLogController {
             model.addAttribute("logs","");
         } else {
             // 開始の日付、終了の日付をLocalDateTime型に変換
-            LocalDateTime beginningDay = accessLogService.convertLocalDateTime(beginning);
-            LocalDateTime endDay= accessLogService.convertLocalDateTime(end);
+            LocalDate beginningDay = accessLogService.convertLocalDate(beginning,"yyyy/MM/dd");
+            LocalDate endDay= accessLogService.convertLocalDate(end,"yyyy/MM/dd");
 
             // 終了の日付が開始の日付より前だった場合、エラーメッセージ表示
             if (endDay.isBefore(beginningDay)) {

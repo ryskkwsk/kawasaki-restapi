@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -27,11 +27,7 @@ public class SearchAccessLogService {
      * @param endDay   終了の日付
      * @return  一致した日付のアクセスログの情報
      */
-    public List<SearchAccessLogDto> getSearchAccessLog(LocalDateTime beginningDay, LocalDateTime endDay) {
-        // もし開始の日付と終了の日付が同じだった場合、終了の日付を23:59:59に設定する
-        if(beginningDay.compareTo(endDay) == 0) {
-            endDay = endDay.plusDays(1).minusSeconds(1);
-        }
+    public List<SearchAccessLogDto> getSearchAccessLog(LocalDate beginningDay, LocalDate endDay) {
         return searchAccessLogRepository.findByAggregationDateBetween(beginningDay, endDay);
     }
 

@@ -14,7 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -174,18 +173,6 @@ public class AccessLogService {
      */
     public LocalDate convertLocalDate(String date, String format) {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern(format));
-    }
-
-    /**
-     * 日付をStringからLocalDateTimeに変換
-     * @param date  変換する日付
-     * @return  変換したLocalDateTime型の日付を返す
-     */
-    public LocalDateTime convertLocalDateTime(String date) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(accessLogSetting.getDatetimeFormat());
-        String replaceDate = date.replaceAll("-", "/");
-        LocalDate localDate = LocalDate.parse(replaceDate, dtf);
-        return LocalDateTime.of(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(), 0, 0, 0);
     }
 
     /**
