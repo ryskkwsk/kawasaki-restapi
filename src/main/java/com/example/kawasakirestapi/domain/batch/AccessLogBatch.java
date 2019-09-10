@@ -1,6 +1,6 @@
 package com.example.kawasakirestapi.domain.batch;
 
-import com.example.kawasakirestapi.domain.service.AccessLogService;
+import com.example.kawasakirestapi.domain.service.log.AccessLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
