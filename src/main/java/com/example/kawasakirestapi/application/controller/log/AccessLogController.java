@@ -66,8 +66,8 @@ public class AccessLogController {
             model.addAttribute("logs","");
         } else {
             // 開始の日付、終了の日付をLocalDateTime型に変換
-            LocalDate beginningDay = accessLogService.convertLocalDate(beginning,"yyyy/MM/dd");
-            LocalDate endDay= accessLogService.convertLocalDate(end,"yyyy/MM/dd");
+            LocalDate beginningDay = accessLogService.convertLocalDate(beginning,"yyyy-MM-dd");
+            LocalDate endDay= accessLogService.convertLocalDate(end,"yyyy-MM-dd");
 
             // 終了の日付が開始の日付より前だった場合、エラーメッセージ表示
             if (endDay.isBefore(beginningDay)) {
