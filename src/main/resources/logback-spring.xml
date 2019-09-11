@@ -22,7 +22,7 @@
     </appender>
 
     <!--　ログレベルと出力 -->
-    <logger name="com.example.kawasakirestapi.application.filter.LoggingFilter" level="INFO" additivity="false">
+    <logger name="com.example.kawasakirestapi.application.filter.ApiLogFilter" level="INFO" additivity="false">
         <appender-ref ref="API_LOG"/>
     </logger>
 
