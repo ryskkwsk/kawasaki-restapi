@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -175,8 +176,14 @@ public class AccessLogService {
      * @return  変換した日付を返す
      */
     public LocalDate convertLocalDate(String date, String format) {
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern(format));
+      try {
+          return LocalDate.parse(date, DateTimeFormatter.ofPattern(format));
+      } catch(DateTimeParseException e) {
+          log.error( "変換エラー: {}",e.getMessage());
+          return null;
+      }
     }
+
 
     /**
      * 昨日の日付のログファイルパスを生成
