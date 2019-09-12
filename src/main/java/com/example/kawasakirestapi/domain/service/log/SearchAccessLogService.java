@@ -30,7 +30,7 @@ public class SearchAccessLogService {
      * @return  一致した日付のアクセスログの情報
      */
     public List<SearchAccessLogDto> getSearchAccessLog(LocalDate beginningDay, LocalDate endDay) {
-        return searchAccessLogRepository.findByAggregationDateBetween(beginningDay, endDay);
+        return searchAccessLogRepository.findByAggregationDateBetween(beginningDay.toString(), endDay.toString());
     }
 
 
