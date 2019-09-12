@@ -87,8 +87,7 @@ public class AccessLogService {
      * @return true or false
      */
     private boolean isAlreadyAggregated() {
-//        LocalDate yesterday = LocalDate.now().minusDays(1);
-        LocalDate yesterday = LocalDate.now();
+        LocalDate yesterday = LocalDate.now().minusDays(1);
 
         List<AccessLog> accessLogsOfYesterday = accessLogRepository.findByAggregationDate(yesterday);
         return !accessLogsOfYesterday.isEmpty();
