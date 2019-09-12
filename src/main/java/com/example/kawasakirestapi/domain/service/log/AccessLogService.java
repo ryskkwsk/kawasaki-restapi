@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,6 +29,7 @@ import java.util.stream.Stream;
  */
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AccessLogService {
 
@@ -85,7 +87,9 @@ public class AccessLogService {
      * @return true or false
      */
     private boolean isAlreadyAggregated() {
-        LocalDate yesterday = LocalDate.now().minusDays(1);
+//        LocalDate yesterday = LocalDate.now().minusDays(1);
+        LocalDate yesterday = LocalDate.now();
+
         List<AccessLog> accessLogsOfYesterday = accessLogRepository.findByAggregationDate(yesterday);
         return !accessLogsOfYesterday.isEmpty();
     }
@@ -180,6 +184,7 @@ public class AccessLogService {
      * @return  生成したログファイルパスを返す
      */
     private Path createYesterdayFilePath() {
+        
         LocalDate yesterday = LocalDate.now().minusDays(1);
 
         String date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(yesterday);
