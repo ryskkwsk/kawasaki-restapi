@@ -184,7 +184,6 @@ public class AccessLogService {
      * @return  生成したログファイルパスを返す
      */
     private Path createYesterdayFilePath() {
-        
         LocalDate yesterday = LocalDate.now().minusDays(1);
 
         String date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(yesterday);
