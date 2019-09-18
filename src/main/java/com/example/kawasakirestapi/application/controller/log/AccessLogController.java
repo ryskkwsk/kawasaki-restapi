@@ -3,6 +3,7 @@ package com.example.kawasakirestapi.application.controller.log;
 import com.example.kawasakirestapi.application.controller.sessioninfo.TokenSessionInfo;
 import com.example.kawasakirestapi.domain.dto.SearchAccessLogDto;
 import com.example.kawasakirestapi.domain.form.SearchAccessLogForm;
+import com.example.kawasakirestapi.domain.form.validationorder.All;
 import com.example.kawasakirestapi.domain.service.log.AccessLogService;
 import com.example.kawasakirestapi.domain.service.log.SearchAccessLogService;
 import com.example.kawasakirestapi.infrastructure.entity.log.AccessLog;
@@ -56,7 +57,7 @@ public class AccessLogController {
      * @return  検索結果をつめたviewファイル
      */
     @GetMapping("/loglist/search")
-    public String searchAggregatedLog(@ModelAttribute @Validated SearchAccessLogForm searchAccessLogForm, BindingResult result, Model model) {
+    public String searchAggregatedLog(@ModelAttribute @Validated(All.class) SearchAccessLogForm searchAccessLogForm, BindingResult result, Model model) {
 
         // 認証トークンチェック
         if (!tokenSessionInfo.checkToken()) {
@@ -65,8 +66,13 @@ public class AccessLogController {
 
         // 開始の日付もしくは終了の日付が空だった場合、エラーメッセージ表示
         if(result.hasErrors()) {
-            model.addAttribute("errorMessage", "期間を指定してください");
-            model.addAttribute("logs","");
+            if(searchAccessLogForm.getBeginingDay().isEmpty() || searchAccessLogForm.getEndDay().isEmpty()) {
+                model.addAttribute("errorMessage", "期間を指定してください");
+                model.addAttribute("logs","").addAttribute("searchAccessLogForm",searchAccessLogForm);
+                return "log/searchLogList";
+            }
+            model.addAttribute("logs","").addAttribute("searchAccessLogForm",searchAccessLogForm);
+            return "log/searchLogList";
         } else {
             // 開始の日付、終了の日付をLocalDateTime型に変換
             LocalDate beginningDay = accessLogService.convertLocalDate(searchAccessLogForm.getBeginingDay(),"yyyy-MM-dd");
