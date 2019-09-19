@@ -3,7 +3,6 @@ package com.example.kawasakirestapi.application.controller.log;
 import com.example.kawasakirestapi.application.controller.sessioninfo.TokenSessionInfo;
 import com.example.kawasakirestapi.domain.dto.SearchAccessLogDto;
 import com.example.kawasakirestapi.domain.form.SearchAccessLogForm;
-import com.example.kawasakirestapi.domain.form.validationorder.All;
 import com.example.kawasakirestapi.domain.service.log.AccessLogService;
 import com.example.kawasakirestapi.domain.service.log.SearchAccessLogService;
 import com.example.kawasakirestapi.infrastructure.entity.log.AccessLog;
@@ -13,9 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,14 +36,14 @@ public class AccessLogController {
      * @return  ログの一覧のviewファイル
      */
     @GetMapping("/loglist")
-    public String viewAccessLog(Model model) {
+    public String viewAccessLog(SearchAccessLogForm searchAccessLogForm, Model model) {
     // 認証トークンチェック
     if (!tokenSessionInfo.checkToken()) {
         return "redirect:/";
     }
     List<AccessLog> accessLogs = accessLogService.findAll();
     model.addAttribute("logs", accessLogs);
-    model.addAttribute("searchAccessLogForm", new SearchAccessLogForm());
+    model.addAttribute("searchAccessLogForm", searchAccessLogForm);
     return "log/loglist";
     }
 
@@ -57,7 +55,7 @@ public class AccessLogController {
      * @return  検索結果をつめたviewファイル
      */
     @GetMapping("/loglist/search")
-    public String searchAggregatedLog(@ModelAttribute @Validated(All.class) SearchAccessLogForm searchAccessLogForm, BindingResult result, Model model) {
+    public String searchAggregatedLog(@Validated SearchAccessLogForm searchAccessLogForm, BindingResult result, Model model) {
 
         // 認証トークンチェック
         if (!tokenSessionInfo.checkToken()) {
@@ -66,23 +64,16 @@ public class AccessLogController {
 
         // 開始の日付もしくは終了の日付が空だった場合、エラーメッセージ表示
         if(result.hasErrors()) {
-            if(searchAccessLogForm.getBeginingDay().isEmpty() || searchAccessLogForm.getEndDay().isEmpty()) {
-                model.addAttribute("errorMessage", "期間を指定してください");
-                model.addAttribute("logs","").addAttribute("searchAccessLogForm",searchAccessLogForm);
-                return "log/searchLogList";
-            }
             model.addAttribute("logs","").addAttribute("searchAccessLogForm",searchAccessLogForm);
             return "log/searchLogList";
         } else {
-            // 開始の日付、終了の日付をLocalDateTime型に変換
-            LocalDate beginningDay = accessLogService.convertLocalDate(searchAccessLogForm.getBeginingDay(),"yyyy-MM-dd");
-            LocalDate endDay= accessLogService.convertLocalDate(searchAccessLogForm.getEndDay(),"yyyy-MM-dd");
-
             // 終了の日付が開始の日付より前だった場合、エラーメッセージ表示
-            if (endDay.isBefore(beginningDay)) {
-                model.addAttribute("errorMessage", "入力された期間が不正です。");
+            if (searchAccessLogForm.getEndDay().isBefore(searchAccessLogForm.getBeginningDay())) {
+                result.reject("error.date.flip",new Object[]{"終了日","開始日"},"");
+                model.addAttribute("logs", Collections.emptyList());
+                return "log/searchLogList";
             }
-            List<SearchAccessLogDto> searchAccessLogDtoList = searchAccessLogService.getSearchAccessLog(beginningDay, endDay);
+            List<SearchAccessLogDto> searchAccessLogDtoList = searchAccessLogService.getSearchAccessLog(searchAccessLogForm.getBeginningDay(), searchAccessLogForm.getEndDay());
             model.addAttribute("logs", searchAccessLogDtoList).addAttribute("searchAccessLogForm",searchAccessLogForm);
         }
         return "log/searchLogList";

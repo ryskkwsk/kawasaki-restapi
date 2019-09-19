@@ -12,17 +12,21 @@
 <body>
 <div class="container">
     <form th:action="@{/loglist/search}"th:method="get" th:object="${searchAccessLogForm}">
+        <div class="alert alert-danger" role="alert"
+             th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="error : ${#fields.allDetailedErrors()}">
+                    <span th:text="${error.message}">Error message</span>
+                </li>
+            </ul>
+        </div>
         <label>from</label>
-        <input type="date" name="from" th:field="*{beginingDay}"/>
-        <span class="text-danger" th:errors="*{beginingDay}" th:if="${#fields.hasErrors('beginingDay')}"></span>
+        <input type="date" name="from" th:field="*{beginningDay}"/>
         <span>~</span>
         <label>until</label>
         <input type="date" name="until" th:field="*{endDay}"/>
-        <span class="text-danger" th:errors="*{beginingDay}" th:if="${#fields.hasErrors('endDay')}"></span>
         <input type="submit" value="検索">
     </form>
-    <span class="text-danger" th:if="${errorMessage != null}" th:text="${errorMessage}"></span>
-    <span class="text-danger" th:if="${errorMessage == null && logs.isEmpty()}" th:text="指定された期間のログは存在しません。"></span>
     <div th:if="${!logs.isEmpty()}">
         <table class="table table-striped">
             <tr>

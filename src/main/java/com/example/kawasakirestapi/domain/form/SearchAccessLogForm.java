@@ -1,13 +1,11 @@
 package com.example.kawasakirestapi.domain.form;
 
 
-import com.example.kawasakirestapi.domain.form.validationorder.First;
-import com.example.kawasakirestapi.domain.form.validationorder.Second;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 /**
  *  アクセスログの集計期間を集計するための期間を受け取るフォーム
@@ -17,14 +15,12 @@ import javax.validation.constraints.Pattern;
 @Data
 public class SearchAccessLogForm {
 
-    @NotEmpty(message = "集計開始日を入力してください", groups= First.class)
-    @Pattern(regexp = "^\\d{4}-\\d{1,2}-\\d{1,2}$", message = "入力された値は正しくありません。", groups = Second.class)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private String beginingDay;
+    @NotNull(message = "集計開始日を入力してください")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate beginningDay;
 
-    @NotEmpty(message = "集計終了日をを入力してください", groups = First.class)
-    @Pattern(regexp = "^\\d{4}-\\d{1,2}-\\d{1,2}$", message = "入力された値は正しくありません。", groups = Second.class)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private String endDay;
+    @NotNull(message = "集計終了日を入力してください")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate endDay;
 
 }
