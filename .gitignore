@@ -10,6 +10,8 @@ build/
 /dataSources.local.xml
 /dataSources/
 src/main/resources/static/images/
+src/main/resources/logs/access/
+logs/
 
 
 ### STS ###

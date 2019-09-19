@@ -14,7 +14,7 @@
     <h1 class="text-center">プロフィールページ</h1>
     <table class="table table-bordered">
         <tbody>
-        <div th:object="${userInfo}">
+        <div th:object="${authenticationToken}">
         <tr>
             <td>ユーザー名</td>
             <td th:text="*{userName}"></td>
@@ -32,6 +32,9 @@
     </table>
     <button type="button" class="btn btn-danger">
         <a href="/github/logout" class="text-white">logout</a>
+    </button>
+    <button type="button" class="btn btn-success">
+        <a href="/loglist" class="text-white">ログ</a>
     </button>
 </div>
 </body>

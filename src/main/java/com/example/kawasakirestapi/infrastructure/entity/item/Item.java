@@ -1,4 +1,4 @@
-package com.example.kawasakirestapi.infrastructure.entity;
+package com.example.kawasakirestapi.infrastructure.entity.item;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,8 +1,8 @@
-package com.example.kawasakirestapi.domain.repository;
+package com.example.kawasakirestapi.domain.repository.item;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.kawasakirestapi.infrastructure.entity.Item;
+import com.example.kawasakirestapi.infrastructure.entity.item.Item;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

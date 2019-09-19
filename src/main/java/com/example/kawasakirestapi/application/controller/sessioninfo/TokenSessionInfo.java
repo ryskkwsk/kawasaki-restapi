@@ -8,6 +8,8 @@ import org.springframework.web.context.annotation.SessionScope;
 
 /**
  *  セッション情報を格納するクラス
+ *
+ * @author kawasakiryosuke
  */
 @SessionScope
 @Component
@@ -17,7 +19,10 @@ public class TokenSessionInfo {
 
     private String accessToken;
 
-    // アクセストークンがnullかどうかチェック
+    /**
+     *  アクセストークンがnullかどうかチェック
+     * @return trueかfalse
+     */
     public boolean checkToken() {
         return accessToken != null;
     }

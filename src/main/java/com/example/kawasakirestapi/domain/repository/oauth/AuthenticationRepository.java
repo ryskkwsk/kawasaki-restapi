@@ -1,6 +1,6 @@
-package com.example.kawasakirestapi.domain.repository;
+package com.example.kawasakirestapi.domain.repository.oauth;
 
-import com.example.kawasakirestapi.infrastructure.entity.AuthenticationToken;
+import com.example.kawasakirestapi.infrastructure.entity.oauth.AuthenticationToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
