@@ -26,6 +26,8 @@ setting:
     client: "${CLIENT_ID}"
     secret: "${CLIENT_SECRET}"
     callbackUrl: http://localhost:8080/github/callback
+  frontend:
+    url: http://localhost:3000/token/
   oauth:
     accessTokenSessionKey: "token"
   log:
