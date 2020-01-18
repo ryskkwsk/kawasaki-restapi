@@ -197,6 +197,9 @@ public class ItemService {
 
         Item item = findOneById(id).orElseThrow(() -> new ItemNotFoundException("対象の商品が存在しません"));
 
+        if (StringUtils.isEmpty(item.getImagePath())){
+            return "";
+        }
         return item.getImagePath();
     }
 
