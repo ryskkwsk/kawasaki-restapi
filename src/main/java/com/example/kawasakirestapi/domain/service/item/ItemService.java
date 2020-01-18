@@ -6,6 +6,7 @@ import com.example.kawasakirestapi.infrastructure.entity.item.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -101,12 +102,19 @@ public class ItemService {
      * 商品に紐づく画像ファイルを削除
      *
      * @param item 商品情報
+     * @return item imagePathを削除した商品情報を返す
      */
-    public void deleteImageItem(Item item) {
-        File file = new File(item.getImagePath());
-        if (file.exists()) {
-            file.delete();
+    public Item deleteImageItem(Item item) {
+        if (!StringUtils.isEmpty(item.getImagePath())) {
+            File file = new File(item.getImagePath());
+            if (file.exists()) {
+                file.delete();
+            }
         }
+        if (!StringUtils.isEmpty(item.getImagePath())){
+            item.setImagePath(null);
+        }
+        return itemRepository.save(item);
     }
 
     /**
