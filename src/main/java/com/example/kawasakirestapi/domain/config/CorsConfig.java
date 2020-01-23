@@ -1,5 +1,6 @@
 package com.example.kawasakirestapi.domain.config;
 
+import com.example.kawasakirestapi.domain.setting.FrontendSetting;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,12 +12,18 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 public class CorsConfig {
 
+    private final FrontendSetting frontendSetting;
+
+    public CorsConfig(FrontendSetting frontendSetting) {
+        this.frontendSetting = frontendSetting;
+    }
+
     @Bean
     public FilterRegistrationBean corsFilter() {
 
         CorsConfiguration config = new CorsConfiguration(); // CORS設定をチェックするメソッド
         config.setAllowCredentials(true); // ユーザ認証情報のサポート
-        config.addAllowedOrigin(CorsConfiguration.ALL); // 許可するoriginを追加する
+        config.addAllowedOrigin(frontendSetting.getUrl()); // 許可するoriginを追加する
         config.addAllowedHeader(CorsConfiguration.ALL); // 許可するリクエストヘッダを追加する
         config.addAllowedMethod(CorsConfiguration.ALL); // 許可するHTTPメソッドを追加する
 

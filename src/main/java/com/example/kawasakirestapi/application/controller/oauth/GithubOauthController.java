@@ -88,7 +88,7 @@ public class GithubOauthController {
         // 新しい認証トークンで登録された認証情報を取得
         AuthenticationToken authenticationToken = authenticationOauthService.findByToken(authToken).orElseThrow(() -> new TokenNotFoundException("トークンがデータベースに登録されていません"));
 
-        return "redirect:" + frontendSetting.getUrl() + authenticationToken.getAuthToken();
+        return "redirect:" + frontendSetting.getUrl() + "/" + oAuthSetting.getAccessTokenSessionKey() + "/" + authenticationToken.getAuthToken();
     }
 
     /**
