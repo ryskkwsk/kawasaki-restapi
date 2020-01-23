@@ -109,7 +109,7 @@ public class ItemsController {
      * @return 検索キーワードを含んだ商品を返す
      */
     @GetMapping("api/items/search/{title}")
-    public List<Item> searchItems(@PathVariable("title") String title) {
+    public List<Item> searchItems(@PathVariable(name = "title", required = false) String title) {
         return itemService.searchItem(title);
     }
 
