@@ -105,13 +105,13 @@ public class ItemService {
      * @return item imagePathを削除した商品情報を返す
      */
     public Item deleteImageItem(Item item) {
-        if (!StringUtils.isEmpty(item.getImagePath())) {
+        if (StringUtils.isNotEmpty(item.getImagePath())) {
             File file = new File(item.getImagePath());
             if (file.exists()) {
                 file.delete();
             }
         }
-        if (!StringUtils.isEmpty(item.getImagePath())){
+        if (StringUtils.isNotEmpty(item.getImagePath())){
             item.setImagePath(null);
         }
         return itemRepository.save(item);
