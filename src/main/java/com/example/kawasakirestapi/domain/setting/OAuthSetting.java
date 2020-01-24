@@ -19,4 +19,7 @@ public class OAuthSetting {
     // アクセストークンセッションキー
     private String accessTokenSessionKey;
 
+    // フロントエンドのリダイレクトURL
+    private String redirectUrl;
+
 }

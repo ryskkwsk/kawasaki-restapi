@@ -4,7 +4,6 @@ import com.example.kawasakirestapi.application.controller.sessioninfo.TokenSessi
 import com.example.kawasakirestapi.application.exception.oauth.TokenNotFoundException;
 import com.example.kawasakirestapi.domain.service.oauth.AuthenticationOauthService;
 import com.example.kawasakirestapi.domain.service.oauth.GithubOauthService;
-import com.example.kawasakirestapi.domain.setting.FrontendSetting;
 import com.example.kawasakirestapi.domain.setting.OAuthSetting;
 import com.example.kawasakirestapi.infrastructure.entity.oauth.AuthenticationToken;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +36,6 @@ public class GithubOauthController {
     private final HttpSession httpSession;
 
     private final TokenSessionInfo tokenSessionInfo;
-
-    private final FrontendSetting frontendSetting;
 
     /**
      * ログインページを表示
@@ -88,7 +85,7 @@ public class GithubOauthController {
         // 新しい認証トークンで登録された認証情報を取得
         AuthenticationToken authenticationToken = authenticationOauthService.findByToken(authToken).orElseThrow(() -> new TokenNotFoundException("トークンがデータベースに登録されていません"));
 
-        return "redirect:" + frontendSetting.getUrl() + "/" + oAuthSetting.getAccessTokenSessionKey() + "/" + authenticationToken.getAuthToken();
+        return "redirect:" + oAuthSetting.getRedirectUrl() + authenticationToken.getAuthToken();
     }
 
     /**
