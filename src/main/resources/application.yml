@@ -20,6 +20,8 @@ spring:
     serialization:
       #整形する
       INDENT_OUTPUT: true
+  profiles:
+    active: local
 #アプリケーション側の設定
 setting:
   github:
