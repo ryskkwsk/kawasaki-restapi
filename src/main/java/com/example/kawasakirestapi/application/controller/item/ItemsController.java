@@ -108,8 +108,8 @@ public class ItemsController {
      * @param title  検索するタイトルを含んだ商品情報
      * @return 検索キーワードを含んだ商品を返す
      */
-    @GetMapping("api/items/search/{title}")
-    public List<Item> searchItems(@PathVariable(name = "title", required = false) String title) {
+    @GetMapping("api/items/search")
+    public List<Item> searchItems(@RequestParam(name = "title", required = false) String title) {
         return itemService.searchItem(title);
     }
 
