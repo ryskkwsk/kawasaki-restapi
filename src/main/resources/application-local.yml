@@ -1,5 +1,5 @@
 setting:
-  oauth:
-    redirectUrl: http://localhost:3000/token/
   frontend:
     url: http://localhost:3000
+  oauth:
+    redirectUrl: ${setting.frontend.url}/token/
