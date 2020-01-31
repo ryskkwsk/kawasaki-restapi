@@ -27,17 +27,24 @@ public class CorsConfig {
     @Bean
     public FilterRegistrationBean corsFilter() {
 
-        CorsConfiguration config = new CorsConfiguration(); // CORS設定をチェックするメソッド
-        config.setAllowCredentials(true); // ユーザ認証情報のサポート
-        config.addAllowedOrigin(frontendSetting.getUrl()); // 許可するoriginを追加する
-        config.addAllowedHeader(CorsConfiguration.ALL); // 許可するリクエストヘッダを追加する
-        config.addAllowedMethod(CorsConfiguration.ALL); // 許可するHTTPメソッドを追加する
+        // CORS設定をチェックするメソッド
+        CorsConfiguration config = new CorsConfiguration();
+        // ユーザ認証情報のサポート
+        config.setAllowCredentials(true);
+        // 許可するoriginを追加する
+        config.addAllowedOrigin(frontendSetting.getUrl());
+        // 許可するリクエストヘッダを追加する
+        config.addAllowedHeader(CorsConfiguration.ALL);
+        // 許可するHTTPメソッドを追加する
+        config.addAllowedMethod(CorsConfiguration.ALL);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", config); // 接続を許可するパスを設定する
+        // 接続を許可するパスを設定する
+        source.registerCorsConfiguration("/api/**", config);
 
         FilterRegistrationBean bean = new FilterRegistrationBean<>(new CorsFilter(source));
-        bean.setOrder(Ordered.HIGHEST_PRECEDENCE); // 登録Beanの順序を設定する
+        // 登録Beanの順序を設定する
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return bean;
     }
 }
