@@ -1,6 +1,7 @@
 package com.example.kawasakirestapi.domain.config;
 
 import com.example.kawasakirestapi.domain.setting.FrontendSetting;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,13 +17,10 @@ import org.springframework.web.filter.CorsFilter;
  * @author kawasakiryosuke 
  */
 @Configuration
+@RequiredArgsConstructor
 public class CorsConfig {
 
     private final FrontendSetting frontendSetting;
-
-    public CorsConfig(FrontendSetting frontendSetting) {
-        this.frontendSetting = frontendSetting;
-    }
 
     @Bean
     public FilterRegistrationBean corsFilter() {
