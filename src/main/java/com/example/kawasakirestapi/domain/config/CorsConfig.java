@@ -40,7 +40,7 @@ public class CorsConfig {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         // 接続を許可するパスを設定する
-        source.registerCorsConfiguration("/api/**", config);
+        source.registerCorsConfiguration(frontendSetting.getAllowPath(), config);
 
         FilterRegistrationBean bean = new FilterRegistrationBean<>(new CorsFilter(source));
         // 登録Beanの順序を設定する

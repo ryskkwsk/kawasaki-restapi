@@ -1,5 +1,6 @@
 setting:
   frontend:
     url: http://localhost:3000
+    allowPath: /api/**
   oauth:
     redirectUrl: ${setting.frontend.url}/token/

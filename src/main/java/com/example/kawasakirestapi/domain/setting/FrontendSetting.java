@@ -14,4 +14,6 @@ import org.springframework.stereotype.Component;
 public class FrontendSetting {
     // フロントエンドのURL
     private String url;
+    // 接続を許可するパス
+    private String allowPath;
 }
