@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 /**
  *  Githubによるソーシャルログインを行うコントローラー
  *
@@ -36,19 +37,6 @@ public class GithubOauthController {
     private final HttpSession httpSession;
 
     private final TokenSessionInfo tokenSessionInfo;
-
-
-    /**
-     * ログインページを表示
-     * @return ログインページのviewを返す
-     */
-    @GetMapping("/")
-    public String index() {
-        if(tokenSessionInfo.checkToken()){
-            return "github/profile";
-        }
-        return "oauth/login";
-    }
 
     /**
      * githubの認証画面へリダイレクト
@@ -86,10 +74,7 @@ public class GithubOauthController {
         // 新しい認証トークンで登録された認証情報を取得
         AuthenticationToken authenticationToken = authenticationOauthService.findByToken(authToken).orElseThrow(() -> new TokenNotFoundException("トークンがデータベースに登録されていません"));
 
-        // viewに渡す
-        model.addAttribute("authenticationToken", authenticationToken);
-
-        return "/oauth/github/profile";
+        return "redirect:" + oAuthSetting.getRedirectUrl() + authenticationToken.getAuthToken();
     }
 
     /**
