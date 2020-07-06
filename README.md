@@ -159,6 +159,7 @@ Intelli IDEAの場合
 「Edit Configurations...」を選択する。
 「VM options」に -DOAUTHAPP_GITHUB_CLIENT_ID=xxx -DOAUTHAPP_GITHUB_CLIENT_SECRET=yyyを入力して、xxxをClient IDに差し替え、yyyをClient Secretに差し替える。
 application.ymlに上記で設定した環境変数を設定する
+また、application-local.ymlを使用しているため、「VM options」-Dspring.profiles.active=localを追加
 ```
 
 ####バッチ処理
