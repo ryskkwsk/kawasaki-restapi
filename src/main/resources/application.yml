@@ -25,8 +25,8 @@ spring:
 #アプリケーション側の設定
 setting:
   github:
-    client: "${CLIENT_ID}"
-    secret: "${CLIENT_SECRET}"
+    client: "${GITHUB_CLIENT_ID}"
+    secret: "${GITHUB_CLIENT_SECRET}"
     callbackUrl: http://localhost:8080/github/callback
   oauth:
     accessTokenSessionKey: "token"
