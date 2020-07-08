@@ -256,7 +256,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ImageNotUploadedException"
+                  $ref: "#/components/schemas/ItemImageException"
 
 components:
   securitySchemes:
@@ -353,7 +353,7 @@ components:
           type: string
           example: "対象の商品が存在しません"
 
-    ImageNotUploadedException:
+    ItemImageException:
       type: object
       properties:
         status:

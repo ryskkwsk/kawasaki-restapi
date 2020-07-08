@@ -1,3 +1,4 @@
+# フレームワーク設定
 setting:
   frontend:
     url: http://localhost:3000

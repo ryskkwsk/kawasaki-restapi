@@ -24,9 +24,9 @@ public interface ItemRepository extends JpaRepository<Item, Long>{
     Optional<Item> findById(Long id);
 
     /**
-     * searchwordと部分一致するtitleをもつ商品を検索
-     * @param searchword 検索用キーワード
+     * keywordと部分一致するtitleをもつ商品を検索
+     * @param keyword 検索用キーワード
      * @return 該当した商品をListで返す
      */
-    List<Item> findByTitleContaining(String searchword);
+    List<Item> findByTitleContaining(String keyword);
 }

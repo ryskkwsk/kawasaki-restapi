@@ -96,8 +96,8 @@ public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
      * @param request   リクエスト内容
      * @return 500エラー情報を返す
      */
-    @ExceptionHandler(ImageNotUploadedException.class)
-    public ResponseEntity<Object> handleImageNotUploadedException(ImageNotUploadedException ex, WebRequest request) {
+    @ExceptionHandler(ItemImageException.class)
+    public ResponseEntity<Object> handleItemImageException(ItemImageException ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
         HttpHeaders headers = new HttpHeaders();
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;

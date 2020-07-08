@@ -1,4 +1,4 @@
-#フレームワーク側の設定
+#フレームワーク設定
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/kawasaki_restfulapi
@@ -22,7 +22,7 @@ spring:
       INDENT_OUTPUT: true
   profiles:
     active: local
-#アプリケーション側の設定
+#アプリケーション設定
 setting:
   github:
     client: "${GITHUB_CLIENT_ID}"

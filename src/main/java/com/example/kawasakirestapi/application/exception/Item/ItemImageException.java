@@ -8,9 +8,9 @@ import lombok.extern.slf4j.Slf4j;
  *  @author kawasakiryosuke
  */
 @Slf4j
-public class ImageNotUploadedException extends RuntimeException {
+public class ItemImageException extends RuntimeException {
 
-    public ImageNotUploadedException (String msg, Throwable cause) {
+    public ItemImageException (String msg, Throwable cause) {
         super(msg, cause);
     }
 

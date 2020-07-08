@@ -26,31 +26,36 @@ public class ItemsController {
     }
 
     /**
-     * 商品取得API
+     * 商品全件取得
+     *
      * @return 全ての商品を取得し、jsonで送信(0件の場合、空の配列を返す)
      */
     @GetMapping("api/items")
+    @ResponseStatus(HttpStatus.OK)
     public List<Item> getItems() {
         return itemService.findAll();
     }
 
     /**
-     * 商品登録API
+     * 商品登録
+     *
      * @param item 登録する商品
      * @return 登録された商品を取得し、jsonで送信
      */
     @PostMapping("api/items")
-    public Item createItem(@RequestBody @Validated Item item) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Item create(@RequestBody @Validated Item item) {
         return itemService.save(item);
     }
 
     /**
-     * 商品情報削除API
-     * @param id 削除する商品のid
+     * 商品情報削除
+     *
+     * @param id 商品ID
      */
     @DeleteMapping("api/items/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteItem(@PathVariable("id") long id) {
+    public void delete(@PathVariable("id") long id) {
         itemService.deleteById(id);
     }
 
@@ -66,28 +71,30 @@ public class ItemsController {
     }
 
     /**
-     * 商品編集API
-     * @param item 編集する商品
-     * @param id 編集する商品のid
-     * @return 編集された商品をjsonで送信
+     * 商品更新
+     *
+     * @param item 更新される商品情報1件
+     * @param id 商品ID
+     * @return  Item
      */
     @PutMapping("api/items/{id}")
-    public Item editItem(@RequestBody @Validated Item item, @PathVariable("id") long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public Item update(@RequestBody @Validated Item item, @PathVariable("id") long id) {
         return itemService.update(item, id);
     }
 
     /**
-     * 商品画像登録API。Multipart形式でない場合、例外を投げる。
+     * 商品画像登録。Multipart形式でない場合、例外を投げる。
      *
      * @param id          画像を登録する商品のid
-     * @param uploadImage MultipartFile
+     * @param multipartFile MultipartFile
      */
     @PostMapping("api/items/image/{id}")
     public Item uploadImageItem(
             @PathVariable("id") long id,
-            @RequestParam("image") MultipartFile uploadImage) {
+            @RequestParam("image") MultipartFile multipartFile) {
 
-        return itemService.uploadImageItem(id, uploadImage);
+        return itemService.uploadImageItem(id, multipartFile);
     }
 
     /**
@@ -110,7 +117,7 @@ public class ItemsController {
      */
     @GetMapping("api/items/search")
     public List<Item> searchItems(@RequestParam(name = "title", required = false) String title) {
-        return itemService.searchItem(title);
+        return itemService.search(title);
     }
 
 }
