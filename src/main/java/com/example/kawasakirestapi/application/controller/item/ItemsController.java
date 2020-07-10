@@ -1,5 +1,6 @@
 package com.example.kawasakirestapi.application.controller.item;
 
+import com.example.kawasakirestapi.domain.form.ItemForm;
 import com.example.kawasakirestapi.domain.service.item.ItemService;
 import com.example.kawasakirestapi.infrastructure.entity.item.Item;
 import org.springframework.http.HttpEntity;
@@ -39,13 +40,13 @@ public class ItemsController {
     /**
      * 商品登録
      *
-     * @param item 登録する商品
+     * @param itemForm 商品画像以外の商品データを受け付けるフォーム
      * @return 登録された商品を取得し、jsonで送信
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Item create(@RequestBody @Validated Item item) {
-        return itemService.save(item);
+    public Item create(@RequestBody @Validated ItemForm itemForm) {
+        return itemService.save(itemForm);
     }
 
     /**
@@ -73,14 +74,14 @@ public class ItemsController {
     /**
      * 商品更新
      *
-     * @param item 更新される商品情報1件
+     * @param itemForm 商品画像以外の商品データを受け付けるフォーム
      * @param id 商品ID
      * @return  Item
      */
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Item update(@RequestBody @Validated Item item, @PathVariable("id") long id) {
-        return itemService.update(item, id);
+    public Item update(@RequestBody @Validated ItemForm itemForm, @PathVariable("id") long id) {
+        return itemService.update(itemForm, id);
     }
 
     /**

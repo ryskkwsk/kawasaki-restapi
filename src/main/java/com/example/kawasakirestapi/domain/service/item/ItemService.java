@@ -4,6 +4,7 @@ import com.example.kawasakirestapi.application.exception.Item.ImageNotFoundExcep
 import com.example.kawasakirestapi.application.exception.Item.ItemImageException;
 import com.example.kawasakirestapi.application.exception.Item.ItemNotFoundException;
 import com.example.kawasakirestapi.application.exception.Item.SearchResultNotFoundException;
+import com.example.kawasakirestapi.domain.form.ItemForm;
 import com.example.kawasakirestapi.domain.repository.item.ItemRepository;
 import com.example.kawasakirestapi.infrastructure.entity.item.Item;
 import lombok.RequiredArgsConstructor;
@@ -62,32 +63,32 @@ public class ItemService {
     /**
      * 保存処理
      *
-     * @param item 保存する商品
+     * @param itemForm 商品画像以外の商品データを受け付けるフォーム
      * @return Item
      */
-    public Item save(Item item){
+    public Item save(ItemForm itemForm){
 
         Item Item = new Item();
-        Item.setTitle(item.getTitle());
-        Item.setDescription(item.getDescription());
-        Item.setPrice(item.getPrice());
+        Item.setTitle(itemForm.getTitle());
+        Item.setDescription(itemForm.getDescription());
+        Item.setPrice(itemForm.getPrice());
 
         return itemRepository.save(Item);
     }
 
     /**
      * 商品更新
-     * @param item 編集後の商品情報1件
+     * @param itemForm 商品画像以外の商品データを受け付けるフォーム
      * @param id 商品ID
      * @return  編集した商品情報を保存して、データベースに更新した情報を返す
      */
-    public Item update(Item item, Long id) {
-        Item updateItem = findById(id);
-        updateItem.setTitle(item.getTitle());
-        updateItem.setDescription(item.getDescription());
-        updateItem.setPrice(item.getPrice());
+    public Item update(ItemForm itemForm, Long id) {
+        Item item = findById(id);
+        item.setTitle(itemForm.getTitle());
+        item.setDescription(itemForm.getDescription());
+        item.setPrice(itemForm.getPrice());
 
-        return itemRepository.save(updateItem);
+        return itemRepository.save(item);
     }
 
     /**
