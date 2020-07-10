@@ -1,6 +1,5 @@
 package com.example.kawasakirestapi.application.controller.item;
 
-import com.example.kawasakirestapi.application.exception.Item.ItemNotFoundException;
 import com.example.kawasakirestapi.domain.service.item.ItemService;
 import com.example.kawasakirestapi.infrastructure.entity.item.Item;
 import org.springframework.http.HttpEntity;
@@ -17,6 +16,7 @@ import java.util.List;
  * @author kawasakiryosuke
  */
 @RestController
+@RequestMapping("/api/items")
 public class ItemsController {
 
     private final ItemService itemService;
@@ -30,7 +30,7 @@ public class ItemsController {
      *
      * @return 全ての商品を取得し、jsonで送信(0件の場合、空の配列を返す)
      */
-    @GetMapping("api/items")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Item> getItems() {
         return itemService.findAll();
@@ -42,7 +42,7 @@ public class ItemsController {
      * @param item 登録する商品
      * @return 登録された商品を取得し、jsonで送信
      */
-    @PostMapping("api/items")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Item create(@RequestBody @Validated Item item) {
         return itemService.save(item);
@@ -53,7 +53,7 @@ public class ItemsController {
      *
      * @param id 商品ID
      */
-    @DeleteMapping("api/items/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") long id) {
         itemService.deleteById(id);
@@ -63,10 +63,10 @@ public class ItemsController {
      * 商品画像削除API
      * @param id 削除する商品のid
      */
-    @DeleteMapping("api/items/image/{id}")
+    @DeleteMapping("/image/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteItemImage(@PathVariable("id") long id) {
-        Item item = itemService.findOneById(id).orElseThrow(() -> new ItemNotFoundException("対象の商品が存在しません"));
+        Item item = itemService.findById(id);
         itemService.deleteImageItem(item);
     }
 
@@ -77,7 +77,7 @@ public class ItemsController {
      * @param id 商品ID
      * @return  Item
      */
-    @PutMapping("api/items/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Item update(@RequestBody @Validated Item item, @PathVariable("id") long id) {
         return itemService.update(item, id);
@@ -89,7 +89,7 @@ public class ItemsController {
      * @param id          画像を登録する商品のid
      * @param multipartFile MultipartFile
      */
-    @PostMapping("api/items/image/{id}")
+    @PostMapping("/image/{id}")
     public Item uploadImageItem(
             @PathVariable("id") long id,
             @RequestParam("image") MultipartFile multipartFile) {
@@ -104,7 +104,7 @@ public class ItemsController {
      * @param id 画像を表示する商品id
      * @return 画像データ HttpEntity<byte[]>
      */
-    @GetMapping ("api/items/image/{id}")
+    @GetMapping ("/image/{id}")
     public HttpEntity<byte[]> showImageItem(@PathVariable Long id) {
         return itemService.getImageItem(id);
     }
@@ -115,7 +115,7 @@ public class ItemsController {
      * @param title  検索するタイトルを含んだ商品情報
      * @return 検索キーワードを含んだ商品を返す
      */
-    @GetMapping("api/items/search")
+    @GetMapping("/search")
     public List<Item> searchItems(@RequestParam(name = "title", required = false) String title) {
         return itemService.search(title);
     }

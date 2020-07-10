@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -56,8 +55,8 @@ public class ItemService {
      * @param id 商品ID
      * @return 商品情報1件
      */
-    public Optional<Item> findOneById(Long id) {
-        return itemRepository.findById(id);
+    public Item findById(Long id) {
+        return itemRepository.findById(id).orElseThrow(() ->new ItemNotFoundException("対象の商品が存在しません"));
     }
 
     /**
@@ -83,7 +82,7 @@ public class ItemService {
      * @return  編集した商品情報を保存して、データベースに更新した情報を返す
      */
     public Item update(Item item, Long id) {
-        Item updateItem = findOneById(id).orElseThrow(() ->new ItemNotFoundException("対象の商品が存在しません"));
+        Item updateItem = findById(id);
         updateItem.setTitle(item.getTitle());
         updateItem.setDescription(item.getDescription());
         updateItem.setPrice(item.getPrice());
@@ -96,7 +95,7 @@ public class ItemService {
      * @param id 削除する商品のid
      */
     public void deleteById(Long id) {
-        Item item = findOneById(id).orElseThrow(() -> new ItemNotFoundException("対象の商品が存在しません"));
+        Item item = findById(id);
         itemRepository.delete(item);
     }
 
@@ -143,7 +142,7 @@ public class ItemService {
 //        }
 
         // 商品を取得
-        Item item = findOneById(id).orElseThrow(() -> new ItemNotFoundException("対象の商品が存在しません"));
+        Item item = findById(id);
 
         // 画像のファイル名の文字数取得
         int number = multipartFile.getOriginalFilename().lastIndexOf(".");
@@ -202,7 +201,7 @@ public class ItemService {
      */
     private String getLocalImagePath(Long id) {
 
-        Item item = findOneById(id).orElseThrow(() -> new ItemNotFoundException("対象の商品が存在しません"));
+        Item item = findById(id);
 
         if (StringUtils.isEmpty(item.getImagePath())){
             return "";
