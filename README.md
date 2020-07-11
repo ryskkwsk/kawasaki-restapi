@@ -114,6 +114,42 @@ UI
 他サービスとの通信等の実装
 ```
 
+#### VPC
+|Name       |CIDR           |
+|-----------|---------------|
+|VPC-Shared2|10.10.0.0/16 |
+
+#### サブネット
+|Name                |IPv4 CIDRv        |アベイラビリティーゾーン|
+|:--------------------:|:------------------:|:--------------------:|
+|kawasakiryosuke-public-1a  |10.10.12.0/27   |ap-northeast-1a     |
+|kawasakiryosuke-public-1c  |10.10.12.32/27  |ap-northeast-1c     |
+|kawasakiryosuke-private-1a |10.10.12.128/27 |ap-northeast-1a     |
+|kawasakiryosuke-private-1c |10.10.12.160/27 |ap-northeast-1c     |
+
+#### EC2
+| Name           | サブネット         | インスタンスタイプ | セキュリティグループ | OS |
+|:--------------:|:------------------:|:------------------:|:--------------------:|:--------------------:|
+| kawasakiryosuke-ec2-pub-1a | kawasakiryosuke-public-1a　| t2.micro         | kawasakiryosuke-ec2-scg　     | Amazon Linux2　     |
+| kawasakiryosuke-ec2-pub-1c | kawasakiryosuke-public-1c| t2.micro           | kawasakiryosuke-ec2-scg　　 | Amazon Linux2　     |
+
+#### RDS
+| Name         | サブネット                            | エンジン        | セキュリティグループ | インスタンスタイプ |
+|:------------:|:-------------------------------------:|:---------------:|:--------------------:|:------------------:|
+| kawasakiryosuke-db   |kawasakiryosuke-private-1a, kawasakiryosuke-private-1c | MySQL Community | kawasakiryosuke-db-scg　    | t2.micro           |
+
+#### S3
+| Name          | 用途  |
+|:-------------:|:---------------:|
+| kawasakiryosuke-front | React SPAの配置 |
+| kawasakiryosuke-deploy | Appデプロイ成果物を配置　　  |
+
+#### ALB
+| Name         | Target(Port)       |AvailabilityZone                       | セキュリティグループ  |
+|:------------:|:------------------:|:-------------------------------------:|:---------------------:|
+| kawasakiryosuke-alb  | tg-alb-kawasakiryosuke(80) | kawasakiryosuke-public-1a, kawasakiryosuke-public-1c  | kawasakiryosuke-alb-scg        |
+
+
 
     
 ####開発環境のセットアップ
