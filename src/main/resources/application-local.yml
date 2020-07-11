@@ -1,7 +1,14 @@
-# フレームワーク設定
+#============================================================================
+# アプリケーション固有設定
+#============================================================================
 setting:
   frontend:
     url: http://localhost:3000
     allowPath: /api/**
   oauth:
     redirectUrl: ${setting.frontend.url}/token/
+  image:
+    uploadDir: src/main/resources/static/images
+  log:
+    accessLogPath: "src/main/resources/logs/access/access."
+    datetimeFormat: "yyyy/MM/dd"

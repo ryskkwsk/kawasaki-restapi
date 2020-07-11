@@ -1,4 +1,6 @@
-#フレームワーク設定
+#============================================================================
+# Spring設定
+#============================================================================
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/kawasaki_restfulapi
@@ -13,7 +15,6 @@ spring:
     throw-exception-if-no-handler-found: true
   resources:
     add-mappings: true
-  localImagesPath: src/main/resources/static/images
   jackson:
     #null項目は出力しない
     default-property-inclusion: non_null
@@ -22,7 +23,9 @@ spring:
       INDENT_OUTPUT: true
   profiles:
     active: local
-#アプリケーション設定
+#============================================================================
+# アプリケーション固有設定
+#============================================================================
 setting:
   github:
     client: "${GITHUB_CLIENT_ID}"
@@ -30,6 +33,14 @@ setting:
     callbackUrl: http://localhost:8080/github/callback
   oauth:
     accessTokenSessionKey: "token"
-  log:
-    accessLogPath: "src/main/resources/logs/access/access."
-    datetimeFormat: "yyyy/MM/dd"
+
+#============================================================================
+# AWS S3 設定
+#============================================================================
+aws:
+  region: ap-northeast-1
+  accessKey: "${AWS_ACCESS_KEY}"
+  secretKey: "${AWS_SECRET_KEY}"
+  s3bucket: kawasakiryosuke-images
+  imageDir: images/
+
