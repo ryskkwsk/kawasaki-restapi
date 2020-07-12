@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: openjdk11
+  build:
+    commands:
+      - echo APP BUILD STARTS ON `date`
+      - ./gradlew clean build -x test
+  post_build:
+    commands:
+      - echo APP BUILD ENDS ON `date`
+artifacts:
+  files:
+    - ./target/kawasaki-restapi.jar
+    - ./appspec.yml
+    - ./start.sh
+    - ./stop.sh
+  discard-paths: yes
+
