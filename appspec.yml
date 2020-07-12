@@ -1,0 +1,21 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/kawasaki-restapi
+    overwrite: true
+permissions:
+  - object: /
+    owner: ec2-user
+    group: ec2-user
+    mode: 755
+    pattern: "**"
+hooks:
+  ApplicationStop:
+    - location: ./stop.sh
+      timeout: 300
+      runas: ec2-user
+  ApplicationStart:
+    - location: ./start.sh
+      timeout: 300
+      runas: ec2-user
