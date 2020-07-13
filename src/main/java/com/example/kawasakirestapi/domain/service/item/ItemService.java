@@ -1,15 +1,14 @@
 package com.example.kawasakirestapi.domain.service.item;
 
-import com.example.kawasakirestapi.application.exception.Item.ImageNotFoundException;
-import com.example.kawasakirestapi.application.exception.Item.ItemImageException;
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.kawasakirestapi.application.exception.Item.ItemNotFoundException;
 import com.example.kawasakirestapi.application.exception.Item.SearchResultNotFoundException;
 import com.example.kawasakirestapi.domain.form.ItemForm;
 import com.example.kawasakirestapi.domain.repository.item.ItemRepository;
+import com.example.kawasakirestapi.domain.service.aws.AwsS3Service;
 import com.example.kawasakirestapi.infrastructure.entity.item.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -18,12 +17,10 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.InputStream;
+import java.io.IOException;
 import java.net.URLConnection;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 商品管理を行うサービス
@@ -37,10 +34,16 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    @Value("${spring.localImagesPath}")
-    private String localImagesPath;
+    @Value("${setting.image.uploadDir}")
+    private String uploadDir;
 
     private final ResourceLoader resourceLoader;
+
+    /** AwsS3サービス */
+    private final AwsS3Service awsS3Service;
+
+    private final ItemImageService itemImageService;
+
 
     /**
      * 商品全権取得
@@ -121,77 +124,40 @@ public class ItemService {
     }
 
     /**
-     * 指定(id値によって)の商品に対し画像を投稿。
-     * 指定の商品が存在しない場合、例外処理。
-     * 画像が正しい形式でない場合、例外処理
+     * 商品画像の保存先へのパスを登録する
      *
-     * @param id 商品id         Long
-     * @param multipartFile MultipartFile
+     * @param id 該当商品のID
+     * @param multipartFile 登録する商品画像
      * @return item       Item
      */
-    public Item uploadImageItem(
+    public Item uploadImagePath(
             Long id,
-            MultipartFile multipartFile) {
-
-//        try (InputStream image = uploadImage.getInputStream()){
-//            BufferedImage bufferedImage = ImageIO.read(image);
-//            if (bufferedImage == null) {
-//                throw new InvalidImageFileException("投稿が画像データではない、もしくは画像が添付されておりません");
-//            }
-//        } catch (IOException e)   {
-//            throw new InvalidImageFileException("投稿が画像データではない、もしくは画像が添付されておりません");
-//        }
+            MultipartFile multipartFile) throws IOException {
 
         // 商品を取得
         Item item = findById(id);
-
-        // 画像のファイル名の文字数取得
-        int number = multipartFile.getOriginalFilename().lastIndexOf(".");
-        // 画像の拡張子取得
-        String ext = multipartFile.getOriginalFilename().substring(number);
-        // 画像名再設定
-        String fileName = id + "_" + getRandomId() + ext;
-        // ディレクトリ作成
-        mkdirs();
-        // アップロードファイルを置く
-        File uploadPath = new File(localImagesPath + "/" + fileName).getAbsoluteFile();
-
-        try {
-            // 配置したファイルに書き込む
-            multipartFile.transferTo(uploadPath);
-            String imagePath = localImagesPath + "/" + fileName;
-            item.setImagePath(imagePath);
-
-            return itemRepository.save(item);
-        } catch (Exception e) {
-
-            throw new ItemImageException("画像のアップロードに失敗しました", e);
+        if (item.getImagePath() != null) {
+            deleteImagePath(id);
         }
-    }
-
-
-
-    /**
-     * 画像配置するディレクトリの作成
-     */
-    private void mkdirs() {
-        try {
-            File dir = new File(localImagesPath);
-            dir.mkdir();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+        item.setImagePath(itemImageService.uploadImage(multipartFile));
+        itemRepository.save(item);
+        return item;
     }
 
     /**
-     * 重複のない一意なユニークなIDを取得
+     * 商品画像と画像へのパスを削除する
      *
-     * @return 生成されたユニークな値
+     * @param id 商品画像と画像へのパスを削除する商品のID
      */
-      private String getRandomId() {
-          UUID uuid = UUID.randomUUID();
-          return  uuid.toString();
-      }
+    public void deleteImagePath(Long id) {
+        Item item = findById(id);
+        if (item.getImagePath() != null) {
+            itemImageService.deleteFile(item.getImagePath());
+            item.setImagePath(null);
+            itemRepository.save(item);
+        }
+    }
+
 
     /**
      * 指定の画像が保存されているディレクトリのパスを返す。
@@ -200,15 +166,15 @@ public class ItemService {
      * @param id Long
      * @return item Item
      */
-    private String getLocalImagePath(Long id) {
-
-        Item item = findById(id);
-
-        if (StringUtils.isEmpty(item.getImagePath())){
-            return "";
-        }
-        return item.getImagePath();
-    }
+//    private String getLocalImagePath(Long id) {
+//
+//        Item item = findById(id);
+//
+//        if (StringUtils.isEmpty(item.getImagePath())){
+//            return "";
+//        }
+//        return item.getImagePath();
+//    }
 
     /**
      * 指定の画像データを返却。
@@ -219,31 +185,21 @@ public class ItemService {
      */
     public HttpEntity<byte[]> getImageItem(Long id) {
 
-        // 画像の格納されているディレクトリを取得
-        String imagePath = getLocalImagePath(id);
-        // リソースファイルを読み込む
-        Resource resource = resourceLoader.getResource("File:" + imagePath);
-
-        byte[] imageBytes;
-        // byteへ変換
-        try (InputStream is = resource.getInputStream()) {
-            imageBytes = IOUtils.toByteArray(is);
-        } catch (Exception e) {
-
-            throw new ImageNotFoundException("対象の画像が存在しません", e);
+        Item item = findById(id);
+        if (item.getImagePath() == null) {
+            throw new NotFoundException("画像が見つかりませんでした( 商品ID= " + id + ")");
         }
-        byte[] images = imageBytes;
+        Resource resource = resourceLoader.getResource(uploadDir + item.getImagePath());
+        byte[] bytes = itemImageService.getImage(resource.toString());
+
 
         HttpHeaders headers = new HttpHeaders();
-        try (InputStream inputStream = new ByteArrayInputStream(images)) {
-            String contentType = URLConnection.guessContentTypeFromStream(inputStream);
-            headers.setContentType(MediaType.valueOf(contentType));
-            headers.setContentLength(images.length);
-        } catch (Exception e) {
-            throw new ImageNotFoundException("対象の画像が存在しません", e);
-        }
 
-        return new ResponseEntity<>(images,headers, HttpStatus.OK);
+        String contentType = URLConnection.guessContentTypeFromName(item.getImagePath());
+        headers.setContentType(MediaType.valueOf(contentType));
+        headers.setContentLength(bytes.length);
+
+        return new ResponseEntity<>(bytes,headers, HttpStatus.OK);
     }
 
 
