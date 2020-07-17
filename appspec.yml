@@ -15,11 +15,11 @@ hooks:
   # 前回のリビジョンのシャットダウンが開始したとき
   ApplicationStop:
     # 実行したいシェルスクリプトファイルの場所
-    - location: stop.sh
+    - location: ./stop.sh
       timeout: 300
       runas: ec2-user
   # アプリケーションのリビジョンが開始する直前
   ApplicationStart:
-    - location: start.sh
+    - location: ./start.sh
       timeout: 300
       runas: ec2-user
