@@ -17,7 +17,7 @@ phases:
 # CodeBuildでは処理の成果物
 artifacts:
   files:
-    - ./kawasakiryosuke-restapi.jar
+    - ./build/libs/kawasaki-restapi-0.0.1-SNAPSHOT.jar
     - ./appspec.yml
     - ./scripts/start.sh
     - ./scripts/stop.sh
