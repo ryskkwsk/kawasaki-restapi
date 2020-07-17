@@ -32,6 +32,8 @@ setting:
     callbackUrl: http://localhost:8080/github/callback
   oauth:
     accessTokenSessionKey: "token"
+  log:
+    absolutePath: /home/ec2-user/kawasaki-restapi/src/main/resources/logs/access
 
 #============================================================================
 # AWS S3 設定
