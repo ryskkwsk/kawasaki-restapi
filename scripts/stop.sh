@@ -1,4 +1,4 @@
-##!/usr/bin/env bash
+#!/bin/sh
 
 PID=$(ps -ax | grep kawasaki-restapi.jar | grep -v grep | awk '{print $1}')
 if [ -n "${PID}" ]; then
