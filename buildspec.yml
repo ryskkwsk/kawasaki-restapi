@@ -19,7 +19,6 @@ artifacts:
   files:
     - ./target/kawasaki-restapi.jar
     - ./appspec.yml
-#    - ./scripts/start.sh
-#    - ./scripts/stop.sh
+
   discard-paths: yes
 
