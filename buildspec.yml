@@ -1,8 +1,20 @@
 version: 0.2
 
+environment_variables:
+  plaintext:
+    DB_ROOT_PASSWORD: password
+    DB_HOST: localhost
+    DB_USER: root
 # phasesで処理を段階ごとに定義
 phases:
   install:
+    commands:
+      - echo "mysql-server mysql-server/root_password password ${DB_ROOT_PASSWORD}" |debconf-set-selections
+      - echo "mysql-server mysql-server/root_password_again password ${DB_ROOT_PASSWORD}" |debconf-set-selections
+      - apt-get update -y
+      - apt-get install -y mysql-server-5.7
+      - service mysql start
+      - mysql -p${DB_ROOT_PASSWORD} -e "create database rest_api;"
     runtime-versions:
       java: corretto11
   # ビルドの時に CodeBuild が実行するコマンド
@@ -17,7 +29,7 @@ phases:
 # CodeBuildでは処理の成果物
 artifacts:
   files:
-    - ./build/libs/kawasaki-restapi.jar
+    - ./kawasakiryosuke-restapi.jar
     - ./appspec.yml
     - ./scripts/start.sh
     - ./scripts/stop.sh
