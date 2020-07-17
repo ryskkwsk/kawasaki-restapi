@@ -11,7 +11,7 @@ permissions:
     group: ec2-user
     mode: 755
     pattern: "**"
-  hooks:
+hooks:
   # 前回のリビジョンのシャットダウンが開始したとき
   ApplicationStop:
     # 実行したいシェルスクリプトファイルの場所
