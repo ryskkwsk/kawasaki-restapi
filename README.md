@@ -143,13 +143,83 @@ UI
 |:-------------:|:---------------:|
 | kawasakiryosuke-front | React SPAの配置 |
 | kawasakiryosuke-deploy | Appデプロイ成果物を配置　　  |
+| kawasakiryosuke-image  | 画像の配置 |
+
 
 #### ALB
 | Name         | Target(Port)       |AvailabilityZone                       | セキュリティグループ  |
 |:------------:|:------------------:|:-------------------------------------:|:---------------------:|
 | kawasakiryosuke-alb  | tg-alb-kawasakiryosuke(80) | kawasakiryosuke-public-1a, kawasakiryosuke-public-1c  | kawasakiryosuke-alb-scg        |
 
+#### CloudFront
+| Path         | Origin     |
+|:------------:|:----------:|
+| /api/*       | ELB-kawasakiryosuke-alb-1332443923 |
+| /images/*    | S3-kawasakiryosuke-image |
+| /static/css/* | ELB-kawasakiryosuke-alb-1332443923 |
+| /github/*    | ELB-kawasakiryosuke-alb-1332443923 |
+| Default(*)   | S3-kawasakiryosuke-front |
 
+#### CodeBuild
+| Name | プロバイダ | リポジトリ |
+| kawasakiryosuke-restapi-build | GitHub | kawasaki-restapi |
+| kawasakiryosuke-front-build | GitHub | kawasaki-react |
+
+#### CodeDeploy
+| Name | グループ | プラットフォーム |
+| kawasakiryosuke-restapi-build | kawasakiryosuke-restapi-deploy-group | EC2/オンプレミス |
+
+
+#### ユーザー
+
+#### ロール
+| Name | AWSサービス | 
+| kawasakiryosuke-codebuild-front-service-role | codebuild |
+| kawasakiryosuke-codebuild-restapi-service-role | codebuild |
+| kawasakiryosuke-codedeploy-role | codedeploy |
+| kawasakiryosuke-ec2-role | ec2 |
+
+#### AWSのCodeDeployでエラー
+```
+・CodeDeployAgentをEC2にインストール
+sudo yum -y install ruby; yum -y install wget; cd /home/ec2-user; wget https://aws-codedeploy-ap-northeast-1.s3.amazonaws.com/latest/install; chmod +x ./install; sudo ./install auto
+・/var/log/aws/codedeploy-agent/　ログを確認
+
+・キャッシュの削除
+/opt/codedeploy-agent/deployment-root/deployment-instructions/ 配下のファイルを削除
+```
+
+#### EC2で環境構築
+```
+・それぞれEC2にjavaをインストールする。
+sudo yum install java-11-amazon-corretto
+・javaがインストールされたか確認
+java -version 
+・アンインストールする場合
+sudo yum remove java-11-amazon-corretto
+
+・mariaDB削除
+$ sudo yum remove mariadb-libs
+$ sudo rm -rf /var/lib/mysql
+
+・mysqlインストール
+$ sudo yum install mysql
+
+・RDS
+マスター名:admin_kawasaki
+パスワード:kawayan1111
+
+・EC2でrdsへの接続
+mysql -h kawasakiryosuke-db.c35xcnhiknum.ap-northeast-1.rds.amazonaws.com -P 3306 -u admin_kawasaki -p
+
+・データベースの作成
+MySQL [(none)]> create database kawasaki_restfulapi;
+```
+
+
+
+
+#### ポリシー
 
     
 ####開発環境のセットアップ
