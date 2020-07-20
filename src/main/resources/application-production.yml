@@ -4,6 +4,7 @@ spring:
     username: admin_kawasaki
     password: kawayan1111
     driverClassName: com.mysql.cj.jdbc.Driver
+    database: MYSQL
 
 setting:
   frontend:
