@@ -254,6 +254,7 @@ $ mysql.server start
 5. 右上のNew OAuth Appを押す
 6. 各項目を入力し、Register applicationを押す
 7. 作成したアプリケーションのページに表示されたClientID とSecretを保持しておく。
+8. 本番環境の際、Homepage URLとAuthorization callbackURLを本番用に書き換える
 ```
 
 #####環境変数の設定

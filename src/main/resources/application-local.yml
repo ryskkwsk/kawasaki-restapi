@@ -24,4 +24,4 @@ setting:
   github:
     client: "${GITHUB_CLIENT_ID}"
     secret: "${GITHUB_CLIENT_SECRET}"
-    callbackUrl: http://localhost:9000/github/callback
+    callbackUrl: http://localhost:8080/github/callback
