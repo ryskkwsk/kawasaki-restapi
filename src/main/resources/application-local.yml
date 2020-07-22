@@ -1,4 +1,13 @@
 #============================================================================
+# Spring設定
+#============================================================================
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/kawasaki_restfulapi
+    username: root
+    password:
+
+#============================================================================
 # アプリケーション固有設定
 #============================================================================
 setting:
@@ -12,3 +21,7 @@ setting:
   log:
     accessLogPath: "src/main/resources/logs/access/access."
     datetimeFormat: "yyyy/MM/dd"
+  github:
+    client: "${GITHUB_CLIENT_ID}"
+    secret: "${GITHUB_CLIENT_SECRET}"
+    callbackUrl: http://localhost:8080/github/callback
