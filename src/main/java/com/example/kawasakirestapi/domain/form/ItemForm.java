@@ -19,7 +19,6 @@ public class ItemForm {
     private String title;
 
     /** 価格 */
-    @NotBlank(message = "商品価格の入力は必須です。")
     @Min(value = 0, message = "金額は0以上の数値を入力してください")
     private Long price;
 
