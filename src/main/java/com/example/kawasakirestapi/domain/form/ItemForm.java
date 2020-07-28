@@ -2,7 +2,9 @@ package com.example.kawasakirestapi.domain.form;
 
 import lombok.Data;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * 商品画像以外の商品データを登録するフォーム
