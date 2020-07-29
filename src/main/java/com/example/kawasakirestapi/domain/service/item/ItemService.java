@@ -110,12 +110,9 @@ public class ItemService {
     public void deleteImageItem(Item item) {
         if (StringUtils.isNotEmpty(item.getImagePath())) {
             // s3の画像削除
-            awsS3Service.deleteS3Object(item.getImagePath());
+            awsS3Service.deleteS3Object(awsS3Setting.getImageDir() + item.getImagePath());
             item.setImagePath(null);
         }
-//        if (StringUtils.isNotEmpty(item.getImagePath())){
-//            item.setImagePath(null);
-//        }
         itemRepository.save(item);
     }
 
