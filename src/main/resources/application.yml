@@ -25,7 +25,7 @@ setting:
   oauth:
     accessTokenSessionKey: "token"
   log:
-    absolutePath: /home/ec2-user/kawasaki-restapi/src/main/resources/logs/access
+    absolutePath: /home/ec2-user/kawasaki-restapi/logs
 #============================================================================
 # AWS S3 設定
 #============================================================================

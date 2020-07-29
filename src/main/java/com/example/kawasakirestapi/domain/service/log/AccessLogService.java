@@ -55,6 +55,7 @@ public class AccessLogService {
     public void aggregateAccessLog() throws IOException {
 
         Path filePath = createYesterdayFilePath();
+        System.out.println(filePath);
         // 昨日の日付のログファイルが無かった場合、終了する
         if(!Files.exists(filePath)){
             log.info("本日のログファイルはありませんでした");
