@@ -26,5 +26,12 @@ setting:
     accessTokenSessionKey: "token"
   log:
     absolutePath: /home/ec2-user/kawasaki-restapi/src/main/resources/logs/access
-
-
+#============================================================================
+# AWS S3 設定
+#============================================================================
+aws:
+  region: ap-northeast-1
+  accessKey: ${AWS_ACCESS_KEY}
+  secretKey: ${AWS_SECRET_KEY}
+  s3bucket: kawasakiryosuke-image
+  imageDir: images/
