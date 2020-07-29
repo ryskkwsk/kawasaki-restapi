@@ -27,3 +27,4 @@ setting:
   log:
     accessLogPath: /home/ec2-user/logs/
     datetimeFormat: "yyyy/MM/dd"
+    absolutePath: /home/ec2-user/kawasaki-restapi/logs

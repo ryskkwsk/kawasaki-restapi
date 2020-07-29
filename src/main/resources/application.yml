@@ -24,8 +24,6 @@ spring:
 setting:
   oauth:
     accessTokenSessionKey: "token"
-  log:
-    absolutePath: /home/ec2-user/kawasaki-restapi/logs
 #============================================================================
 # AWS S3 設定
 #============================================================================
