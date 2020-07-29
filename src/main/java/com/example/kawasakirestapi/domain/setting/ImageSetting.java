@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * 画像関連のapplication固有セッティング
  *
- * @author hasegawachiharu
+ * @author kawasakiryosuke
  */
 @Component
 @Data
