@@ -11,7 +11,6 @@ import com.example.kawasakirestapi.infrastructure.entity.item.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -170,10 +169,11 @@ public class ItemService {
         if (item.getImagePath() == null) {
             throw new NotFoundException("画像が見つかりませんでした( 商品ID= " + id + ")");
         }
-        Resource resource = resourceLoader.getResource(imageSetting.getUploadDir() + item.getImagePath());
-        System.out.println(resource.toString());
-        System.out.println("hogehoge");
-        byte[] bytes = itemImageService.getImage(resource.toString());
+//        Resource resource = resourceLoader.getResource(imageSetting.getUploadDir() + item.getImagePath());
+//        System.out.println(resource.toString());
+//        System.out.println("hogehoge");
+        System.out.println(imageSetting.getUploadDir() + item.getImagePath());
+        byte[] bytes = itemImageService.getImage(imageSetting.getUploadDir() + item.getImagePath());
 
 
         HttpHeaders headers = new HttpHeaders();
