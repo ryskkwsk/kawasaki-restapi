@@ -169,12 +169,8 @@ public class ItemService {
         if (item.getImagePath() == null) {
             throw new NotFoundException("画像が見つかりませんでした( 商品ID= " + id + ")");
         }
-//        Resource resource = resourceLoader.getResource(imageSetting.getUploadDir() + item.getImagePath());
-//        System.out.println(resource.toString());
-//        System.out.println("hogehoge");
-        System.out.println(imageSetting.getUploadDir() + item.getImagePath());
-        byte[] bytes = itemImageService.getImage(imageSetting.getUploadDir() + item.getImagePath());
 
+        byte[] bytes = itemImageService.getImage(imageSetting.getUploadDir() + item.getImagePath());
 
         HttpHeaders headers = new HttpHeaders();
 
