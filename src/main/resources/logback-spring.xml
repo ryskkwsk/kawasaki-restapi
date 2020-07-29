@@ -7,7 +7,7 @@
     <!-- アクセスログのファイル書き出し -->
 
     <!--　保存先の設定　name任意　value保存先 -->
-    <property name="logFileName" value="setting.log.absolutePath"/>
+    <property name="logFileName" value="${setting.log.absolutePath}"/>
 
     <!--　アプリケーションログのファイル書き出し設定を定義 name任意 class絶対クラス名 -->
     <appender name="API_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
