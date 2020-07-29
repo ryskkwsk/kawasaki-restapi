@@ -6,12 +6,12 @@ import com.example.kawasakirestapi.application.exception.Item.SearchResultNotFou
 import com.example.kawasakirestapi.domain.form.ItemForm;
 import com.example.kawasakirestapi.domain.repository.item.ItemRepository;
 import com.example.kawasakirestapi.domain.service.aws.AwsS3Service;
+import com.example.kawasakirestapi.domain.setting.AwsS3Setting;
 import com.example.kawasakirestapi.domain.setting.ImageSetting;
 import com.example.kawasakirestapi.infrastructure.entity.item.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,12 +32,11 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    private final ResourceLoader resourceLoader;
-
-    /** AwsS3サービス */
     private final AwsS3Service awsS3Service;
 
     private final ImageSetting imageSetting;
+
+    private final AwsS3Setting awsS3Setting;
 
     private final ItemImageService itemImageService;
 
@@ -97,7 +96,7 @@ public class ItemService {
      */
     public void deleteById(Long id) {
         Item item = findById(id);
-        awsS3Service.deleteS3Object(item.getImagePath());
+        awsS3Service.deleteS3Object(awsS3Setting.getImageDir() + item.getImagePath());
         itemRepository.delete(item);
     }
 
