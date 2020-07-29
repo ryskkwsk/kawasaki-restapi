@@ -58,6 +58,9 @@ public class AwsS3Service {
      */
     public InputStream getS3Object(String resource) {
         try {
+            System.out.println(awsS3Setting.getS3bucket());
+            System.out.println(resource);
+            System.out.println("test");
             S3Object s3Object = amazonS3.getObject(awsS3Setting.getS3bucket(), resource);
             return s3Object.getObjectContent();
         } catch (Exception e) {
