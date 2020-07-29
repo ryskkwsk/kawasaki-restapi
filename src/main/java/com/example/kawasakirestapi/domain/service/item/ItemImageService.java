@@ -86,6 +86,12 @@ public class ItemImageService {
         awsS3Service.deleteS3Object(file.toString());
     }
 
+    /**
+     *  画像を取得する
+     *
+     * @param resource resource
+     * @return 画像
+     */
     public byte[] getImage(String resource) {
         try {
             return IOUtils.toByteArray(awsS3Service.getS3Object(resource));
