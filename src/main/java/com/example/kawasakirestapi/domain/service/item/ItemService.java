@@ -117,20 +117,6 @@ public class ItemService {
     }
 
     /**
-     * 商品画像と画像へのパスを削除する
-     *
-     * @param id 商品画像と画像へのパスを削除する商品のID
-     */
-//    public void deleteImagePath(Long id) {
-//        Item item = findById(id);
-//        if (item.getImagePath() != null) {
-//            itemImageService.deleteFile(item.getImagePath());
-//            item.setImagePath(null);
-//            itemRepository.save(item);
-//        }
-//    }
-
-    /**
      * 商品画像の保存先へのパスを登録する
      *
      * @param id 該当商品のID
