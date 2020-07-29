@@ -171,7 +171,8 @@ public class ItemService {
             throw new NotFoundException("画像が見つかりませんでした( 商品ID= " + id + ")");
         }
         Resource resource = resourceLoader.getResource(imageSetting.getUploadDir() + item.getImagePath());
-        System.out.println(resource);
+        System.out.println(resource.toString());
+        System.out.println("hogehoge");
         byte[] bytes = itemImageService.getImage(resource.toString());
 
 
