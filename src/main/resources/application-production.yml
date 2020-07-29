@@ -18,8 +18,8 @@ setting:
   oauth:
     redirectUrl: ${setting.frontend.url}/token/
   github:
-    client: "${GITHUB_CLIENT_ID}"
-    secret: "${GITHUB_CLIENT_SECRET}"
+    client: ${GITHUB_CLIENT_ID}
+    secret: ${GITHUB_CLIENT_SECRET}
     callbackUrl: http://ec2-18-179-4-82.ap-northeast-1.compute.amazonaws.com:8080/github/callback
   # 商品画像のアップロード先
   image:
@@ -32,7 +32,7 @@ setting:
 #============================================================================
 aws:
   region: ap-northeast-1
-  accessKey: "${AWS_ACCESS_KEY}"
-  secretKey: "${AWS_SECRET_KEY}"
+  accessKey: ${AWS_ACCESS_KEY}
+  secretKey: ${AWS_SECRET_KEY}
   s3bucket: kawasakiryosuke-image
   imageDir: images/
