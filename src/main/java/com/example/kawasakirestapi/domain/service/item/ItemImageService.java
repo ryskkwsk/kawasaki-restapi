@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
@@ -81,10 +80,10 @@ public class ItemImageService {
     }
 
 
-    void deleteFile(String imagePath) {
-        File file = new File(uploadDir + imagePath);
-        awsS3Service.deleteS3Object(file.toString());
-    }
+//    void deleteFile(String imagePath) {
+//        File file = new File(uploadDir + imagePath);
+//        awsS3Service.deleteS3Object(file.toString());
+//    }
 
     /**
      *  画像を取得する

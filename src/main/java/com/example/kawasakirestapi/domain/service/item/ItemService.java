@@ -16,7 +16,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URLConnection;
 import java.util.List;
@@ -98,6 +97,7 @@ public class ItemService {
      */
     public void deleteById(Long id) {
         Item item = findById(id);
+        awsS3Service.deleteS3Object(item.getImagePath());
         itemRepository.delete(item);
     }
 
@@ -108,18 +108,31 @@ public class ItemService {
      * @param item 商品情報
      * @return item imagePathを削除した商品情報を返す
      */
-    public Item deleteImageItem(Item item) {
+    public void deleteImageItem(Item item) {
         if (StringUtils.isNotEmpty(item.getImagePath())) {
-            File file = new File(item.getImagePath());
-            if (file.exists()) {
-                file.delete();
-            }
-        }
-        if (StringUtils.isNotEmpty(item.getImagePath())){
+            // s3の画像削除
+            awsS3Service.deleteS3Object(item.getImagePath());
             item.setImagePath(null);
         }
-        return itemRepository.save(item);
+//        if (StringUtils.isNotEmpty(item.getImagePath())){
+//            item.setImagePath(null);
+//        }
+        itemRepository.save(item);
     }
+
+    /**
+     * 商品画像と画像へのパスを削除する
+     *
+     * @param id 商品画像と画像へのパスを削除する商品のID
+     */
+//    public void deleteImagePath(Long id) {
+//        Item item = findById(id);
+//        if (item.getImagePath() != null) {
+//            itemImageService.deleteFile(item.getImagePath());
+//            item.setImagePath(null);
+//            itemRepository.save(item);
+//        }
+//    }
 
     /**
      * 商品画像の保存先へのパスを登録する
@@ -135,26 +148,13 @@ public class ItemService {
         // 商品を取得
         Item item = findById(id);
         if (item.getImagePath() != null) {
-            deleteImagePath(id);
+            deleteImageItem(item);
         }
         item.setImagePath(itemImageService.uploadImage(multipartFile));
         itemRepository.save(item);
         return item;
     }
 
-    /**
-     * 商品画像と画像へのパスを削除する
-     *
-     * @param id 商品画像と画像へのパスを削除する商品のID
-     */
-    public void deleteImagePath(Long id) {
-        Item item = findById(id);
-        if (item.getImagePath() != null) {
-            itemImageService.deleteFile(item.getImagePath());
-            item.setImagePath(null);
-            itemRepository.save(item);
-        }
-    }
 
     /**
      * 指定の画像データを返却。
