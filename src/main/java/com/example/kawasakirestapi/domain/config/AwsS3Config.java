@@ -27,12 +27,15 @@ public class AwsS3Config {
      */
     @Bean
     public AmazonS3 getAwsS3() {
+        // 認証情報を用意
         AWSCredentials credentials =
                 new BasicAWSCredentials(awsS3Setting.getAccessKey(), awsS3Setting.getSecretKey());
 
         return AmazonS3ClientBuilder
                 .standard()
+                // 認証情報を設定
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                // リージョンを設定
                 .withRegion(awsS3Setting.getRegion())
                 .build();
     }
