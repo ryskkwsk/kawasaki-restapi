@@ -6,11 +6,11 @@ import com.example.kawasakirestapi.application.exception.Item.SearchResultNotFou
 import com.example.kawasakirestapi.domain.form.ItemForm;
 import com.example.kawasakirestapi.domain.repository.item.ItemRepository;
 import com.example.kawasakirestapi.domain.service.aws.AwsS3Service;
+import com.example.kawasakirestapi.domain.setting.ImageSetting;
 import com.example.kawasakirestapi.infrastructure.entity.item.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.*;
@@ -34,13 +34,12 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    @Value("${setting.image.uploadDir}")
-    private String uploadDir;
-
     private final ResourceLoader resourceLoader;
 
     /** AwsS3サービス */
     private final AwsS3Service awsS3Service;
+
+    private final ImageSetting imageSetting;
 
     private final ItemImageService itemImageService;
 
@@ -158,24 +157,6 @@ public class ItemService {
         }
     }
 
-
-    /**
-     * 指定の画像が保存されているディレクトリのパスを返す。
-     * 指定の商品が存在しない場合、例外処理
-     *
-     * @param id Long
-     * @return item Item
-     */
-//    private String getLocalImagePath(Long id) {
-//
-//        Item item = findById(id);
-//
-//        if (StringUtils.isEmpty(item.getImagePath())){
-//            return "";
-//        }
-//        return item.getImagePath();
-//    }
-
     /**
      * 指定の画像データを返却。
      * 対象の商品が存在しない場合エラー処理。
@@ -189,7 +170,7 @@ public class ItemService {
         if (item.getImagePath() == null) {
             throw new NotFoundException("画像が見つかりませんでした( 商品ID= " + id + ")");
         }
-        Resource resource = resourceLoader.getResource(uploadDir + item.getImagePath());
+        Resource resource = resourceLoader.getResource(imageSetting.getUploadDir() + item.getImagePath());
         byte[] bytes = itemImageService.getImage(resource.toString());
 
 
