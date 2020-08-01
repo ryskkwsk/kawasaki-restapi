@@ -46,13 +46,7 @@ public class GithubOauthController {
     public String login() {
         return "redirect:" + oauthService.getOauthAuthorizeUrl();
     }
-
-    @GetMapping("/index")
-    public String healthCheck() {
-        return "index";
-    }
-
-
+    
     /**
      * githubから取得したプロフィールを表示。
      *
