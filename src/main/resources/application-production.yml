@@ -20,7 +20,7 @@ setting:
   github:
     client: ${GITHUB_CLIENT_ID}
     secret: ${GITHUB_CLIENT_SECRET}
-    callbackUrl: http://ec2-18-179-4-82.ap-northeast-1.compute.amazonaws.com:8080/github/callback
+    callbackUrl: http://ec2-18-179-4-82.ap-northeast-1.compute.amazonaws.com/github/callback
   # 商品画像のアップロード先
   image:
     uploadDir: images/
