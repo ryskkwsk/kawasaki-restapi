@@ -33,6 +33,7 @@ dependencies {
 	implementation 'org.springframework.social:spring-social-github:1.0.0.M4'
 	implementation platform("com.amazonaws:aws-java-sdk-bom:1.11.228")
 	implementation "com.amazonaws:aws-java-sdk-s3"
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	compile "org.springframework.boot:spring-boot-configuration-processor"
 	compileOnly 'org.projectlombok:lombok'
 	compile 'commons-io:commons-io:2.6'
