@@ -13,14 +13,14 @@ spring:
 #============================================================================
 setting:
   frontend:
-    url: http://d3396oif6lnqlh.cloudfront.net
+    url: https://d3396oif6lnqlh.cloudfront.net
     allowPath: /api/**
   oauth:
     redirectUrl: ${setting.frontend.url}/token/
   github:
     client: ${GITHUB_CLIENT_ID}
     secret: ${GITHUB_CLIENT_SECRET}
-    callbackUrl: http://kawasakiryosuke-alb-728460785.ap-northeast-1.elb.amazonaws.com:8080/github/callback
+    callbackUrl: https://d3396oif6lnqlh.cloudfront.net/github/callback
   # 商品画像のアップロード先
   image:
     uploadDir: images/
