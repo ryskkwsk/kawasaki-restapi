@@ -13,7 +13,7 @@ spring:
 #============================================================================
 setting:
   frontend:
-    url: https://d3396oif6lnqlh.cloudfront.net
+    url: https://kawasakiryosuke.com
     allowPath: /api/**
   oauth:
     redirectUrl: ${setting.frontend.url}/token/
