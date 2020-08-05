@@ -85,7 +85,7 @@ public class GithubOauthController {
      */
     @GetMapping("/github/callback")
     public String githubCallback(@RequestParam("code") String authenticationCode, HttpServletResponse response) {
-
+        System.out.println(authenticationCode);
         if (authenticationCode == null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "error/401";
@@ -95,6 +95,7 @@ public class GithubOauthController {
         // アクセストークンをsessioninfoに格納
         tokenSessionInfo.setAccessToken(accessToken);
         httpSession.setAttribute(oAuthSetting.getAccessTokenSessionKey(), accessToken);
+        System.out.println(accessToken);
 
         return "redirect:/github/profile";
     }
