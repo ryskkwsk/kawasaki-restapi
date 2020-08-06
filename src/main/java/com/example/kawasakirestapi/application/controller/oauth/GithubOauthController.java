@@ -92,10 +92,10 @@ public class GithubOauthController {
         }
         // アクセストークン取得
         String accessToken = oauthService.getAccessToken(authenticationCode);
+        System.out.println(accessToken);
         // アクセストークンをsessioninfoに格納
         tokenSessionInfo.setAccessToken(accessToken);
         httpSession.setAttribute(oAuthSetting.getAccessTokenSessionKey(), accessToken);
-        System.out.println(accessToken);
 
         return "redirect:/github/profile";
     }
