@@ -20,7 +20,7 @@ setting:
   github:
     client: ${GITHUB_CLIENT_ID}
     secret: ${GITHUB_CLIENT_SECRET}
-    callbackUrl: https://kawasakiryosuke-alb-728460785.ap-northeast-1.elb.amazonaws.com//github/callback
+    callbackUrl: https://kawasakiryosuke-alb-728460785.ap-northeast-1.elb.amazonaws.com/github/callback
   # 商品画像のアップロード先
   image:
     uploadDir: images/
