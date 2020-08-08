@@ -14,7 +14,7 @@ spring:
 setting:
   frontend:
     url: https://kawasakiryosuke.com
-    allowPath: /api/**
+    allowPath: "/**"
   oauth:
     redirectUrl: ${setting.frontend.url}/token/
   github:
