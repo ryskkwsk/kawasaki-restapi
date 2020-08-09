@@ -85,14 +85,13 @@ public class GithubOauthController {
      */
     @GetMapping("/github/callback")
     public String githubCallback(@RequestParam("code") String authenticationCode, HttpServletResponse response) {
-        System.out.println(authenticationCode);
+
         if (authenticationCode == null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "error/401";
         }
         // アクセストークン取得
         String accessToken = oauthService.getAccessToken(authenticationCode);
-        System.out.println(accessToken);
         // アクセストークンをsessioninfoに格納
         tokenSessionInfo.setAccessToken(accessToken);
         httpSession.setAttribute(oAuthSetting.getAccessTokenSessionKey(), accessToken);
