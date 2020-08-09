@@ -18,7 +18,7 @@ phases:
 artifacts:
   files:
     - ./build/libs/kawasaki-restapi-0.0.1-SNAPSHOT.jar
-    - ./appspec.yml
+    - ./deploy/appspec.yml
     - ./scripts/start.sh
     - ./scripts/stop.sh
   discard-paths: yes
