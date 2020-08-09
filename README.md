@@ -3,7 +3,7 @@
 ### 使用技術
 -Spring Boot2.1.7
 
--Java8
+-Java11
 
 -MySQL5.7
 
