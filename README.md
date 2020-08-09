@@ -1,15 +1,15 @@
-#RestfulなAPIの商品管理アプリケーション
+# RestfulなAPIの商品管理アプリケーション
 
-###使用技術
+### 使用技術
 -Spring Boot2.1.7
 
 -Java8
 
 -MySQL5.7
 
-###全体の設計・構成についての説明
+### 全体の設計・構成についての説明
 
-####APIルーティング
+#### APIルーティング
 
  | HTTPメソッド | URL | 概要 |
  |:-----------|:------|:--- |
@@ -22,7 +22,7 @@
  | GET       |      api/items/image/{id} | 商品画像の表示　|
  | GET       |      api/items/search     | 商品情報の検索 |
 
-####Oauth認証ルーティング
+#### Oauth認証ルーティング
  | HTTPメソッド | URL | 概要 |
  |:-----------|:------|:--- |
  | GET       |     github/login           | Githubログイン実行 　　　　　 |
@@ -31,9 +31,9 @@
  | GET       |     github/logout          | ログアウト実行 |
 
 
-####DB設計
+#### DB設計
 
-#####items
+##### items
 
  | カラム名 | 型 | null | key |
  |:-----------|:------------|:------------|:--- |
@@ -43,7 +43,7 @@
  | description  | VARCHAR(500) |    NO    |             |
  | image_path   | VARCHAR(500) |    YES   |             |
  
-#####AutenticationToken
+##### AutenticationToken
 
  | カラム名 | 型 | null | key |
  |:-----------|:------------|:------------|:--- |
@@ -54,7 +54,7 @@
  | user_id    |  INT BIGINT   |    YES   |             |
  | user_name  |  VARCHAR      |    YES   |             |
   
-#####access_log
+##### access_log
 
  | カラム名 | 型 | null | key |
  |:-----------|:------------|:------------|:--- |
@@ -67,7 +67,7 @@
  | status_code       |  INT          |    YES   |             |
 
 
-####ディレクトリ構成
+#### ディレクトリ構成
 
 ```
 ├── src
@@ -261,7 +261,7 @@ MySQL [(none)]> create database kawasaki_restfulapi;
 ```
 
     
-####開発環境のセットアップ
+#### 開発環境のセットアップ
 ・SDKMANでJava11インストール
 ```
 ・SDKMANのインストール
@@ -294,10 +294,10 @@ $ mysql.server start
  $ mysql -u root #MySQLにログイン
  mysql> CREATE DATABASE kawasaki_restfulapi; #データベース作成
 ```
-####Github認証情報の環境変数の設定
+#### Github認証情報の環境変数の設定
 ローカル環境での動作確認のために、Githubの認証情報を環境変数に設定をする。
 
-#####GitHubのOAuthアプリケーションの登録
+##### GitHubのOAuthアプリケーションの登録
 ```
 1. Githubのアカウントが無ければ登録
 2. Githubページにログインする。
@@ -309,7 +309,7 @@ $ mysql.server start
 8. 本番環境の際、Homepage URLとAuthorization callbackURLを本番用に書き換える
 ```
 
-#####環境変数の設定
+##### 環境変数の設定
 作成したClient IDとClient Secretを環境変数に設定する。
 
 ```
@@ -321,14 +321,14 @@ application.ymlに上記で設定した環境変数を設定する
 また、application-local.ymlを使用しているため、「VM options」-Dspring.profiles.active=localを追加
 ```
 
-####APIのアクセス認証
+#### APIのアクセス認証
 ```
 ・APIリクエストのheaderに認証情報を追加
   Key: Authorization
   Value: Bearer ***********(取得したいアクセストークン)
 ```
 
-####バッチ処理
+#### バッチ処理
 ```
 1.APIにアクセスがあった日毎にlogs/access内にログファイルが作成され、同日中のアクセスは全てそのログファイルに記録される。
 2.毎日AM10:00にlogs/access内の前日のlogファイルを集計する。
