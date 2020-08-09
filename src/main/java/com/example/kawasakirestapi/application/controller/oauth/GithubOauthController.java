@@ -46,7 +46,29 @@ public class GithubOauthController {
     public String login() {
         return "redirect:" + oauthService.getOauthAuthorizeUrl();
     }
-    
+
+    /**
+     * github OAuthコールバック時のアクション
+     *
+     * @param authenticationCode String
+     * @return viewProfileメソッドへリダイレクト
+     */
+    @GetMapping("/github/callback")
+    public String githubCallback(@RequestParam("code") String authenticationCode, HttpServletResponse response) {
+
+        if (authenticationCode == null) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return "error/401";
+        }
+        // アクセストークン取得
+        String accessToken = oauthService.getAccessToken(authenticationCode);
+        // アクセストークンをsessioninfoに格納
+        tokenSessionInfo.setAccessToken(accessToken);
+        httpSession.setAttribute(oAuthSetting.getAccessTokenSessionKey(), accessToken);
+
+        return "redirect:/github/profile";
+    }
+
     /**
      * githubから取得したプロフィールを表示。
      *
@@ -75,28 +97,6 @@ public class GithubOauthController {
         AuthenticationToken authenticationToken = authenticationOauthService.findByToken(authToken).orElseThrow(() -> new TokenNotFoundException("トークンがデータベースに登録されていません"));
 
         return "redirect:" + oAuthSetting.getRedirectUrl() + authenticationToken.getAuthToken();
-    }
-
-    /**
-     * github OAuthコールバック時のアクション
-     *
-     * @param authenticationCode String
-     * @return viewProfileメソッドへリダイレクト
-     */
-    @GetMapping("/github/callback")
-    public String githubCallback(@RequestParam("code") String authenticationCode, HttpServletResponse response) {
-
-        if (authenticationCode == null) {
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return "error/401";
-        }
-        // アクセストークン取得
-        String accessToken = oauthService.getAccessToken(authenticationCode);
-        // アクセストークンをsessioninfoに格納
-        tokenSessionInfo.setAccessToken(accessToken);
-        httpSession.setAttribute(oAuthSetting.getAccessTokenSessionKey(), accessToken);
-
-        return "redirect:/github/profile";
     }
 
     /**
