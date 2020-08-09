@@ -44,7 +44,6 @@ public class GithubOauthController {
      */
     @GetMapping("/github/login")
     public String login() {
-        System.out.println("hoge");
         return "redirect:" + oauthService.getOauthAuthorizeUrl();
     }
     
