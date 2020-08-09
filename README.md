@@ -9,18 +9,26 @@
 
 ###全体の設計・構成についての説明
 
-####ルーティング
+####APIルーティング
 
  | HTTPメソッド | URL | 概要 |
  |:-----------|:------|:--- |
- | GET       |        api/items         | 商品情報の取得 |
- | POST    |      api/items        | 商品情報の保存 |
- | DELETE       |        api/items/{id}          | 商品情報の削除 |
- | DELETE         |   api/items/image/{id}            | 商品画像の削除 |
- | PUT       |       api/items/{id}         | 商品情報の編集 |
- | POST    |     api/items/image/{id}        | 商品画像の登録 |
- | GET | api/items/image/{id}   | 商品画像の表示　|
- | GET | api/items/search   | 商品情報の検索 |
+ | GET       |      api/items            | 商品情報の取得 |
+ | POST      |      api/items            | 商品情報の保存 |
+ | DELETE    |      api/items/{id}       | 商品情報の削除 |
+ | DELETE    |      api/items/image/{id} | 商品画像の削除 |
+ | PUT       |      api/items/{id}       | 商品情報の編集 |
+ | POST      |      api/items/image/{id} | 商品画像の登録 |
+ | GET       |      api/items/image/{id} | 商品画像の表示　|
+ | GET       |      api/items/search     | 商品情報の検索 |
+
+####Oauth認証ルーティング
+ | HTTPメソッド | URL | 概要 |
+ |:-----------|:------|:--- |
+ | GET       |     github/login           | Githubログイン実行 　　　　　 |
+ | GET       |     github/callback        | Github callback実行 　　 　 |
+ | GET       |     github/profile         | Githubのプロフィール画面表示  |
+ | GET       |     github/logout          | ログアウト実行 |
 
 
 ####DB設計
@@ -29,40 +37,42 @@
 
  | カラム名 | 型 | null | key |
  |:-----------|:------------|:------------|:--- |
- | id       |INT BIGINT|     NO    | primary key |
- | title    |VARCHAR(100)|    NO    |  |
- | price       |INT|     NO     |  |
- | description         |   VARCHAR(500) |      NO      |  |
- | image_path       |       VARCHAR(500) |    YES    |  |
+ | id           | INT BIGINT   |    NO    | primary key |
+ | title        | VARCHAR(100) |    NO    |             |
+ | price        | INT          |    NO    |             |
+ | description  | VARCHAR(500) |    NO    |             |
+ | image_path   | VARCHAR(500) |    YES   |             |
  
 #####AutenticationToken
 
  | カラム名 | 型 | null | key |
  |:-----------|:------------|:------------|:--- |
- | id       |INT BIGINT|     NO    | primary key |
- | dead_line    |DATETIME|    YES   |  |
- | create_at      |DATETIME|     YES     |  |
- | auth_token         |   VARCHAR(255) |      YES      |  |
- | user_id       |       INT BIGINT |    YES    |  |
- | user_name       |       VARCHAR |    YES    |  |
+ | id         |  INT BIGINT   |    NO    | primary key |
+ | dead_line  |  DATETIME     |    YES   |             |
+ | create_at  |  DATETIME     |    YES   |             |
+ | auth_token |  VARCHAR(255) |    YES   |             |
+ | user_id    |  INT BIGINT   |    YES   |             |
+ | user_name  |  VARCHAR      |    YES   |             |
   
 #####access_log
 
  | カラム名 | 型 | null | key |
  |:-----------|:------------|:------------|:--- |
- | id       |INT BIGINT|     NO    | primary key |
- | access_count    |INT|    YES   |  |
- | aggregation_date      |DATE|     YES     |  |
- | request_mehod         |   VARCHAR(255) |      YES      |  |
- | request_url       |       VARCHAR(255) |    YES    |  |
- | responsetimes       |       INT |    YES    |  | 
- | status_code       |       INT |    YES    |  |
+ | id                |  INT BIGINT   |    NO    | primary key |
+ | access_count      |  INT          |    YES   |             |
+ | aggregation_date  |  DATE         |    YES   |             |
+ | request_mehod     |  VARCHAR(255) |    YES   |             |
+ | request_url       |  VARCHAR(255) |    YES   |             |
+ | responsetimes     |  INT          |    YES   |             | 
+ | status_code       |  INT          |    YES   |             |
 
 
 ####ディレクトリ構成
 
 ```
 ├── src
+│   ├── batch
+│   │   └── image
 │   ├── main
 │   │   ├── java
 │   │   │   └── com
@@ -70,27 +80,56 @@
 │   │   │           └── kawasakirestapi
 │   │   │               ├── KawasakiRestapiApplication.java
 │   │   │               ├── application
-│   │   │               │   ├── controller-
-│   │   │               │   └── exception-
-│   │   │               │   └── filter
-│   │   │               │   └── inetrceptor
-│   │   │               │       
+│   │   │               │   ├── controller
+│   │   │               │   │   ├── item
+│   │   │               │   │   ├── log
+│   │   │               │   │   ├── oauth
+│   │   │               │   │   └── sessioninfo
+│   │   │               │   ├── exception
+│   │   │               │   │   ├── Item
+│   │   │               │   │   └── oauth
+│   │   │               │   ├── filter
+│   │   │               │   └── interceptor
 │   │   │               ├── domain
-│   │   │               │   ├── repository-
-│   │   │               │   └── service-
-│   │   │               │   └── setting
-│   │   │               │   └── batch
-│   │   │               │   └── config
-│   │   │               │   └── dto
-│   │   │               │             
+│   │   │               │   ├── batch
+│   │   │               │   ├── config
+│   │   │               │   ├── dto
+│   │   │               │   ├── form
+│   │   │               │   ├── repository
+│   │   │               │   │   ├── item
+│   │   │               │   │   ├── log
+│   │   │               │   │   └── oauth
+│   │   │               │   ├── service
+│   │   │               │   │   ├── aws
+│   │   │               │   │   ├── item
+│   │   │               │   │   ├── log
+│   │   │               │   │   └── oauth
+│   │   │               │   └── setting
 │   │   │               └── infrastructure
-│   │   │                   └── entity-
+│   │   │                   └── entity
+│   │   │                       ├── item
+│   │   │                       │   └── Item.java
+│   │   │                       ├── log
+│   │   │                       │   └── AccessLog.java
+│   │   │                       └── oauth
+│   │   │                           └── AuthenticationToken.java
 │   │   └── resources
-│   │       ├── application.yml
-│   │       ├── data.sql
 │   │       ├── static
+│   │       │   ├── css
+│   │       │   │   └── custom.css
+│   │       │   └── images
 │   │       └── templates
-│   │       └── logback-spring.xml
+│   │           ├── error
+│   │           │   ├── 401.html
+│   │           │   ├── 404.html
+│   │           │   └── 500.html
+│   │           ├── log
+│   │           │   ├── loglist.html
+│   │           │   └── searchLogList.html
+│   │           └── oauth
+│   │               ├── github
+│   │               │   └── profile.html
+│   │               └── login.html
 │   └── test
 │       └── java
 │           └── com
@@ -98,6 +137,7 @@
 │                   └── kawasakirestapi
 │                       └── KawasakiRestapiApplicationTests.java
 └── swagger.yml
+
 ```
 各ディレクトリの役割
 ```
@@ -113,6 +153,11 @@ UI
 永続化の実装
 他サービスとの通信等の実装
 ```
+
+## 本番環境
+
+商品管理アプリケーション
+https://kawasakiryosuke.com/
 
 #### VPC
 |Name       |CIDR           |
@@ -144,40 +189,39 @@ UI
 | kawasakiryosuke-front | React SPAの配置 |
 | kawasakiryosuke-deploy | Appデプロイ成果物を配置　　  |
 | kawasakiryosuke-image  | 画像の配置 |
-
+| kawasakiryosuke-log | ログ |
 
 #### ALB
 | Name         | Target(Port)       |AvailabilityZone                       | セキュリティグループ  |
 |:------------:|:------------------:|:-------------------------------------:|:---------------------:|
-| kawasakiryosuke-alb  | tg-alb-kawasakiryosuke(80) | kawasakiryosuke-public-1a, kawasakiryosuke-public-1c  | kawasakiryosuke-alb-scg        |
+| kawasakiryosuke-alb  | tg-alb-kawasakiryosuke(http:80, https:443) | kawasakiryosuke-public-1a, kawasakiryosuke-public-1c  | kawasakiryosuke-alb   |
 
 #### CloudFront
 | Path         | Origin     |
 |:------------:|:----------:|
-| /api/*       | ELB-kawasakiryosuke-alb-1332443923 |
-| /images/*    | S3-kawasakiryosuke-image |
-| /static/css/* | ELB-kawasakiryosuke-alb-1332443923 |
-| /github/*    | ELB-kawasakiryosuke-alb-1332443923 |
+| /github/*    | ELB-kawasakiryosuke-alb-728460785 |
+| /api/*       | ELB-kawasakiryosuke-alb-728460785 |
+| /token/*     | S3-kawasakiryosuke-front          |
+| /loglist/*   | ELB-kawasakiryosuke-alb-728460785 |
+| /login*      | S3-kawasakiryosuke-front |
 | Default(*)   | S3-kawasakiryosuke-front |
 
 #### CodeBuild
-| Name | プロバイダ | リポジトリ |
-| kawasakiryosuke-restapi-build | GitHub | kawasaki-restapi |
-| kawasakiryosuke-front-build | GitHub | kawasaki-react |
+| Name | ソースプロバイダ | リポジトリ |
+|:------------:|:----------:|:---------:|
+| kawasakiryosuke-restfulapi-build | AWS CodePipelinde | kawasaki-restapi |
+| kawasakiryosuke-frontend-build | AWS CodePipelinde | kawasaki-react |
 
 #### CodeDeploy
 | Name | グループ | プラットフォーム |
+|:------------:|:----------:|:----------:|
 | kawasakiryosuke-restapi-build | kawasakiryosuke-restapi-deploy-group | EC2/オンプレミス |
 
-
-#### ユーザー
-
-#### ロール
-| Name | AWSサービス | 
-| kawasakiryosuke-codebuild-front-service-role | codebuild |
-| kawasakiryosuke-codebuild-restapi-service-role | codebuild |
-| kawasakiryosuke-codedeploy-role | codedeploy |
-| kawasakiryosuke-ec2-role | ec2 |
+#### CodePipeline
+| Name | 
+|:----:|
+|kawasakiryosuke-restapi-pipeline |
+|kawasakiryosuke-frontend-pipeline |
 
 #### AWSのCodeDeployでエラー
 ```
@@ -216,17 +260,25 @@ mysql -h kawasakiryosuke-db.c35xcnhiknum.ap-northeast-1.rds.amazonaws.com -P 330
 MySQL [(none)]> create database kawasaki_restfulapi;
 ```
 
-
-
-
-#### ポリシー
-
     
 ####開発環境のセットアップ
-・Java8 インストール
+・SDKMANでJava11インストール
 ```
-$ brew cask install java8 
-$ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+・SDKMANのインストール
+$ curl -s "https://get.sdkman.io" | bash
+$ source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+・AdoptOpenJDK の 11.xx.xx.hs-adpt(xxはマイナーバージョン)を探す
+$ sdk list java
+
+・インストール
+$ sdk install java 11.xx.xx.hs-adpt
+
+・デフォルトで使用するバージョンを固定する
+$ sdk default java 11.0.4.hs-adpt
+
+・javaのバージョンを確認
+$ java -version
 ```
 
 ・MySQLインストール
@@ -267,6 +319,13 @@ Intelli IDEAの場合
 「VM options」に -DOAUTHAPP_GITHUB_CLIENT_ID=xxx -DOAUTHAPP_GITHUB_CLIENT_SECRET=yyyを入力して、xxxをClient IDに差し替え、yyyをClient Secretに差し替える。
 application.ymlに上記で設定した環境変数を設定する
 また、application-local.ymlを使用しているため、「VM options」-Dspring.profiles.active=localを追加
+```
+
+####APIのアクセス認証
+```
+・APIリクエストのheaderに認証情報を追加
+  Key: Authorization
+  Value: Bearer ***********(取得したいアクセストークン)
 ```
 
 ####バッチ処理
