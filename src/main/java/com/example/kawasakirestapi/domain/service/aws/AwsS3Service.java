@@ -26,7 +26,7 @@ public class AwsS3Service {
     private final AwsS3Setting awsS3Setting;
 
     /**
-     * 画像のアップロード
+     * s3へ画像のアップロード
      *
      * @param imagePath 画像パス
      * @param inputStream InputStream

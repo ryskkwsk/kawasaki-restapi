@@ -91,7 +91,7 @@ public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * 画像が正しくアップロードされなかった時にエラーを返す
+     * 画像の投稿・取得・削除・アップロードの失敗した時にエラーを返す
      * @param ex    Exception
      * @param request   リクエスト内容
      * @return 500エラー情報を返す

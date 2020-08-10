@@ -33,6 +33,7 @@ public class AccessLogController {
     /**
      * 認証トークンがあれば、アクセスログを取得してログの一覧のviewを返す。無ければトップページに遷移。
      * @param model
+     *
      * @return  ログの一覧のviewファイル
      */
     @GetMapping("/loglist")
@@ -52,6 +53,7 @@ public class AccessLogController {
      * @param searchAccessLogForm
      * @param result
      * @param model
+     *
      * @return  検索結果をつめたviewファイル
      */
     @GetMapping("/loglist/search")

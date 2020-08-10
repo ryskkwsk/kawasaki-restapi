@@ -17,6 +17,11 @@ import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.UUID;
 
+/**
+ * 商品画像の管理に関するサービス
+ *
+ * @author kawasakiryosuke
+ */
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -51,12 +56,10 @@ public class ItemImageService {
     }
 
     /**
-     * 指定(id値によって)の商品に対し画像を投稿。
-     * 指定の商品が存在しない場合、例外処理。
-     * 画像が正しい形式でない場合、例外処理
+     * 商品画像の登録
      *
-     * @param multipartFile MultipartFile
-     * @return item       Item
+     * @param multipartFile 登録する商品画像
+     * @return item         登録された商品画像へのパス（Item entityのimagePathに該当）
      */
     String uploadImage(MultipartFile multipartFile) throws IOException {
 
@@ -79,17 +82,11 @@ public class ItemImageService {
         return imagePath;
     }
 
-
-//    void deleteFile(String imagePath) {
-//        File file = new File(uploadDir + imagePath);
-//        awsS3Service.deleteS3Object(file.toString());
-//    }
-
     /**
      *  画像を取得する
      *
      * @param resource resource
-     * @return 画像
+     * @return 画像byte
      */
     public byte[] getImage(String resource) {
         try {

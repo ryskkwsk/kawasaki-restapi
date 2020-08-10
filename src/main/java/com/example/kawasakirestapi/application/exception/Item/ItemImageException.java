@@ -3,7 +3,7 @@ package com.example.kawasakirestapi.application.exception.Item;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- *  画像のアップロードに失敗した時に返す例外クラス
+ *  画像の投稿・取得・削除・アップロードに失敗した時に返す例外クラス
  *
  *  @author kawasakiryosuke
  */

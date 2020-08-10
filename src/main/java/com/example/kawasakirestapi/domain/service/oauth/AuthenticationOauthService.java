@@ -85,6 +85,7 @@ public class AuthenticationOauthService {
 
     /**
      * 認証情報を削除
+     *
      * @param token
      */
     public void deleteAuthToken(String token) {
@@ -109,6 +110,7 @@ public class AuthenticationOauthService {
 
     /**
      *  authTokenを取得
+     *
      * @param authToken
      * @return 登録されているauthTokenの情報を返す
      */

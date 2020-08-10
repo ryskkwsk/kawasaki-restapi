@@ -90,6 +90,8 @@ public class ItemController {
      *
      * @param id          画像を登録する商品のid
      * @param multipartFile MultipartFile
+     *
+     * @return Item
      */
     @PostMapping("/image/{id}")
     public Item uploadImage(
@@ -104,6 +106,7 @@ public class ItemController {
      * 画像がアプリ内に存在する場合に結果を返す
      *
      * @param id 画像を表示する商品id
+     *
      * @return 画像データ HttpEntity<byte[]>
      */
     @GetMapping ("/image/{id}")
@@ -115,6 +118,7 @@ public class ItemController {
      * 商品検索API
      *
      * @param title  検索するタイトルを含んだ商品情報
+     *
      * @return 検索キーワードを含んだ商品を返す
      */
     @GetMapping("/search")
