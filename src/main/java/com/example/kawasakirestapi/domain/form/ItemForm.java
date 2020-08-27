@@ -2,6 +2,7 @@ package com.example.kawasakirestapi.domain.form;
 
 import lombok.Data;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -18,7 +19,7 @@ public class ItemForm {
     private String title;
 
     /** 価格 */
-    @NotBlank(message = "{error.price.required}")
+    @Min(value = 0, message = "{error.price.zero}")
     private Long price;
 
     /** 説明文 */
