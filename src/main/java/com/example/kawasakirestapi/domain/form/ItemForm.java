@@ -14,17 +14,16 @@ import javax.validation.constraints.Size;
 @Data
 public class ItemForm {
     /** 商品タイトル */
-    @NotBlank(message = "{error.title.required}")
-    @Size(max = 100, message = "{error.title.maxlength}")
+    @NotBlank(message = "商品タイトルの入力は必須です。")
+    @Size(max = 100, message = "商品タイトルは最大{max}文字までで記入してください")
     private String title;
 
     /** 価格 */
-    @NotBlank(message = "error.price.required")
-    @Min(value = 0, message = "{error.price.zero}")
+    @Min(value = 0, message = "金額は0以上の数値を入力してください")
     private Long price;
 
     /** 説明文 */
-    @NotBlank(message = "{error.description.required}")
-    @Size(max = 500, message = "{error.description.maxlength}")
+    @NotBlank(message = "商品説明文の入力は必須です。")
+    @Size(max = 500, message = "商品説明は{max}文字以内で入力してください")
     private String description;
 }
