@@ -161,6 +161,19 @@ Intelli IDEAの場合
 application.ymlに上記で設定した環境変数を設定する
 ```
 
+#####ローカルと本番環境での設定
+```
+・GitHubのSettings/Developer settings / kawasaki_restapi でHomepage URLとAuthorization callback URLを変更する必要がある
+ローカル
+Homepage URL : http://localhost:8080
+Authorization callback URL : http://localhost:8080/github/callback
+
+本番
+Homepage URL : https://kawasakiryosuke.com
+Authorization callback URL : https://kawasakiryosuke.com/github/callback
+
+```
+
 ####バッチ処理
 ```
 1.APIにアクセスがあった日毎にlogs/access内にログファイルが作成され、同日中のアクセスは全てそのログファイルに記録される。
